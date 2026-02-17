@@ -63,8 +63,7 @@ $base64Auth = [Convert]::ToBase64String(
     [Text.Encoding]::ASCII.GetBytes(":$Pat")
 )
 $headers = @{
-    Authorization  = "Basic $base64Auth"
-    'Content-Type' = 'application/json'
+    Authorization = "Basic $base64Auth"
 }
 
 #--- Build request body -----------------------------------------------------
@@ -81,7 +80,8 @@ $uri = "https://dev.azure.com/$Organization/_apis/projects/${ProjectId}?api-vers
 Write-Verbose "PATCH $uri"
 Write-Verbose "Body: $jsonBody"
 
-$response = Invoke-RestMethod -Uri $uri -Method Patch -Headers $headers -Body $jsonBody
+$bodyBytes = [System.Text.Encoding]::UTF8.GetBytes($jsonBody)
+$response = Invoke-RestMethod -Uri $uri -Method Patch -Headers $headers -Body $bodyBytes -ContentType 'application/json'
 
 #--- Version guard ----------------------------------------------------------
 if (-not $response.id) {
