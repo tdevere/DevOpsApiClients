@@ -5,6 +5,9 @@
 # API:  PATCH {org}/_apis/projects/{projectId}?api-version=7.2-preview.4
 # Auth: Basic (PAT)
 #
+# The PATCH endpoint requires a project GUID (not a name).  If a name is
+# supplied, the script automatically resolves it to a GUID via a GET call.
+#
 # The API is asynchronous — it returns an operation reference.
 #
 # Usage:
@@ -31,6 +34,22 @@ BODY="${1:?ERROR: Pass a JSON body as the first argument, e.g. '{\"description\"
 # Auth
 # ---------------------------------------------------------------------------
 AUTH=$(printf ':%s' "$PAT" | base64 -w0)
+
+# ---------------------------------------------------------------------------
+# Resolve project GUID — PATCH requires a GUID, not a name
+# ---------------------------------------------------------------------------
+GUID_RE='^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$'
+if ! [[ "$PROJECT" =~ $GUID_RE ]]; then
+    echo "Resolving project name '${PROJECT}' to GUID..." >&2
+    GET_URL="https://dev.azure.com/${ORG}/_apis/projects/${PROJECT}?api-version=${API_VERSION}"
+    GET_RESP=$(curl --silent --fail --show-error \
+        -X GET \
+        -H "Authorization: Basic ${AUTH}" \
+        -H "Content-Type: application/json" \
+        "$GET_URL")
+    PROJECT=$(echo "$GET_RESP" | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
+    echo "Resolved to GUID: ${PROJECT}" >&2
+fi
 
 # ---------------------------------------------------------------------------
 # API call

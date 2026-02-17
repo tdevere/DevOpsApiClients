@@ -6,6 +6,9 @@
     Calls  PATCH {org}/_apis/projects/{projectId}?api-version=7.2-preview.4
     Uses Basic Auth with a PAT stored in $env:AZURE_DEVOPS_PAT.
 
+    The PATCH endpoint requires a project GUID (not a name).  If a name is
+    supplied, the script automatically resolves it to a GUID via a GET call.
+
     The Update Projects API is an async operation. This script queues the
     update and returns the operation reference.  Poll the operation URL to
     track completion.
@@ -19,7 +22,7 @@ param (
     [Parameter()]
     [string]$Organization = $env:AZURE_DEVOPS_ORG,
 
-    [Parameter()]
+    [Parameter(HelpMessage = 'Project name or GUID. Names are auto-resolved to GUIDs.')]
     [string]$ProjectId = $env:PROJECT_ID,
 
     [Parameter()]
@@ -66,13 +69,25 @@ $headers = @{
     Authorization = "Basic $base64Auth"
 }
 
+#--- Resolve project GUID ---------------------------------------------------
+# The PATCH endpoint requires a GUID.  If the caller supplied a name (or we
+# are unsure), we resolve it first via a GET call.
+$guidPattern = '^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$'
+if ($ProjectId -notmatch $guidPattern) {
+    Write-Verbose "ProjectId '$ProjectId' is not a GUID — resolving via GET..."
+    $getUri = "https://dev.azure.com/$Organization/_apis/projects/${ProjectId}?api-version=$ApiVersion"
+    $proj   = Invoke-RestMethod -Uri $getUri -Method Get -Headers $headers -ContentType 'application/json'
+    $ProjectId = $proj.id
+    Write-Verbose "Resolved to GUID: $ProjectId"
+}
+
 #--- Build request body -----------------------------------------------------
 $body = @{}
 if ($NewName)        { $body['name']        = $NewName }
 if ($NewDescription) { $body['description'] = $NewDescription }
 if ($NewVisibility)  { $body['visibility']  = $NewVisibility }
 
-$jsonBody = $body | ConvertTo-Json -Depth 5
+$jsonBody = $body | ConvertTo-Json -Compress -Depth 5
 
 #--- Call the API -----------------------------------------------------------
 $uri = "https://dev.azure.com/$Organization/_apis/projects/${ProjectId}?api-version=$ApiVersion"

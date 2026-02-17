@@ -5,6 +5,9 @@ Update an Azure DevOps project (name, description, or visibility).
 API:  PATCH {org}/_apis/projects/{projectId}?api-version=7.2-preview.4
 Auth: Basic (PAT)
 
+The PATCH endpoint requires a project GUID (not a name).  If a name is
+supplied, the script automatically resolves it to a GUID via a GET call.
+
 The API is asynchronous — it returns an operation reference.
 Poll the operation URL to track completion.
 
@@ -15,6 +18,7 @@ import argparse
 import base64
 import json
 import os
+import re
 import sys
 
 import requests
@@ -23,6 +27,9 @@ import requests
 # Configuration
 # ---------------------------------------------------------------------------
 API_VERSION = "7.2-preview.4"
+GUID_RE = re.compile(
+    r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+)
 
 ORGANIZATION = os.environ.get("AZURE_DEVOPS_ORG")
 PROJECT_ID = os.environ.get("PROJECT_ID")
@@ -67,6 +74,20 @@ HEADERS = {
     "Authorization": f"Basic {credentials}",
     "Content-Type": "application/json",
 }
+
+# ---------------------------------------------------------------------------
+# Resolve project GUID — PATCH requires a GUID, not a name
+# ---------------------------------------------------------------------------
+if not GUID_RE.match(PROJECT_ID):
+    print(f"Resolving project name '{PROJECT_ID}' to GUID...", file=sys.stderr)
+    get_url = (
+        f"https://dev.azure.com/{ORGANIZATION}/_apis/projects/{PROJECT_ID}"
+        f"?api-version={API_VERSION}"
+    )
+    get_resp = requests.get(get_url, headers=HEADERS, timeout=30)
+    get_resp.raise_for_status()
+    PROJECT_ID = get_resp.json()["id"]
+    print(f"Resolved to GUID: {PROJECT_ID}", file=sys.stderr)
 
 # ---------------------------------------------------------------------------
 # API call
