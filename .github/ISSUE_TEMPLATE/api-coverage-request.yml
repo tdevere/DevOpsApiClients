@@ -1,0 +1,83 @@
+name: "API Coverage Request"
+description: "Request automated implementation of an Azure DevOps REST API endpoint"
+title: "[API] "
+labels: ["needs-api-coverage"]
+assignees:
+  - tdevere
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Request Automated API Coverage
+
+        Fill out this form to request implementation of an Azure DevOps REST API 7.2 endpoint.
+        The agent will generate Python, PowerShell, and Bash/cURL implementations with offline tests.
+
+        > **Note**: Only approved project members can trigger the agent. See the repo's authorization policy for details.
+
+  - type: dropdown
+    id: domain
+    attributes:
+      label: "API Domain"
+      description: "Which API area does this endpoint belong to?"
+      options:
+        - Core
+        - Git
+        - Build
+        - WorkItemTracking
+    validations:
+      required: true
+
+  - type: input
+    id: operation
+    attributes:
+      label: "Operation"
+      description: "Human-readable name for the operation"
+      placeholder: "e.g., List Repositories, Create Work Item"
+    validations:
+      required: true
+
+  - type: input
+    id: endpoint
+    attributes:
+      label: "REST Endpoint"
+      description: "Full REST path including method"
+      placeholder: "e.g., GET /{org}/_apis/git/repositories"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: method
+    attributes:
+      label: "HTTP Method"
+      options:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "Priority"
+      description: "How urgently is this endpoint needed?"
+      options:
+        - High
+        - Medium
+        - Low
+      default: 1
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Additional Context"
+      description: "Any notes, links to docs, query parameters, edge cases, or special requirements"
+      placeholder: "Optional — add links to Microsoft docs, known quirks, required PAT scopes, etc."
+    validations:
+      required: false

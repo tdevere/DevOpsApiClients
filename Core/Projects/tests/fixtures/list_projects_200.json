@@ -1,0 +1,35 @@
+{
+  "count": 3,
+  "value": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "ProjectAlpha",
+      "description": "First test project",
+      "url": "https://dev.azure.com/testorg/_apis/projects/a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "state": "wellFormed",
+      "revision": 42,
+      "visibility": "private",
+      "lastUpdateTime": "2025-12-01T10:00:00Z"
+    },
+    {
+      "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+      "name": "ProjectBeta",
+      "description": "Second test project",
+      "url": "https://dev.azure.com/testorg/_apis/projects/b2c3d4e5-f6a7-8901-bcde-f12345678901",
+      "state": "wellFormed",
+      "revision": 15,
+      "visibility": "public",
+      "lastUpdateTime": "2025-11-15T08:30:00Z"
+    },
+    {
+      "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "name": "ProjectGamma",
+      "description": "Third test project",
+      "url": "https://dev.azure.com/testorg/_apis/projects/c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "state": "wellFormed",
+      "revision": 7,
+      "visibility": "private",
+      "lastUpdateTime": "2025-10-20T14:45:00Z"
+    }
+  ]
+}

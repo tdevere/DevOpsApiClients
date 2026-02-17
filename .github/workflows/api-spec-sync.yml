@@ -1,0 +1,356 @@
+# =============================================================================
+# API Spec Sync — Automated Upstream Monitoring
+#
+# Detects changes in the upstream Azure DevOps REST API v7.2 specifications.
+# On delta:
+#   1. Creates a feature branch
+#   2. Updates hashes
+#   3. Runs T1 offline tests
+#   4. Opens a PR (if T1 passes) or an Issue (if T1 fails)
+#   5. Optionally runs T2 live tests if secrets are available
+#
+# Trigger: Weekly schedule (Monday 06:00 UTC) or manual dispatch
+# =============================================================================
+name: API Spec Sync
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'       # Weekly on Monday 06:00 UTC
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'Domain to check (or "all")'
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - core
+          - git
+          - build
+          - wit
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+# ═══════════════════════════════════════════════════════════════════════════════
+jobs:
+
+  # -------------------------------------------------------------------------
+  # 1. Detect upstream spec changes
+  # -------------------------------------------------------------------------
+  detect:
+    name: "Detect Spec Changes"
+    runs-on: ubuntu-latest
+    outputs:
+      has_changes: ${{ steps.check.outputs.has_changes }}
+      report: ${{ steps.check.outputs.report }}
+      branch: ${{ steps.check.outputs.branch }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: "Run sync check"
+        id: check
+        run: |
+          DOMAIN="${{ github.event.inputs.domain || 'all' }}"
+          echo "Checking domain: $DOMAIN"
+
+          # Capture the report (exit code 2 = changes detected, 0 = in-sync)
+          set +e
+          REPORT=$(python _shared/specs/sync_check.py --domain "$DOMAIN" 2>/tmp/sync_stderr.txt)
+          EXIT_CODE=$?
+          set -e
+
+          cat /tmp/sync_stderr.txt
+
+          if [[ $EXIT_CODE -eq 2 ]]; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+
+            # Build branch name
+            DATE=$(date -u +%Y%m%d)
+            BRANCH="api-sync/${DOMAIN}-${DATE}"
+            echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+            # Store report as output (escape newlines for GH Actions)
+            echo "report<<EOF" >> "$GITHUB_OUTPUT"
+            echo "$REPORT" >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
+
+            echo "Changes detected — will create branch: $BRANCH"
+          elif [[ $EXIT_CODE -eq 0 ]]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "All specs in sync. No action needed."
+          else
+            echo "::error::sync_check.py failed with exit code $EXIT_CODE"
+            exit 1
+          fi
+
+  # -------------------------------------------------------------------------
+  # 2. Create branch, update hashes, run T1 tests
+  # -------------------------------------------------------------------------
+  sync-and-test:
+    name: "Sync & T1 Test"
+    runs-on: ubuntu-latest
+    needs: detect
+    if: needs.detect.outputs.has_changes == 'true'
+    outputs:
+      t1_passed: ${{ steps.t1.outputs.passed }}
+      pr_title: ${{ steps.meta.outputs.pr_title }}
+      pr_body: ${{ steps.meta.outputs.pr_body }}
+      change_type: ${{ steps.meta.outputs.change_type }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: "Install test dependencies"
+        run: pip install requests responses pytest
+
+      - name: "Create sync branch"
+        run: |
+          BRANCH="${{ needs.detect.outputs.branch }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+
+      - name: "Update spec hashes"
+        run: |
+          DOMAIN="${{ github.event.inputs.domain || 'all' }}"
+          python _shared/specs/sync_check.py --domain "$DOMAIN" --update-hashes > /dev/null 2>&1 || true
+
+      - name: "Extract PR metadata"
+        id: meta
+        run: |
+          REPORT='${{ needs.detect.outputs.report }}'
+
+          # Extract change type from report
+          CHANGE_TYPE=$(echo "$REPORT" | python3 -c "
+          import sys, json
+          report = json.load(sys.stdin)
+          types = set(d.get('change_type', 'non-breaking') for d in report.get('deltas', []))
+          print('breaking' if 'breaking' in types else 'non-breaking')
+          " 2>/dev/null || echo "non-breaking")
+
+          # Extract affected domains
+          DOMAINS=$(echo "$REPORT" | python3 -c "
+          import sys, json
+          report = json.load(sys.stdin)
+          print(', '.join(d['domain'] for d in report.get('deltas', [])))
+          " 2>/dev/null || echo "unknown")
+
+          # Extract summary
+          SUMMARY=$(echo "$REPORT" | python3 -c "
+          import sys, json
+          report = json.load(sys.stdin)
+          parts = [d['classification']['summary'] for d in report.get('deltas', [])]
+          print('; '.join(parts))
+          " 2>/dev/null || echo "Spec changes detected")
+
+          echo "change_type=$CHANGE_TYPE" >> "$GITHUB_OUTPUT"
+
+          PR_TITLE="[API-SYNC] ${DOMAINS}: ${SUMMARY}"
+          echo "pr_title=${PR_TITLE:0:256}" >> "$GITHUB_OUTPUT"
+
+          # Build PR body
+          NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          cat > /tmp/pr_body.md << PRBODY
+          ## Upstream API Spec Change Detected
+
+          | Field | Value |
+          |-------|-------|
+          | **Domains** | ${DOMAINS} |
+          | **Change Type** | ${CHANGE_TYPE} |
+          | **Detected At** | ${NOW} |
+
+          ### Classification: \`${CHANGE_TYPE}\`
+
+          ${SUMMARY}
+
+          ### Detailed Report
+          \`\`\`json
+          $(echo "$REPORT" | python3 -m json.tool 2>/dev/null || echo "$REPORT")
+          \`\`\`
+
+          ### Automated Actions
+          - [x] Spec hashes updated
+          - [ ] Fixtures regenerated (manual review may be needed)
+          - [ ] Client scripts updated (manual review may be needed)
+          PRBODY
+
+          echo "pr_body<<EOF" >> "$GITHUB_OUTPUT"
+          cat /tmp/pr_body.md >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: "Commit hash updates"
+        run: |
+          git add _shared/specs/last_sync_hashes.json
+          git add _shared/specs/.cache_*.json 2>/dev/null || true
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "[API-SYNC] Update spec hashes — $(date -u +%Y-%m-%d)"
+
+      - name: "Run T1 Offline Tests"
+        id: t1
+        run: |
+          set +e
+
+          echo "=== pytest offline ==="
+          pytest -m offline -v --tb=short 2>&1
+          PYTEST_RC=$?
+
+          echo "=== bats offline ==="
+          BATS_FILES=$(find . -name '*.bats' -not -path './.git/*')
+          if [[ -n "$BATS_FILES" ]]; then
+            bats $BATS_FILES 2>&1
+            BATS_RC=$?
+          else
+            BATS_RC=0
+          fi
+
+          if [[ $PYTEST_RC -eq 0 && $BATS_RC -eq 0 ]]; then
+            echo "passed=true" >> "$GITHUB_OUTPUT"
+            echo "T1 offline tests PASSED ✅"
+          else
+            echo "passed=false" >> "$GITHUB_OUTPUT"
+            echo "T1 offline tests FAILED ❌ (pytest=$PYTEST_RC, bats=$BATS_RC)"
+          fi
+
+      - name: "Push branch"
+        if: steps.t1.outputs.passed == 'true'
+        run: |
+          BRANCH="${{ needs.detect.outputs.branch }}"
+          git push origin "$BRANCH"
+
+  # -------------------------------------------------------------------------
+  # 3. Open PR or Issue based on T1 results
+  # -------------------------------------------------------------------------
+  open-pr-or-issue:
+    name: "Open PR / Issue"
+    runs-on: ubuntu-latest
+    needs: [detect, sync-and-test]
+    if: needs.detect.outputs.has_changes == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Open PR (T1 passed)"
+        if: needs.sync-and-test.outputs.t1_passed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="${{ needs.detect.outputs.branch }}"
+          TITLE="${{ needs.sync-and-test.outputs.pr_title }}"
+          CHANGE_TYPE="${{ needs.sync-and-test.outputs.change_type }}"
+
+          # Create PR body file
+          cat > /tmp/pr_body.md << 'BODYEOF'
+          ${{ needs.sync-and-test.outputs.pr_body }}
+          BODYEOF
+
+          LABELS="api-sync,${CHANGE_TYPE}"
+
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "$TITLE" \
+            --body-file /tmp/pr_body.md \
+            --label "$LABELS" \
+            || echo "::warning::PR creation failed — branch may not have new commits"
+
+      - name: "Open Issue (T1 failed)"
+        if: needs.sync-and-test.outputs.t1_passed == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TITLE="[API-SYNC FAILURE] T1 tests failed after spec update"
+          BODY="## API Spec Sync — T1 Test Failure
+
+          The upstream API spec changed, but the T1 offline tests **failed** after updating hashes.
+
+          **Branch**: \`${{ needs.detect.outputs.branch }}\`
+          **Change Type**: \`${{ needs.sync-and-test.outputs.change_type }}\`
+
+          ### Action Required
+          1. Review the detected spec changes
+          2. Manually update fixtures and client scripts
+          3. Ensure T1 tests pass before merging
+
+          ### Sync Report
+          \`\`\`json
+          ${{ needs.detect.outputs.report }}
+          \`\`\`
+          "
+
+          gh issue create \
+            --title "$TITLE" \
+            --body "$BODY" \
+            --label "api-sync-failure"
+
+  # -------------------------------------------------------------------------
+  # 4. T2 Live Tests (optional — only if secrets are available)
+  # -------------------------------------------------------------------------
+  test-live:
+    name: "T2 Live Test (optional)"
+    runs-on: ubuntu-latest
+    needs: [detect, sync-and-test]
+    if: |
+      needs.sync-and-test.outputs.t1_passed == 'true' &&
+      needs.detect.outputs.has_changes == 'true'
+    env:
+      AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
+      AZURE_DEVOPS_ORG: ${{ secrets.AZURE_DEVOPS_ORG }}
+      PROJECT_ID:       ${{ secrets.PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.detect.outputs.branch }}
+
+      - name: "Check if secrets are available"
+        id: secrets
+        run: |
+          if [[ -n "$AZURE_DEVOPS_PAT" && -n "$AZURE_DEVOPS_ORG" ]]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Secrets not available — skipping T2 live tests"
+          fi
+
+      - name: "Set up Python"
+        if: steps.secrets.outputs.available == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: "Install dependencies"
+        if: steps.secrets.outputs.available == 'true'
+        run: pip install requests
+
+      - name: "Run live tests"
+        if: steps.secrets.outputs.available == 'true'
+        run: |
+          echo "=== Running T2 live tests ==="
+          python Core/Projects/list_projects.py
+          python Core/Projects/get_project.py
+          echo "T2 live tests passed ✅"
+
+      - name: "Comment on PR with T2 results"
+        if: steps.secrets.outputs.available == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="${{ needs.detect.outputs.branch }}"
+          PR_NUM=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number' 2>/dev/null)
+          if [[ -n "$PR_NUM" ]]; then
+            gh pr comment "$PR_NUM" --body "### T2 Live Test Results
+            | Tier | Result |
+            |------|--------|
+            | T1 Offline | ✅ Passed |
+            | T2 Live | ✅ Passed |"
+          fi

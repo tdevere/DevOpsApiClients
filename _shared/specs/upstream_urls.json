@@ -1,0 +1,6 @@
+{
+  "core":  "https://raw.githubusercontent.com/MicrosoftDocs/vsts-rest-api-specs/master/specification/core/7.2/core.json",
+  "git":   "https://raw.githubusercontent.com/MicrosoftDocs/vsts-rest-api-specs/master/specification/git/7.2/git.json",
+  "build": "https://raw.githubusercontent.com/MicrosoftDocs/vsts-rest-api-specs/master/specification/build/7.2/build.json",
+  "wit":   "https://raw.githubusercontent.com/MicrosoftDocs/vsts-rest-api-specs/master/specification/workItemTracking/7.2/workItemTracking.json"
+}

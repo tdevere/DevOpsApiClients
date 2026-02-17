@@ -1,0 +1,29 @@
+# === Logs (generated at runtime) ===
+logs/
+
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.pytest_cache/
+
+# === PowerShell ===
+*.psm1.bak
+
+# === IDE / Editor ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# === Release artifacts ===
+*.tar.gz
+*.zip

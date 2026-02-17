@@ -1,0 +1,23 @@
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "name": "ProjectAlpha",
+  "description": "First test project",
+  "url": "https://dev.azure.com/testorg/_apis/projects/a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "state": "wellFormed",
+  "revision": 42,
+  "visibility": "private",
+  "defaultTeam": {
+    "id": "d4e5f6a7-b8c9-0123-defg-234567890123",
+    "name": "ProjectAlpha Team",
+    "url": "https://dev.azure.com/testorg/_apis/projects/a1b2c3d4-e5f6-7890-abcd-ef1234567890/teams/d4e5f6a7-b8c9-0123-defg-234567890123"
+  },
+  "lastUpdateTime": "2025-12-01T10:00:00Z",
+  "_links": {
+    "self": {
+      "href": "https://dev.azure.com/testorg/_apis/projects/a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    "web": {
+      "href": "https://dev.azure.com/testorg/ProjectAlpha"
+    }
+  }
+}

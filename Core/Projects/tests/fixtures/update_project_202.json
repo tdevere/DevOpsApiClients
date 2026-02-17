@@ -1,0 +1,10 @@
+{
+  "id": "e5f6a7b8-c9d0-1234-ef01-345678901234",
+  "status": "queued",
+  "url": "https://dev.azure.com/testorg/_apis/operations/e5f6a7b8-c9d0-1234-ef01-345678901234",
+  "_links": {
+    "self": {
+      "href": "https://dev.azure.com/testorg/_apis/operations/e5f6a7b8-c9d0-1234-ef01-345678901234"
+    }
+  }
+}

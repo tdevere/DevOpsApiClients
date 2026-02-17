@@ -1,0 +1,216 @@
+# =============================================================================
+# Agent API Coverage Request — Authorization-Gated Workflow
+#
+# Triggered when an issue is opened or labeled with 'needs-api-coverage'.
+# Validates the requester against an approved contributor list and
+# author_association before allowing the agent to process the request.
+#
+# Security model:
+#   1. Identity check — MEMBER / OWNER / hardcoded allowlist
+#   2. Label gate   — 'needs-api-coverage' must be present
+#   3. Audit trail  — all runs visible in Actions history
+# =============================================================================
+name: Agent API Coverage Request
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+# ═══════════════════════════════════════════════════════════════════════════════
+jobs:
+
+  # ---------------------------------------------------------------------------
+  # 1. Authorization gate — validate requester identity
+  # ---------------------------------------------------------------------------
+  authorize:
+    name: "Authorize Requester"
+    runs-on: ubuntu-latest
+    # Only consider issues that carry the trigger label
+    if: contains(github.event.issue.labels.*.name, 'needs-api-coverage')
+    outputs:
+      is_authorized: ${{ steps.check.outputs.authorized }}
+    steps:
+      - name: "Check if user is approved"
+        id: check
+        shell: bash
+        run: |
+          # ── Option A: Hardcoded allowlist ──────────────────────────────
+          APPROVED_USERS="tdevere"
+
+          # ── Option B: Author association (automatic) ──────────────────
+          # COLLABORATOR, MEMBER, OWNER are trusted roles
+          USER_ROLE="${{ github.event.issue.author_association }}"
+
+          ACTOR="${{ github.actor }}"
+          echo "Actor:       $ACTOR"
+          echo "Association: $USER_ROLE"
+
+          if [[ ",$APPROVED_USERS," == *",$ACTOR,"* ]] \
+             || [[ "$USER_ROLE" == "COLLABORATOR" ]] \
+             || [[ "$USER_ROLE" == "MEMBER" ]] \
+             || [[ "$USER_ROLE" == "OWNER" ]]; then
+            echo "✅ $ACTOR is authorized ($USER_ROLE)"
+            echo "authorized=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "❌ $ACTOR is NOT authorized ($USER_ROLE)"
+            echo "authorized=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  # ---------------------------------------------------------------------------
+  # 2. Reject — polite comment for unauthorized requesters
+  # ---------------------------------------------------------------------------
+  reject:
+    name: "Reject Unauthorized"
+    runs-on: ubuntu-latest
+    needs: authorize
+    if: needs.authorize.outputs.is_authorized == 'false'
+    steps:
+      - name: "Post rejection comment"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" \
+            --body "I'm sorry, @${{ github.actor }}, but automated API generation is currently restricted to approved project members.
+
+          If you believe this is an error, please contact a repository owner to be added as a collaborator."
+
+  # ---------------------------------------------------------------------------
+  # 3. Generate — agent processes the approved request
+  # ---------------------------------------------------------------------------
+  generate-api:
+    name: "Generate API Coverage"
+    runs-on: ubuntu-latest
+    needs: authorize
+    if: needs.authorize.outputs.is_authorized == 'true'
+    env:
+      AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
+      AZURE_DEVOPS_ORG: ${{ secrets.AZURE_DEVOPS_ORG }}
+      PROJECT_ID:       ${{ secrets.PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: "Install dependencies"
+        run: pip install requests responses pytest
+
+      - name: "Parse issue body"
+        id: parse
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Extract structured fields from the issue body
+          ISSUE_BODY=$(gh issue view "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" --json body --jq '.body')
+
+          # Extract domain (e.g., Core, Git, Build, WorkItemTracking)
+          DOMAIN=$(echo "$ISSUE_BODY" | grep -oP '(?<=### API Domain\s).*' | xargs || echo "")
+          echo "domain=$DOMAIN" >> "$GITHUB_OUTPUT"
+
+          # Extract operation (e.g., List Repositories)
+          OPERATION=$(echo "$ISSUE_BODY" | grep -oP '(?<=### Operation\s).*' | xargs || echo "")
+          echo "operation=$OPERATION" >> "$GITHUB_OUTPUT"
+
+          # Extract endpoint
+          ENDPOINT=$(echo "$ISSUE_BODY" | grep -oP '(?<=### REST Endpoint\s).*' | xargs || echo "")
+          echo "endpoint=$ENDPOINT" >> "$GITHUB_OUTPUT"
+
+          echo "Domain:    $DOMAIN"
+          echo "Operation: $OPERATION"
+          echo "Endpoint:  $ENDPOINT"
+
+      - name: "Acknowledge request"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" \
+            --body "🤖 **Agent acknowledged** — processing API coverage request from @${{ github.actor }}.
+
+          | Field | Value |
+          |-------|-------|
+          | **Domain** | ${{ steps.parse.outputs.domain }} |
+          | **Operation** | ${{ steps.parse.outputs.operation }} |
+          | **Endpoint** | ${{ steps.parse.outputs.endpoint }} |
+
+          I'll create a PR once the implementation is ready."
+
+      - name: "Generate API client code"
+        id: generate
+        run: |
+          echo "Processing API Request from Authorized User: ${{ github.actor }}"
+          echo "Domain:    ${{ steps.parse.outputs.domain }}"
+          echo "Operation: ${{ steps.parse.outputs.operation }}"
+          echo "Endpoint:  ${{ steps.parse.outputs.endpoint }}"
+
+          # ── Agent logic placeholder ────────────────────────────────────
+          # The AI agent reads the parsed issue fields and generates:
+          #   1. Python implementation   (<operation>.py)
+          #   2. PowerShell script       (Verb-Resource.ps1)
+          #   3. Bash/cURL script        (<operation>.sh)
+          #   4. Offline unit tests      (pytest, Pester, bats)
+          #   5. Test fixture JSON       (tests/fixtures/<name>_200.json)
+          #   6. README update           (domain README.md)
+          #
+          # For now this step is a placeholder.
+          # Replace with actual agent invocation when the LLM integration
+          # is configured (e.g., GitHub Copilot Workspace, custom action).
+          # ──────────────────────────────────────────────────────────────
+
+          echo "status=placeholder" >> "$GITHUB_OUTPUT"
+          echo "⚠️  Agent code generation is a placeholder — replace with actual LLM integration."
+
+      - name: "Run T1 offline tests"
+        id: t1
+        run: |
+          set +e
+          pytest -m offline -v --tb=short 2>&1
+          PYTEST_RC=$?
+
+          BATS_FILES=$(find . -name '*.bats' -not -path './.git/*')
+          if [[ -n "$BATS_FILES" ]]; then
+            bats $BATS_FILES 2>&1
+            BATS_RC=$?
+          else
+            BATS_RC=0
+          fi
+
+          if [[ $PYTEST_RC -eq 0 && $BATS_RC -eq 0 ]]; then
+            echo "passed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "passed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: "Report results"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          T1="${{ steps.t1.outputs.passed }}"
+          STATUS="${{ steps.generate.outputs.status }}"
+
+          if [[ "$STATUS" == "placeholder" ]]; then
+            BODY="🤖 **Agent run complete** (placeholder mode).
+
+          T1 Offline Tests: $([ \"$T1\" == 'true' ] && echo '✅ Passed' || echo '❌ Failed')
+
+          > Note: The code generation step is currently a placeholder. Connect your LLM agent to fully automate this workflow."
+          else
+            BODY="🤖 **Agent run complete**.
+
+          T1 Offline Tests: $([ \"$T1\" == 'true' ] && echo '✅ Passed' || echo '❌ Failed')
+
+          A pull request has been created with the implementation."
+          fi
+
+          gh issue comment "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" \
+            --body "$BODY"
