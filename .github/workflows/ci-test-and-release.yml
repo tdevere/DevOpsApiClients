@@ -228,16 +228,21 @@ jobs:
         run: |
           TAG="${{ steps.version.outputs.tag }}"
           ARCHIVE="DevOpsApiClients-${TAG}.tar.gz"
+          ARCHIVE_PATH="/tmp/${ARCHIVE}"
 
-          # Package everything except .git
-          tar czf "$ARCHIVE" \
+          # Package everything except .git — write to /tmp to avoid
+          # "file changed as we read it" when tar output is inside the source tree.
+          tar czf "$ARCHIVE_PATH" \
             --exclude='.git' \
             --exclude='.github' \
-            -C /home/runner/work/DevOpsApiClients/DevOpsApiClients .
+            -C "$GITHUB_WORKSPACE" .
 
-          echo "ARCHIVE=$ARCHIVE" >> "$GITHUB_ENV"
+          # Copy back so the release step can find it
+          cp "$ARCHIVE_PATH" "${GITHUB_WORKSPACE}/${ARCHIVE}"
+
+          echo "ARCHIVE=${ARCHIVE}" >> "$GITHUB_ENV"
           echo "Created $ARCHIVE"
-          ls -lh "$ARCHIVE"
+          ls -lh "${GITHUB_WORKSPACE}/${ARCHIVE}"
 
       - name: "Create Git tag"
         run: |
