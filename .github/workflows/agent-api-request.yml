@@ -101,32 +101,52 @@ jobs:
           python-version: "3.12"
 
       - name: "Install dependencies"
-        run: pip install requests responses pytest
+        run: |
+          pip install requests responses pytest
+          sudo apt-get update -qq && sudo apt-get install -y -qq bats > /dev/null
 
       - name: "Parse issue body"
         id: parse
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Extract structured fields from the issue body
+          # Extract structured fields from the issue body.
+          # GitHub Issue Forms render as:
+          #   ### Header
+          #
+          #   Value
+          #
+          # So we grab the first non-empty line after each header.
           ISSUE_BODY=$(gh issue view "${{ github.event.issue.number }}" \
             --repo "${{ github.repository }}" --json body --jq '.body')
 
-          # Extract domain (e.g., Core, Git, Build, WorkItemTracking)
-          DOMAIN=$(echo "$ISSUE_BODY" | grep -oP '(?<=### API Domain\s).*' | xargs || echo "")
+          extract_field() {
+            local header="$1"
+            echo "$ISSUE_BODY" | awk -v h="### $header" '
+              $0 == h { found=1; next }
+              found && /^\s*$/ { next }
+              found && /^### / { exit }
+              found { print; exit }
+            ' | xargs
+          }
+
+          DOMAIN=$(extract_field "API Domain")
+          OPERATION=$(extract_field "Operation")
+          ENDPOINT=$(extract_field "REST Endpoint")
+          METHOD=$(extract_field "HTTP Method")
+          PRIORITY=$(extract_field "Priority")
+
           echo "domain=$DOMAIN" >> "$GITHUB_OUTPUT"
-
-          # Extract operation (e.g., List Repositories)
-          OPERATION=$(echo "$ISSUE_BODY" | grep -oP '(?<=### Operation\s).*' | xargs || echo "")
           echo "operation=$OPERATION" >> "$GITHUB_OUTPUT"
-
-          # Extract endpoint
-          ENDPOINT=$(echo "$ISSUE_BODY" | grep -oP '(?<=### REST Endpoint\s).*' | xargs || echo "")
           echo "endpoint=$ENDPOINT" >> "$GITHUB_OUTPUT"
+          echo "method=$METHOD" >> "$GITHUB_OUTPUT"
+          echo "priority=$PRIORITY" >> "$GITHUB_OUTPUT"
 
           echo "Domain:    $DOMAIN"
           echo "Operation: $OPERATION"
           echo "Endpoint:  $ENDPOINT"
+          echo "Method:    $METHOD"
+          echo "Priority:  $PRIORITY"
 
       - name: "Acknowledge request"
         env:
