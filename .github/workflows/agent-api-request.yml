@@ -217,16 +217,22 @@ jobs:
           T1="${{ steps.t1.outputs.passed }}"
           STATUS="${{ steps.generate.outputs.status }}"
 
+          if [[ "$T1" == "true" ]]; then
+            T1_RESULT="✅ Passed"
+          else
+            T1_RESULT="❌ Failed"
+          fi
+
           if [[ "$STATUS" == "placeholder" ]]; then
             BODY="🤖 **Agent run complete** (placeholder mode).
 
-          T1 Offline Tests: $([ \"$T1\" == 'true' ] && echo '✅ Passed' || echo '❌ Failed')
+          T1 Offline Tests: ${T1_RESULT}
 
           > Note: The code generation step is currently a placeholder. Connect your LLM agent to fully automate this workflow."
           else
             BODY="🤖 **Agent run complete**.
 
-          T1 Offline Tests: $([ \"$T1\" == 'true' ] && echo '✅ Passed' || echo '❌ Failed')
+          T1 Offline Tests: ${T1_RESULT}
 
           A pull request has been created with the implementation."
           fi
