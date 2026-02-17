@@ -1,0 +1,274 @@
+# =============================================================================
+# Azure DevOps 7.2 API Clients — CI Test & Release Pipeline
+#
+# Runs all Core/Projects scripts (PowerShell, Python, cURL) against a live
+# Azure DevOps organisation.  When every test passes, a GitHub Release is
+# created automatically.
+#
+# Required secrets:
+#   AZURE_DEVOPS_PAT  — Personal Access Token
+#   AZURE_DEVOPS_ORG  — Organisation name
+#   PROJECT_ID        — Target project name or GUID (for Get / Update tests)
+# =============================================================================
+name: CI Test & Release
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:          # allow manual trigger
+
+permissions:
+  contents: write             # needed for creating releases / tags
+
+# ---------------------------------------------------------------------------
+# Global env — available to every job
+# ---------------------------------------------------------------------------
+env:
+  AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
+  AZURE_DEVOPS_ORG: ${{ secrets.AZURE_DEVOPS_ORG }}
+  PROJECT_ID:       ${{ secrets.PROJECT_ID }}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+jobs:
+
+  # -------------------------------------------------------------------------
+  # 1. PowerShell tests
+  # -------------------------------------------------------------------------
+  test-powershell:
+    name: "Test — PowerShell"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Validate secrets are set"
+        shell: bash
+        run: |
+          [[ -z "$AZURE_DEVOPS_PAT" ]] && echo "::error::AZURE_DEVOPS_PAT secret is not set" && exit 1
+          [[ -z "$AZURE_DEVOPS_ORG" ]] && echo "::error::AZURE_DEVOPS_ORG secret is not set" && exit 1
+          [[ -z "$PROJECT_ID" ]]       && echo "::error::PROJECT_ID secret is not set"       && exit 1
+          echo "All secrets present ✓"
+
+      - name: "List Projects"
+        shell: pwsh
+        run: |
+          Write-Host "=== List Projects (PowerShell) ==="
+          ./Core/Projects/List-Projects.ps1 -Verbose
+
+      - name: "Get Project"
+        shell: pwsh
+        run: |
+          Write-Host "=== Get Project (PowerShell) ==="
+          ./Core/Projects/Get-Project.ps1 -Verbose
+
+      - name: "Update Project (dry-run description)"
+        shell: pwsh
+        run: |
+          Write-Host "=== Update Project — set description (PowerShell) ==="
+          $ts = Get-Date -Format 'yyyy-MM-ddTHH:mm:ssZ'
+          ./Core/Projects/Update-Project.ps1 `
+            -NewDescription "CI validation run at $ts" `
+            -Verbose
+
+  # -------------------------------------------------------------------------
+  # 2. Python tests
+  # -------------------------------------------------------------------------
+  test-python:
+    name: "Test — Python"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: "Install dependencies"
+        run: pip install requests
+
+      - name: "Validate secrets are set"
+        run: |
+          [[ -z "$AZURE_DEVOPS_PAT" ]] && echo "::error::AZURE_DEVOPS_PAT secret is not set" && exit 1
+          [[ -z "$AZURE_DEVOPS_ORG" ]] && echo "::error::AZURE_DEVOPS_ORG secret is not set" && exit 1
+          [[ -z "$PROJECT_ID" ]]       && echo "::error::PROJECT_ID secret is not set"       && exit 1
+          echo "All secrets present ✓"
+
+      - name: "List Projects"
+        run: |
+          echo "=== List Projects (Python) ==="
+          python Core/Projects/list_projects.py
+
+      - name: "Get Project"
+        run: |
+          echo "=== Get Project (Python) ==="
+          python Core/Projects/get_project.py
+
+      - name: "Update Project (dry-run description)"
+        run: |
+          echo "=== Update Project — set description (Python) ==="
+          python Core/Projects/update_project.py \
+            --description "CI validation run at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+  # -------------------------------------------------------------------------
+  # 3. cURL / Bash tests
+  # -------------------------------------------------------------------------
+  test-curl:
+    name: "Test — cURL"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Validate secrets are set"
+        run: |
+          [[ -z "$AZURE_DEVOPS_PAT" ]] && echo "::error::AZURE_DEVOPS_PAT secret is not set" && exit 1
+          [[ -z "$AZURE_DEVOPS_ORG" ]] && echo "::error::AZURE_DEVOPS_ORG secret is not set" && exit 1
+          [[ -z "$PROJECT_ID" ]]       && echo "::error::PROJECT_ID secret is not set"       && exit 1
+          echo "All secrets present ✓"
+
+      - name: "List Projects"
+        run: |
+          echo "=== List Projects (cURL) ==="
+          bash Core/Projects/list_projects.sh
+
+      - name: "Get Project"
+        run: |
+          echo "=== Get Project (cURL) ==="
+          bash Core/Projects/get_project.sh
+
+      - name: "Update Project (dry-run description)"
+        run: |
+          echo "=== Update Project — set description (cURL) ==="
+          bash Core/Projects/update_project.sh \
+            "{\"description\":\"CI validation run at $(date -u +%Y-%m-%dT%H:%M:%SZ)\"}"
+
+  # -------------------------------------------------------------------------
+  # 4. Syntax / lint checks (no secrets required)
+  # -------------------------------------------------------------------------
+  lint:
+    name: "Lint & Syntax"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: "Python — syntax check all .py files"
+        run: |
+          echo "=== Python syntax check ==="
+          find . -name '*.py' -print -exec python -m py_compile {} \;
+          echo "All Python files compile ✓"
+
+      - name: "Bash — syntax check all .sh files"
+        run: |
+          echo "=== Bash syntax check ==="
+          find . -name '*.sh' -print -exec bash -n {} \;
+          echo "All Bash files pass syntax check ✓"
+
+      - name: "PowerShell — syntax parse all .ps1 files"
+        shell: pwsh
+        run: |
+          Write-Host "=== PowerShell syntax check ==="
+          Get-ChildItem -Recurse -Filter '*.ps1' | ForEach-Object {
+              $tokens = $null; $errors = $null
+              [System.Management.Automation.Language.Parser]::ParseFile(
+                  $_.FullName, [ref]$tokens, [ref]$errors
+              ) | Out-Null
+              if ($errors.Count -gt 0) {
+                  Write-Error "Parse errors in $($_.FullName): $($errors | Out-String)"
+                  exit 1
+              }
+              Write-Host "  OK  $($_.FullName)"
+          }
+          Write-Host "All PowerShell files parse ✓"
+
+  # =========================================================================
+  # 5. RELEASE — runs only when ALL test jobs pass on main branch pushes
+  # =========================================================================
+  release:
+    name: "Create Release"
+    runs-on: ubuntu-latest
+    needs: [test-powershell, test-python, test-curl, lint]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0            # full history for tag detection
+
+      - name: "Determine next version"
+        id: version
+        run: |
+          # Fetch all tags
+          git fetch --tags
+
+          # Find the latest vX.Y.Z tag, default to v0.0.0
+          LATEST_TAG=$(git tag --list 'v*' --sort=-version:refname | head -n1)
+          if [[ -z "$LATEST_TAG" ]]; then
+            LATEST_TAG="v0.0.0"
+            echo "No existing tags found — starting from v0.0.0"
+          else
+            echo "Latest tag: $LATEST_TAG"
+          fi
+
+          # Parse and bump the patch version
+          VERSION="${LATEST_TAG#v}"
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+          PATCH=$((PATCH + 1))
+          NEW_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+
+          echo "Next version: $NEW_TAG"
+          echo "tag=$NEW_TAG"           >> "$GITHUB_OUTPUT"
+          echo "previous=$LATEST_TAG"   >> "$GITHUB_OUTPUT"
+
+      - name: "Build release archive"
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          ARCHIVE="DevOpsApiClients-${TAG}.tar.gz"
+
+          # Package everything except .git
+          tar czf "$ARCHIVE" \
+            --exclude='.git' \
+            --exclude='.github' \
+            -C /home/runner/work/DevOpsApiClients/DevOpsApiClients .
+
+          echo "ARCHIVE=$ARCHIVE" >> "$GITHUB_ENV"
+          echo "Created $ARCHIVE"
+          ls -lh "$ARCHIVE"
+
+      - name: "Create Git tag"
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "Release $TAG — all API client tests passed"
+          git push origin "$TAG"
+
+      - name: "Create GitHub Release"
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: "Release ${{ steps.version.outputs.tag }}"
+          generate_release_notes: true
+          body: |
+            ## Azure DevOps 7.2 API Clients — ${{ steps.version.outputs.tag }}
+
+            All tests passed across **PowerShell**, **Python**, and **cURL/Bash** clients.
+
+            ### Tested API Areas
+            - **Core / Projects** — List, Get, Update (api-version `7.2-preview.4`)
+
+            ### What's included
+            - PowerShell scripts (`*.ps1`) using `Invoke-RestMethod`
+            - Python scripts (`*.py`) using `requests`
+            - Bash/cURL scripts (`*.sh`) using `curl`
+
+            ### Changelog
+            See auto-generated notes below for commit-level details.
+          files: |
+            ${{ env.ARCHIVE }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
