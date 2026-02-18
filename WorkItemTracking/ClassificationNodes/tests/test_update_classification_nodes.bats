@@ -14,7 +14,7 @@ setup() {
     export AZURE_DEVOPS_PAT="fakepat1234567890"
     export PROJECT_ID="a1b2c3d4-e5f6-7890-abcd-ef1234567890"
     export STRUCTURE_GROUP="test-value-structure_group"
-    export PATH="test-value-path"
+    export CLASSIFICATION_PATH="test-value-path"
     export FIXTURES_DIR
     export BATS_TMPDIR
 
@@ -77,11 +77,11 @@ teardown() {
     [[ "$output" == *"STRUCTURE_GROUP"* ]]
 }
 
-@test "update_classification_nodes.sh: exits with error when PATH is unset" {
-    unset PATH
+@test "update_classification_nodes.sh: exits with error when CLASSIFICATION_PATH is unset" {
+    unset CLASSIFICATION_PATH
     run bash "$SCRIPT_DIR/update_classification_nodes.sh"
     [ "$status" -ne 0 ]
-    [[ "$output" == *"PATH"* ]]
+    [[ "$output" == *"CLASSIFICATION_PATH"* ]]
 }
 
 @test "update_classification_nodes.sh: succeeds with valid env and stubbed curl" {

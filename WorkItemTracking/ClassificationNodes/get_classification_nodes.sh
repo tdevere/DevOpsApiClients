@@ -7,7 +7,7 @@
 # API:  GET {org}/_apis/wit/classificationnodes/{structure_group}/{path}?api-version=7.2
 # Auth: Basic (PAT)
 #
-# Usage: STRUCTURE_GROUP="value" PATH="value" bash get_classification_nodes.sh
+# Usage: STRUCTURE_GROUP="value" CLASSIFICATION_PATH="value" bash get_classification_nodes.sh
 #
 # Docs: https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/classification-nodes/get?view=azure-devops-rest-7.2
 # ============================================================================
@@ -27,7 +27,7 @@ ORG=$(ado_require_env "AZURE_DEVOPS_ORG" "organisation slug")
 PAT=$(ado_require_env "AZURE_DEVOPS_PAT" "Personal Access Token")
 PROJECT=$(ado_require_env "PROJECT_ID" "project name or GUID")
 STRUCTURE_GROUP=$(ado_require_env "STRUCTURE_GROUP" "Structure group of the classification node, area or iteration.")
-PATH=$(ado_require_env "PATH" "Path of the classification node.")
+CLASSIFICATION_PATH=$(ado_require_env "CLASSIFICATION_PATH" "Path of the classification node.")
 
 # ---------------------------------------------------------------------------
 # Auth
@@ -37,7 +37,7 @@ AUTH=$(ado_build_auth "$PAT")
 # ---------------------------------------------------------------------------
 # API call
 # ---------------------------------------------------------------------------
-URL=$(ado_build_url "$ORG" "_apis/wit/classificationnodes/${STRUCTURE_GROUP}/${PATH}" "$API_VERSION" "$PROJECT")
+URL=$(ado_build_url "$ORG" "_apis/wit/classificationnodes/${STRUCTURE_GROUP}/${CLASSIFICATION_PATH}" "$API_VERSION" "$PROJECT")
 
 RESPONSE=$(curl --silent --fail --show-error \
     -X GET \
