@@ -14,7 +14,7 @@ setup() {
     export AZURE_DEVOPS_PAT="fakepat1234567890"
     export PROJECT_ID="a1b2c3d4-e5f6-7890-abcd-ef1234567890"
     export WIKI_IDENTIFIER="test-value-wiki_identifier"
-    export PATH="test-value-path"
+    export WIKI_PAGE_PATH="test-value-path"
     export FIXTURES_DIR
     export BATS_TMPDIR
 
@@ -77,11 +77,11 @@ teardown() {
     [[ "$output" == *"WIKI_IDENTIFIER"* ]]
 }
 
-@test "create_or_update.sh: exits with error when PATH is unset" {
-    unset PATH
+@test "create_or_update.sh: exits with error when WIKI_PAGE_PATH is unset" {
+    unset WIKI_PAGE_PATH
     run bash "$SCRIPT_DIR/create_or_update.sh"
     [ "$status" -ne 0 ]
-    [[ "$output" == *"PATH"* ]]
+    [[ "$output" == *"WIKI_PAGE_PATH"* ]]
 }
 
 @test "create_or_update.sh: succeeds with valid env and stubbed curl" {

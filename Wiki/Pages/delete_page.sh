@@ -27,7 +27,7 @@ ORG=$(ado_require_env "AZURE_DEVOPS_ORG" "organisation slug")
 PAT=$(ado_require_env "AZURE_DEVOPS_PAT" "Personal Access Token")
 PROJECT=$(ado_require_env "PROJECT_ID" "project name or GUID")
 WIKI_IDENTIFIER=$(ado_require_env "WIKI_IDENTIFIER" "Wiki ID or wiki name.")
-PATH=$(ado_require_env "PATH" "Wiki page path.")
+WIKI_PAGE_PATH=$(ado_require_env "WIKI_PAGE_PATH" "Wiki page path.")
 
 # ---------------------------------------------------------------------------
 # Auth

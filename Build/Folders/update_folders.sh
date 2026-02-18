@@ -26,7 +26,7 @@ API_VERSION="7.2"
 ORG=$(ado_require_env "AZURE_DEVOPS_ORG" "organisation slug")
 PAT=$(ado_require_env "AZURE_DEVOPS_PAT" "Personal Access Token")
 PROJECT=$(ado_require_env "PROJECT_ID" "project name or GUID")
-PATH=$(ado_require_env "PATH" "The full path to the folder.")
+FOLDER_PATH=$(ado_require_env "FOLDER_PATH" "The full path to the folder.")
 
 # ---------------------------------------------------------------------------
 # Auth
@@ -44,7 +44,7 @@ BODY=$(cat <<EOF
   "description": "${DESCRIPTION}",
   "lastChangedBy": "${LAST_CHANGED_BY}",
   "lastChangedDate": "${LAST_CHANGED_DATE}",
-  "path": "${PATH}"
+  "path": "${FOLDER_PATH}"
 }
 EOF
 )

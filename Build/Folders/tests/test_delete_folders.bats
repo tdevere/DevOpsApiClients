@@ -13,7 +13,7 @@ setup() {
     export AZURE_DEVOPS_ORG="testorg"
     export AZURE_DEVOPS_PAT="fakepat1234567890"
     export PROJECT_ID="a1b2c3d4-e5f6-7890-abcd-ef1234567890"
-    export PATH="test-value-path"
+    export FOLDER_PATH="test-value-path"
     export FIXTURES_DIR
     export BATS_TMPDIR
 
@@ -69,11 +69,11 @@ teardown() {
     [[ "$output" == *"PROJECT_ID"* ]]
 }
 
-@test "delete_folders.sh: exits with error when PATH is unset" {
-    unset PATH
+@test "delete_folders.sh: exits with error when FOLDER_PATH is unset" {
+    unset FOLDER_PATH
     run bash "$SCRIPT_DIR/delete_folders.sh"
     [ "$status" -ne 0 ]
-    [[ "$output" == *"PATH"* ]]
+    [[ "$output" == *"FOLDER_PATH"* ]]
 }
 
 @test "delete_folders.sh: succeeds with valid env and stubbed curl" {

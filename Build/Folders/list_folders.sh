@@ -26,7 +26,7 @@ API_VERSION="7.2"
 ORG=$(ado_require_env "AZURE_DEVOPS_ORG" "organisation slug")
 PAT=$(ado_require_env "AZURE_DEVOPS_PAT" "Personal Access Token")
 PROJECT=$(ado_require_env "PROJECT_ID" "project name or GUID")
-PATH=$(ado_require_env "PATH" "The path to start with.")
+FOLDER_PATH=$(ado_require_env "FOLDER_PATH" "The path to start with.")
 
 # ---------------------------------------------------------------------------
 # Auth
@@ -36,7 +36,7 @@ AUTH=$(ado_build_auth "$PAT")
 # ---------------------------------------------------------------------------
 # API call
 # ---------------------------------------------------------------------------
-URL=$(ado_build_url "$ORG" "_apis/build/folders/${PATH}" "$API_VERSION" "$PROJECT")
+URL=$(ado_build_url "$ORG" "_apis/build/folders/${FOLDER_PATH}" "$API_VERSION" "$PROJECT")
 
 RESPONSE=$(curl --silent --fail --show-error \
     -X GET \
