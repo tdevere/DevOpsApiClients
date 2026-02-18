@@ -11,7 +11,7 @@
 #   5. ANTI-REPEAT — explicitly forbids repeating a failed approach
 #
 # Guard rails:
-#   - Only triggers on main branch failures (not PR branches)
+#   - Triggers on main branch failures AND copilot/ PR branch failures
 #   - Dedup: updates existing issue instead of creating duplicates
 #   - Non-fatal copilot assignment (issue created regardless)
 # =============================================================================
@@ -32,7 +32,8 @@ jobs:
     name: "Detect, Diagnose & Dispatch Fix"
     if: >-
       github.event.workflow_run.conclusion == 'failure' &&
-      github.event.workflow_run.head_branch == 'main'
+      (github.event.workflow_run.head_branch == 'main' ||
+       startsWith(github.event.workflow_run.head_branch, 'copilot/'))
     runs-on: ubuntu-latest
     steps:
       # ── 0. Checkout code (needed for diagnostic test runs) ───────────
@@ -337,7 +338,7 @@ jobs:
 
           ### What Happened
 
-          1. CI detected test failures on \`main\`
+          1. CI detected test failures on \`${{ github.event.workflow_run.head_branch }}\`
           2. Auto-heal created this issue and assigned copilot
           3. Copilot attempted a fix, but CI still failed after merge
           4. This cycle repeated ${ATTEMPT} times without resolution
@@ -508,7 +509,7 @@ jobs:
 
           ### Context
 
-          The CI pipeline on \`main\` has **${TOTAL} failure(s)** (${PYTEST_SUMMARY:-details below}).
+          The CI pipeline on \`${{ github.event.workflow_run.head_branch }}\` has **${TOTAL} failure(s)** (${PYTEST_SUMMARY:-details below}).
           These must be fixed to keep the project healthy.
 
           **CI Run:** https://github.com/${{ github.repository }}/actions/runs/${RUN_ID}
