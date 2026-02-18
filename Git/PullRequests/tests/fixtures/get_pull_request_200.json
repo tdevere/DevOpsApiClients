@@ -1,4 +1,7 @@
 {
+  "pullRequestId": 1001,
+  "title": "Add feature X",
+  "status": "active",
   "artifactId": "sample-string",
   "autoCompleteSetBy": {
     "directoryAlias": "sample-string",

@@ -6,7 +6,15 @@
     "text": "sample-string",
     "version": 1
   },
-  "fields": {},
+  "fields": {
+    "System.Title": "Implement user authentication flow",
+    "System.State": "Active",
+    "System.WorkItemType": "Task",
+    "System.AssignedTo": { "displayName": "Test User" },
+    "System.AreaPath": "ProjectAlpha",
+    "System.IterationPath": "ProjectAlpha\\Sprint 1",
+    "Microsoft.VSTS.Common.Priority": 2
+  },
   "id": 1,
   "multilineFieldsFormat": {},
   "relations": [
