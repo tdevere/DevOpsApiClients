@@ -90,36 +90,37 @@ jobs:
             | sed 's/,$//')
           echo "domains=${DOMAINS:-unknown}" >> "$GITHUB_OUTPUT"
 
-          # ── Build failure details (truncated for issue body) ──
-          {
-            echo "failure_details<<ENDOFDETAILS"
+          # Extract unique test FILE paths (for targeted re-run command)
+          sed 's/::.*$//' /tmp/pytest_failures.txt \
+            | sort -u \
+            > /tmp/pytest_failing_files.txt 2>/dev/null || true
 
-            if [[ "$PYTEST_COUNT" -gt 0 ]]; then
-              echo '```'
-              echo "# pytest failures ($PYTEST_COUNT):"
-              head -50 /tmp/pytest_failures.txt
-              if [[ "$PYTEST_COUNT" -gt 50 ]]; then
-                echo "... and $((PYTEST_COUNT - 50)) more"
-              fi
-              echo '```'
+          # ── Build failure details into a FILE (not a variable) ──
+          # Writing to a file avoids shell expansion issues with backticks
+          : > /tmp/failure_details.txt
+          if [[ "$PYTEST_COUNT" -gt 0 ]]; then
+            printf '```\n' >> /tmp/failure_details.txt
+            printf '# pytest failures (%s):\n' "$PYTEST_COUNT" >> /tmp/failure_details.txt
+            head -50 /tmp/pytest_failures.txt >> /tmp/failure_details.txt
+            if [[ "$PYTEST_COUNT" -gt 50 ]]; then
+              printf '... and %d more\n' "$((PYTEST_COUNT - 50))" >> /tmp/failure_details.txt
             fi
+            printf '```\n' >> /tmp/failure_details.txt
+          fi
 
-            if [[ "$PS_COUNT" -gt 0 ]]; then
-              echo '```'
-              echo "# PowerShell errors ($PS_COUNT):"
-              head -20 /tmp/ps_errors.txt
-              echo '```'
-            fi
+          if [[ "$PS_COUNT" -gt 0 ]]; then
+            printf '```\n' >> /tmp/failure_details.txt
+            printf '# PowerShell errors (%s):\n' "$PS_COUNT" >> /tmp/failure_details.txt
+            head -20 /tmp/ps_errors.txt >> /tmp/failure_details.txt
+            printf '```\n' >> /tmp/failure_details.txt
+          fi
 
-            if [[ "$BASH_COUNT" -gt 0 ]]; then
-              echo '```'
-              echo "# Bash errors ($BASH_COUNT):"
-              head -20 /tmp/bash_errors.txt
-              echo '```'
-            fi
-
-            echo "ENDOFDETAILS"
-          } >> "$GITHUB_OUTPUT"
+          if [[ "$BASH_COUNT" -gt 0 ]]; then
+            printf '```\n' >> /tmp/failure_details.txt
+            printf '# Bash errors (%s):\n' "$BASH_COUNT" >> /tmp/failure_details.txt
+            head -20 /tmp/bash_errors.txt >> /tmp/failure_details.txt
+            printf '```\n' >> /tmp/failure_details.txt
+          fi
 
           echo "Parsed: pytest=$PYTEST_COUNT ps=$PS_COUNT bash=$BASH_COUNT total=$TOTAL"
 
@@ -154,7 +155,7 @@ jobs:
           PS_COUNT="${{ steps.logs.outputs.ps_count }}"
           BASH_COUNT="${{ steps.logs.outputs.bash_count }}"
           TOTAL="${{ steps.logs.outputs.total_failures }}"
-          FAILURE_DETAILS="${{ steps.logs.outputs.failure_details }}"
+          DOMAINS="${{ steps.logs.outputs.domains }}"
 
           # Ensure labels exist
           gh label create "auto-heal" \
@@ -163,67 +164,100 @@ jobs:
             --color "D93F0B" \
             2>/dev/null || true
 
-          TITLE="[AUTO-HEAL] Fix $TOTAL test failure(s) from CI run #${RUN_ID}"
+          TITLE="[AUTO-HEAL] Fix $TOTAL test failure(s) in ${DOMAINS} from CI run #${RUN_ID}"
 
-          # Build issue body
-          BODY="## Task: Fix test failures detected in CI
+          # ── Build the issue body in a FILE to avoid shell expansion ──
+          # (backticks in failure details were causing command substitution)
+          cat > /tmp/issue_body.md <<'STATIC_EOF'
+          ## Task: Fix test failures detected in CI
 
           ### Context
 
-          The CI pipeline on \`main\` has **${TOTAL} failure(s)** (${PYTEST_SUMMARY:-details below}).
-          These must be fixed to keep the project healthy.
+          STATIC_EOF
 
-          **CI Run:** https://github.com/${{ github.repository }}/actions/runs/${RUN_ID}
+          # Append dynamic content with proper escaping
+          {
+            printf 'The CI pipeline on `main` has **%s failure(s)** (%s).\n' "$TOTAL" "${PYTEST_SUMMARY:-details below}"
+            printf 'These must be fixed to keep the project healthy.\n\n'
+            printf '**CI Run:** https://github.com/%s/actions/runs/%s\n\n' "${{ github.repository }}" "$RUN_ID"
+            printf '| Framework | Failures |\n'
+            printf '|-----------|----------|\n'
+            printf '| pytest | %s |\n' "$PYTEST_COUNT"
+            printf '| PowerShell | %s |\n' "$PS_COUNT"
+            printf '| Bash/bats | %s |\n\n' "$BASH_COUNT"
+            printf '### Failure Details\n\n'
+          } >> /tmp/issue_body.md
 
-          | Framework | Failures |
-          |-----------|----------|
-          | pytest | ${PYTEST_COUNT} |
-          | PowerShell | ${PS_COUNT} |
-          | Bash/bats | ${BASH_COUNT} |
+          # Append failure details from file (safe — no shell expansion)
+          cat /tmp/failure_details.txt >> /tmp/issue_body.md
 
-          ### Failure Details
+          # ── Build targeted test command ──
+          FAILING_FILES=""
+          if [[ -s /tmp/pytest_failing_files.txt ]]; then
+            FAILING_FILES=$(cat /tmp/pytest_failing_files.txt | tr '\n' ' ')
+          fi
 
-          ${FAILURE_DETAILS}
+          cat >> /tmp/issue_body.md <<'INSTRUCTIONS_EOF'
 
           ### How to Fix
 
-          1. **Reproduce locally** — run the failing tests:
-             \`\`\`bash
-             python -m pytest --tb=short -q 2>&1 | tail -60
-             \`\`\`
+          1. **Reproduce locally** — run ONLY the failing tests (not the full suite):
+          INSTRUCTIONS_EOF
+
+          # Add the targeted pytest command
+          {
+            printf '   ```bash\n'
+            if [[ -n "$FAILING_FILES" ]]; then
+              printf '   python -m pytest --tb=short -q \\\n'
+              # List each failing test file, one per line for readability
+              while IFS= read -r f; do
+                printf '     %s \\\n' "$f"
+              done < /tmp/pytest_failing_files.txt
+              printf '     2>&1 | tail -60\n'
+            else
+              printf '   python -m pytest --tb=short -q 2>&1 | tail -60\n'
+            fi
+            printf '   ```\n'
+          } >> /tmp/issue_body.md
+
+          cat >> /tmp/issue_body.md <<'TAIL_EOF'
+
+             > **Important:** Only run the tests listed above. Do NOT re-run the full test suite — 7000+ other tests already pass.
+
           2. **Common root causes** for generated scripts:
-             - **Fixture mismatch**: Test expects keys that don't exist in \`tests/fixtures/*.json\` — update the fixture
-             - **URL pattern wrong**: Mock URL doesn't match what the script builds — check \`responses.add()\` URL vs script URL
-             - **Import errors**: Missing \`__init__.py\` or wrong relative import — check the domain's package structure
-             - **Unescaped characters**: Apostrophes or quotes in YAML synopsis/description — fix the YAML in \`_generator/definitions/\` and regenerate
-             - **PowerShell duplicate params**: Already fixed in template — regenerate with \`python -m _generator.generate -d <yaml>\`
+             - **Fixture mismatch**: Test expects keys that don't exist in `tests/fixtures/*.json` — update the fixture
+             - **URL pattern wrong**: Mock URL doesn't match what the script builds — check `responses.add()` URL vs script URL
+             - **Import errors**: Missing `__init__.py` or wrong relative import — check the domain's package structure
+             - **Unescaped characters**: Apostrophes or quotes in YAML synopsis/description — fix the YAML in `_generator/definitions/` and regenerate
+             - **PowerShell duplicate params**: Already fixed in template — regenerate with `python -m _generator.generate -d <yaml>`
           3. **Fix the root cause** (template, YAML definition, or fixture) — not just the symptom
-          4. **Regenerate if needed**: \`python -m _generator.generate -d _generator/definitions/<name>.yaml\`
-          5. **Verify locally** before committing:
-             \`\`\`bash
-             python -m pytest -q --tb=line 2>&1 | tail -10
-             \`\`\`
+          4. **Regenerate if needed**: `python -m _generator.generate -d _generator/definitions/<name>.yaml`
+          5. **Verify locally** before committing — run ONLY the affected tests:
+             ```bash
+             python -m pytest -q --tb=line <failing_test_files> 2>&1 | tail -10
+             ```
 
           ### Acceptance Criteria
 
-          - [ ] \`python -m pytest -q\` exits with 0 failures
+          - [ ] All previously-failing tests now pass (run the targeted command above)
           - [ ] No tests were deleted or skipped to hide failures
           - [ ] Any template/YAML fixes are applied so future regeneration is clean
 
           ### Reference
-          See \`.github/copilot-instructions.md\` for project conventions."
+          See `.github/copilot-instructions.md` for project conventions.
+          TAIL_EOF
 
           # Dedent the body (heredoc indentation artifact)
-          BODY=$(echo "$BODY" | sed 's/^          //')
+          sed -i 's/^          //' /tmp/issue_body.md
 
           ISSUE_URL=$(gh issue create \
             --repo "${{ github.repository }}" \
             --title "$TITLE" \
-            --body "$BODY" \
+            --body-file /tmp/issue_body.md \
             --label "auto-heal" \
             --label "bug")
 
-          echo "✅ Created: $ISSUE_URL"
+          echo "Created: $ISSUE_URL"
           ISSUE_NUM=$(echo "$ISSUE_URL" | grep -oP '\d+$')
           echo "issue_number=$ISSUE_NUM" >> "$GITHUB_OUTPUT"
           echo "issue_url=$ISSUE_URL" >> "$GITHUB_OUTPUT"
