@@ -385,7 +385,7 @@ jobs:
           if [[ -n "$ADMIN_PAT" ]]; then
             curl -s -o /dev/null \
               -X DELETE \
-              -H "Authorization: token $ADMIN_PAT" \
+              -H "Authorization: Bearer $ADMIN_PAT" \
               -H "Accept: application/vnd.github+json" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
               "https://api.github.com/repos/$REPO/issues/$ISSUE_NUM/assignees" \
@@ -591,7 +591,7 @@ jobs:
 
           HTTP_CODE=$(curl -s -o /tmp/assign_resp.json -w "%{http_code}" \
             -X POST \
-            -H "Authorization: token $ADMIN_PAT" \
+            -H "Authorization: Bearer $ADMIN_PAT" \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/$REPO/issues/$ISSUE_NUM/assignees" \
@@ -599,7 +599,7 @@ jobs:
 
           # Verify the assignee actually stuck
           ASSIGNEES=$(curl -s \
-            -H "Authorization: token $ADMIN_PAT" \
+            -H "Authorization: Bearer $ADMIN_PAT" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/$REPO/issues/$ISSUE_NUM" \
             | python3 -c "import sys,json; print(','.join(a['login'] for a in json.load(sys.stdin).get('assignees',[])))" 2>/dev/null || echo "")
