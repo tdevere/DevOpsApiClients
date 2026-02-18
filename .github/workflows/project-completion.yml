@@ -208,7 +208,8 @@ jobs:
             --color "0E8A16" \
             2>/dev/null || true
 
-      - name: "Create issue and assign to Copilot"
+      - name: "Create issue"
+        id: create_issue
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TASK_TITLE: ${{ needs.assess.outputs.task_title }}
@@ -232,7 +233,7 @@ jobs:
             fi
           done
 
-          # Create the issue (without assignee first — assignee may not be available)
+          # Create the issue (without assignee — added separately)
           ISSUE_URL=$(gh issue create \
             --repo "${{ github.repository }}" \
             --title "$TASK_TITLE" \
@@ -240,25 +241,42 @@ jobs:
             $LABEL_FLAGS)
 
           echo "✅ Created: $ISSUE_URL"
-
-          # Extract issue number from URL
           ISSUE_NUM=$(echo "$ISSUE_URL" | grep -oP '\d+$')
+          echo "issue_number=$ISSUE_NUM" >> "$GITHUB_OUTPUT"
+          echo "issue_url=$ISSUE_URL" >> "$GITHUB_OUTPUT"
 
-          # Try to assign copilot — non-fatal if Copilot Coding Agent isn't enabled
-          if gh issue edit "$ISSUE_NUM" \
-            --repo "${{ github.repository }}" \
-            --add-assignee "copilot" 2>/dev/null; then
-            echo "✅ Assigned to copilot"
-            ASSIGNEE="copilot"
+      - name: "Assign Copilot to issue"
+        if: steps.create_issue.outputs.issue_number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NUM="${{ steps.create_issue.outputs.issue_number }}"
+          REPO="${{ github.repository }}"
+          echo "Assigning copilot to issue #$ISSUE_NUM..."
+
+          # Use the REST API directly — gh CLI doesn't recognize bot assignees
+          HTTP_CODE=$(curl -s -o /tmp/assign_resp.json -w "%{http_code}" \
+            -X POST \
+            -H "Authorization: token $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$REPO/issues/$ISSUE_NUM/assignees" \
+            -d '{"assignees":["copilot"]}')
+
+          if [[ "$HTTP_CODE" -lt 300 ]]; then
+            echo "✅ Assigned copilot to issue #$ISSUE_NUM"
           else
-            echo "⚠️  Could not assign 'copilot' — Copilot Coding Agent may not be enabled."
-            echo "   To enable: Repo Settings → Copilot → Coding Agent → Enable"
-            echo "   The issue was still created. You can assign it manually or work it yourself."
-            ASSIGNEE="(unassigned — enable Copilot Coding Agent in repo settings)"
+            echo "⚠️  Could not assign copilot (HTTP $HTTP_CODE)."
+            cat /tmp/assign_resp.json 2>/dev/null | head -5
+            echo ""
+            echo "The issue was created successfully. Assign copilot manually:"
+            echo "  ${{ steps.create_issue.outputs.issue_url }}"
           fi
 
+      - name: "Summary"
+        if: always() && steps.create_issue.outputs.issue_url != ''
+        run: |
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "### Dispatched Task" >> "$GITHUB_STEP_SUMMARY"
-          echo "**Issue:** $ISSUE_URL" >> "$GITHUB_STEP_SUMMARY"
-          echo "**Title:** $TASK_TITLE" >> "$GITHUB_STEP_SUMMARY"
-          echo "**Assignee:** $ASSIGNEE" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Issue:** ${{ steps.create_issue.outputs.issue_url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Title:** ${{ needs.assess.outputs.task_title }}" >> "$GITHUB_STEP_SUMMARY"
