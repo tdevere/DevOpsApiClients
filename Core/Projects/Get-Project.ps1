@@ -38,7 +38,7 @@ Assert-AdoEnv -Name 'ProjectId' -Value $ProjectId
 Assert-AdoEnv -Name 'PAT' -Value $Pat
 
 #--- API version ------------------------------------------------------------
-$ApiVersion = '7.2'
+$ApiVersion = '7.2-preview.4'
 
 #--- Build auth header ------------------------------------------------------
 $headers = New-AdoAuthHeader -Pat $Pat
