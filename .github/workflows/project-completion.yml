@@ -236,28 +236,39 @@ jobs:
       - name: "Assign Copilot to issue"
         if: steps.create_issue.outputs.issue_number != ''
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ADMIN_PAT: ${{ secrets.ADMIN_PAT }}
         run: |
           ISSUE_NUM="${{ steps.create_issue.outputs.issue_number }}"
           REPO="${{ github.repository }}"
           echo "Assigning copilot to issue #$ISSUE_NUM..."
 
-          # Use the REST API directly — gh CLI doesn't recognize bot assignees
+          # Use the REST API with ADMIN_PAT — GITHUB_TOKEN can't assign bot accounts
           HTTP_CODE=$(curl -s -o /tmp/assign_resp.json -w "%{http_code}" \
             -X POST \
-            -H "Authorization: token $GH_TOKEN" \
+            -H "Authorization: token $ADMIN_PAT" \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/$REPO/issues/$ISSUE_NUM/assignees" \
             -d '{"assignees":["copilot"]}')
 
-          if [[ "$HTTP_CODE" -lt 300 ]]; then
-            echo "✅ Assigned copilot to issue #$ISSUE_NUM"
+          # Verify the assignee actually stuck
+          ASSIGNEES=$(curl -s \
+            -H "Authorization: token $ADMIN_PAT" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$REPO/issues/$ISSUE_NUM" \
+            | python3 -c "import sys,json; print(','.join(a['login'] for a in json.load(sys.stdin).get('assignees',[])))" 2>/dev/null || echo "")
+
+          if echo "$ASSIGNEES" | grep -q "copilot"; then
+            echo "✅ Confirmed: copilot assigned to issue #$ISSUE_NUM"
+          elif [[ "$HTTP_CODE" -lt 300 ]]; then
+            echo "⚠️  API returned $HTTP_CODE but copilot not in assignees: $ASSIGNEES"
+            echo "Issue was created — assign copilot manually:"
+            echo "  ${{ steps.create_issue.outputs.issue_url }}"
           else
             echo "⚠️  Could not assign copilot (HTTP $HTTP_CODE)."
             cat /tmp/assign_resp.json 2>/dev/null | head -5
             echo ""
-            echo "The issue was created successfully. Assign copilot manually:"
+            echo "Issue was created — assign copilot manually:"
             echo "  ${{ steps.create_issue.outputs.issue_url }}"
           fi
 
