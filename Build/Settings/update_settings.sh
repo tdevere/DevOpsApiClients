@@ -33,6 +33,7 @@ AUTH=$(ado_build_auth "$PAT")
 # ---------------------------------------------------------------------------
 # Request body
 # ---------------------------------------------------------------------------
+set +u
 BODY=$(cat <<EOF
 {
   "daysToKeepDeletedBuildsBeforeDestroy": "${DAYS_TO_KEEP_DELETED_BUILDS_BEFORE_DESTROY}",
@@ -41,6 +42,7 @@ BODY=$(cat <<EOF
 }
 EOF
 )
+set -u
 
 # ---------------------------------------------------------------------------
 # API call
