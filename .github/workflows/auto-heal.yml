@@ -28,6 +28,72 @@ permissions:
   actions: read
 
 jobs:
+  # ── Job A: Auto-close healed issues when CI goes green ───────────────────
+  auto-close-healed:
+    name: "Auto-Close Healed Issues"
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: "Close resolved auto-heal issues"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          REPO="${{ github.repository }}"
+
+          OPEN_ISSUES=$(gh issue list \
+            --repo "$REPO" \
+            --label "auto-heal" \
+            --state open \
+            --json number,title \
+            --jq '.')
+
+          OPEN_COUNT=$(echo "$OPEN_ISSUES" | jq 'length')
+          echo "Open auto-heal issues to close: $OPEN_COUNT"
+
+          if [[ "$OPEN_COUNT" -eq 0 ]]; then
+            echo "No open auto-heal issues — nothing to close."
+            exit 0
+          fi
+
+          SHORT_SHA="${HEAD_SHA:0:7}"
+
+          COMMENT=$(cat <<CLOSEEOF
+          ## :white_check_mark: CI Is Green — Issue Auto-Closed
+
+          The CI pipeline on \`main\` passed on run [#${RUN_ID}](${RUN_URL}) (commit \`${SHORT_SHA}\`).
+
+          All previously detected test failures have been resolved. Closing this issue automatically.
+
+          > If new failures appear on a subsequent push, a fresh auto-heal issue will be opened.
+          CLOSEEOF
+          )
+
+          # Dedent
+          COMMENT=$(echo "$COMMENT" | sed 's/^          //')
+
+          echo "$OPEN_ISSUES" | jq -r '.[].number' | while read -r ISSUE_NUM; do
+            TITLE=$(echo "$OPEN_ISSUES" | jq -r --argjson n "$ISSUE_NUM" '.[] | select(.number == $n) | .title')
+            echo "Closing issue #$ISSUE_NUM: $TITLE"
+
+            gh issue comment "$ISSUE_NUM" \
+              --repo "$REPO" \
+              --body "$COMMENT"
+
+            gh issue close "$ISSUE_NUM" \
+              --repo "$REPO" \
+              --reason "completed"
+
+            echo "Closed #$ISSUE_NUM"
+          done
+
+  # ── Job B: Detect, diagnose and create/update fix issues on failure ───────
   check-and-heal:
     name: "Detect, Diagnose & Dispatch Fix"
     if: >-
