@@ -1,11 +1,53 @@
-[
-  {
-    "creationDate": "2026-01-15T10:30:00Z",
-    "defaultBranch": "sample-string",
-    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "isDisabled": true,
-    "isFork": true,
-    "isInMaintenance": true,
-    "name": "sample-string"
-  }
-]
+{
+  "count": 3,
+  "value": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "repo-alpha",
+      "defaultBranch": "refs/heads/main",
+      "url": "https://dev.azure.com/testorg/_apis/git/repositories/a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "remoteUrl": "https://testorg@dev.azure.com/testorg/Project%20Alpha/_git/repo-alpha",
+      "isDisabled": false,
+      "isFork": false,
+      "isInMaintenance": false,
+      "creationDate": "2026-01-15T10:30:00Z",
+      "project": {
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "name": "Project Alpha",
+        "state": "wellFormed"
+      }
+    },
+    {
+      "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+      "name": "repo-beta",
+      "defaultBranch": "refs/heads/main",
+      "url": "https://dev.azure.com/testorg/_apis/git/repositories/b2c3d4e5-f6a7-8901-bcde-f12345678901",
+      "remoteUrl": "https://testorg@dev.azure.com/testorg/Project%20Alpha/_git/repo-beta",
+      "isDisabled": false,
+      "isFork": false,
+      "isInMaintenance": false,
+      "creationDate": "2026-01-10T08:00:00Z",
+      "project": {
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "name": "Project Alpha",
+        "state": "wellFormed"
+      }
+    },
+    {
+      "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "name": "repo-gamma",
+      "defaultBranch": "refs/heads/develop",
+      "url": "https://dev.azure.com/testorg/_apis/git/repositories/c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "remoteUrl": "https://testorg@dev.azure.com/testorg/Project%20Beta/_git/repo-gamma",
+      "isDisabled": false,
+      "isFork": false,
+      "isInMaintenance": false,
+      "creationDate": "2026-01-05T12:00:00Z",
+      "project": {
+        "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+        "name": "Project Beta",
+        "state": "wellFormed"
+      }
+    }
+  ]
+}

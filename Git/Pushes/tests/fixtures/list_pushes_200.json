@@ -1,33 +1,54 @@
-[
-  {
-    "commits": [
-      {
-        "author": {},
-        "changeCounts": {},
-        "changes": {},
-        "comment": {},
-        "commentTruncated": {},
-        "commitId": {},
-        "committer": {}
+{
+  "count": 1,
+  "value": [
+    {
+      "pushId": 42,
+      "date": "2026-01-15T10:30:00Z",
+      "pushedBy": {
+        "displayName": "Alice Developer",
+        "uniqueName": "alice@example.com",
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      },
+      "commits": [
+        {
+          "commitId": "abc123def456789012345678901234567890abcd",
+          "comment": "Fix null reference in parser module",
+          "author": {
+            "date": "2026-01-15T10:30:00Z",
+            "email": "alice@example.com",
+            "name": "Alice Developer"
+          },
+          "committer": {
+            "date": "2026-01-15T10:30:00Z",
+            "email": "alice@example.com",
+            "name": "Alice Developer"
+          },
+          "changeCounts": {
+            "Add": 1,
+            "Edit": 2,
+            "Delete": 0
+          },
+          "url": "https://dev.azure.com/testorg/_apis/git/repositories/r1/commits/abc123def456789012345678901234567890abcd"
+        }
+      ],
+      "refUpdates": [
+        {
+          "name": "refs/heads/main",
+          "oldObjectId": "0000000000000000000000000000000000000000",
+          "newObjectId": "abc123def456789012345678901234567890abcd",
+          "isLocked": false,
+          "repositoryId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+        }
+      ],
+      "repository": {
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "name": "repo-alpha",
+        "defaultBranch": "refs/heads/main",
+        "isDisabled": false,
+        "isFork": false,
+        "isInMaintenance": false,
+        "creationDate": "2026-01-15T10:30:00Z"
       }
-    ],
-    "refUpdates": [
-      {
-        "isLocked": {},
-        "name": {},
-        "newObjectId": {},
-        "oldObjectId": {},
-        "repositoryId": {}
-      }
-    ],
-    "repository": {
-      "creationDate": "2026-01-15T10:30:00Z",
-      "defaultBranch": "sample-string",
-      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "isDisabled": true,
-      "isFork": true,
-      "isInMaintenance": true,
-      "name": "sample-string"
     }
-  }
-]
+  ]
+}

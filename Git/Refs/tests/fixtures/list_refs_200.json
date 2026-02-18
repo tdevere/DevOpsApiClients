@@ -1,39 +1,43 @@
-[
-  {
-    "creator": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "isLocked": true,
-    "isLockedBy": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "name": "sample-string",
-    "objectId": "sample-string",
-    "peeledObjectId": "sample-string",
-    "statuses": [
-      {
-        "context": {},
-        "createdBy": {},
-        "creationDate": {},
-        "description": {},
-        "id": {},
-        "state": {},
-        "targetUrl": {}
+{
+  "count": 2,
+  "value": [
+    {
+      "name": "refs/heads/main",
+      "objectId": "abc123def456789012345678901234567890abcd",
+      "peeledObjectId": "abc123def456789012345678901234567890abcd",
+      "isLocked": false,
+      "url": "https://dev.azure.com/testorg/_apis/git/repositories/r1/refs/heads/main",
+      "statuses": [],
+      "creator": {
+        "displayName": "Alice Developer",
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "imageUrl": "https://example.com/alice.png",
+        "inactive": false,
+        "isAadIdentity": true,
+        "isContainer": false,
+        "isDeletedInOrigin": false,
+        "directoryAlias": "alice",
+        "profileUrl": "https://example.com/profile/alice"
       }
-    ]
-  }
-]
+    },
+    {
+      "name": "refs/heads/develop",
+      "objectId": "def456789012345678901234567890abcdef1234",
+      "peeledObjectId": "def456789012345678901234567890abcdef1234",
+      "isLocked": false,
+      "url": "https://dev.azure.com/testorg/_apis/git/repositories/r1/refs/heads/develop",
+      "statuses": [],
+      "creator": {
+        "displayName": "Bob Engineer",
+        "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+        "imageUrl": "https://example.com/bob.png",
+        "inactive": false,
+        "isAadIdentity": true,
+        "isContainer": false,
+        "isDeletedInOrigin": false,
+        "directoryAlias": "bob",
+        "profileUrl": "https://example.com/profile/bob"
+      }
+    }
+  ]
+}
