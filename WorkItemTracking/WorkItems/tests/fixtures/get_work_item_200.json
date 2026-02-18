@@ -20,5 +20,6 @@
   "relations": [
     {}
   ],
-  "rev": 1
+  "rev": 1,
+  "url": "https://dev.azure.com/testorg/ProjectAlpha/_apis/wit/workitems/42"
 }
