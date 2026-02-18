@@ -1,12 +1,15 @@
-[
-  {
-    "color": "sample-string",
-    "customizationType": {},
-    "hidden": true,
-    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "name": "sample-string",
-    "order": 1,
-    "stateCategory": "sample-string",
-    "url": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "color": "sample-string",
+      "customizationType": {},
+      "hidden": true,
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "sample-string",
+      "order": 1,
+      "stateCategory": "sample-string",
+      "url": "sample-string"
+    }
+  ]
+}

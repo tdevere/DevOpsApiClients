@@ -1,17 +1,20 @@
-[
-  {
-    "description": "sample-string",
-    "machineCount": 1,
-    "machines": [
-      {
-        "agent": {},
-        "id": {},
-        "properties": {},
-        "tags": {}
-      }
-    ],
-    "machineTags": [
-      "sample-string"
-    ]
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "description": "sample-string",
+      "machineCount": 1,
+      "machines": [
+        {
+          "agent": {},
+          "id": {},
+          "properties": {},
+          "tags": {}
+        }
+      ],
+      "machineTags": [
+        "sample-string"
+      ]
+    }
+  ]
+}

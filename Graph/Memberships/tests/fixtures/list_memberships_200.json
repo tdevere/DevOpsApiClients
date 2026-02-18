@@ -1,6 +1,9 @@
-[
-  {
-    "containerDescriptor": "sample-string",
-    "memberDescriptor": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "containerDescriptor": "sample-string",
+      "memberDescriptor": "sample-string"
+    }
+  ]
+}

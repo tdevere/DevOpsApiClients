@@ -1,8 +1,11 @@
-[
-  {
-    "authorized": true,
-    "id": "sample-string",
-    "name": "sample-string",
-    "type": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "authorized": true,
+      "id": "sample-string",
+      "name": "sample-string",
+      "type": "sample-string"
+    }
+  ]
+}

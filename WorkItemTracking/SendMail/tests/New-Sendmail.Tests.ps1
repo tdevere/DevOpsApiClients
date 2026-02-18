@@ -20,19 +20,19 @@ Describe 'New-Sendmail.ps1' -Tag 'Offline', 'WIT' {
 
         It 'Throws when Organisation is empty' {
             {
-                & $ScriptPath -Organization '' -ProjectId $ProjectGuid -Fields 'testvalue' -Ids 'testvalue' -Message 'testvalue' -PersistenceId 'testvalue' -ProjectId 'testvalue' -SortFields 'testvalue' -Pat 'fakepat'
+                & $ScriptPath -Organization '' -ProjectId $ProjectGuid -Fields 'testvalue' -Ids 'testvalue' -Message 'testvalue' -PersistenceId 'testvalue' -SortFields 'testvalue' -Pat 'fakepat'
             } | Should -Throw '*is required*'
         }
 
         It 'Throws when ProjectId is empty' {
             {
-                & $ScriptPath -Organization 'testorg' -ProjectId '' -Fields 'testvalue' -Ids 'testvalue' -Message 'testvalue' -PersistenceId 'testvalue' -ProjectId '' -SortFields 'testvalue' -Pat 'fakepat'
+                & $ScriptPath -Organization 'testorg' -ProjectId '' -Fields 'testvalue' -Ids 'testvalue' -Message 'testvalue' -PersistenceId 'testvalue' -SortFields 'testvalue' -Pat 'fakepat'
             } | Should -Throw '*is required*'
         }
 
         It 'Throws when Pat is empty' {
             {
-                & $ScriptPath -Organization 'testorg' -ProjectId $ProjectGuid -Fields 'testvalue' -Ids 'testvalue' -Message 'testvalue' -PersistenceId 'testvalue' -ProjectId 'testvalue' -SortFields 'testvalue' -Pat ''
+                & $ScriptPath -Organization 'testorg' -ProjectId $ProjectGuid -Fields 'testvalue' -Ids 'testvalue' -Message 'testvalue' -PersistenceId 'testvalue' -SortFields 'testvalue' -Pat ''
             } | Should -Throw '*is required*'
         }
     }
@@ -46,7 +46,7 @@ Describe 'New-Sendmail.ps1' -Tag 'Offline', 'WIT' {
         It 'Calls the correct URL' {
             Mock Invoke-RestMethod { return $fixture } -Verifiable
 
-            & $ScriptPath -Organization 'testorg' -ProjectId $ProjectGuid -Fields 'testvalue' -Ids 'testvalue' -Message 'testvalue' -PersistenceId 'testvalue' -ProjectId 'testvalue' -SortFields 'testvalue' -Pat 'fakepat' | Out-Null
+            & $ScriptPath -Organization 'testorg' -ProjectId $ProjectGuid -Fields 'testvalue' -Ids 'testvalue' -Message 'testvalue' -PersistenceId 'testvalue' -SortFields 'testvalue' -Pat 'fakepat' | Out-Null
 
             Should -InvokeVerifiable
             Should -Invoke Invoke-RestMethod -Times 1 -Exactly -ParameterFilter {
@@ -62,7 +62,7 @@ Describe 'New-Sendmail.ps1' -Tag 'Offline', 'WIT' {
 
             Mock Invoke-RestMethod { return $fixture }
 
-            & $ScriptPath -Organization 'testorg' -ProjectId $ProjectGuid -Fields 'testvalue' -Ids 'testvalue' -Message 'testvalue' -PersistenceId 'testvalue' -ProjectId 'testvalue' -SortFields 'testvalue' -Pat 'fakepat' | Out-Null
+            & $ScriptPath -Organization 'testorg' -ProjectId $ProjectGuid -Fields 'testvalue' -Ids 'testvalue' -Message 'testvalue' -PersistenceId 'testvalue' -SortFields 'testvalue' -Pat 'fakepat' | Out-Null
 
             Should -Invoke Invoke-RestMethod -Times 1 -ParameterFilter {
                 $Headers['Authorization'] -eq "Basic $expectedAuth"
@@ -78,7 +78,7 @@ Describe 'New-Sendmail.ps1' -Tag 'Offline', 'WIT' {
                 throw $ex
             }
 
-            { & $ScriptPath -Organization 'testorg' -ProjectId $ProjectGuid -Fields 'testvalue' -Ids 'testvalue' -Message 'testvalue' -PersistenceId 'testvalue' -ProjectId 'testvalue' -SortFields 'testvalue' -Pat 'fakepat' } | Should -Throw
+            { & $ScriptPath -Organization 'testorg' -ProjectId $ProjectGuid -Fields 'testvalue' -Ids 'testvalue' -Message 'testvalue' -PersistenceId 'testvalue' -SortFields 'testvalue' -Pat 'fakepat' } | Should -Throw
         }
     }
 }

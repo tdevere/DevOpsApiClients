@@ -1,20 +1,23 @@
-[
-  {
-    "changedBy": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "changedDate": "2026-01-15T10:30:00Z",
-    "changeType": {},
-    "comment": "sample-string",
-    "definitionUrl": "sample-string",
-    "name": "sample-string",
-    "revision": 1
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "changedBy": {
+        "directoryAlias": "sample-string",
+        "id": "sample-string",
+        "imageUrl": "sample-string",
+        "inactive": true,
+        "isAadIdentity": true,
+        "isContainer": true,
+        "isDeletedInOrigin": true,
+        "profileUrl": "sample-string"
+      },
+      "changedDate": "2026-01-15T10:30:00Z",
+      "changeType": {},
+      "comment": "sample-string",
+      "definitionUrl": "sample-string",
+      "name": "sample-string",
+      "revision": 1
+    }
+  ]
+}

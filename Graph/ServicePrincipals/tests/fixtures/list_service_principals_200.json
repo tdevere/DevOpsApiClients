@@ -1,5 +1,8 @@
-[
-  {
-    "applicationId": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "applicationId": "sample-string"
+    }
+  ]
+}

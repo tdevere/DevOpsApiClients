@@ -1,29 +1,32 @@
-[
-  {
-    "aheadCount": 1,
-    "behindCount": 1,
-    "commit": {
-      "author": {
-        "date": {},
-        "email": {},
-        "imageUrl": {},
-        "name": {}
+{
+  "count": 1,
+  "value": [
+    {
+      "aheadCount": 1,
+      "behindCount": 1,
+      "commit": {
+        "author": {
+          "date": {},
+          "email": {},
+          "imageUrl": {},
+          "name": {}
+        },
+        "changeCounts": {},
+        "changes": [
+          {}
+        ],
+        "comment": "sample-string",
+        "commentTruncated": true,
+        "commitId": "sample-string",
+        "committer": {
+          "date": {},
+          "email": {},
+          "imageUrl": {},
+          "name": {}
+        }
       },
-      "changeCounts": {},
-      "changes": [
-        {}
-      ],
-      "comment": "sample-string",
-      "commentTruncated": true,
-      "commitId": "sample-string",
-      "committer": {
-        "date": {},
-        "email": {},
-        "imageUrl": {},
-        "name": {}
-      }
-    },
-    "isBaseVersion": true,
-    "name": "sample-string"
-  }
-]
+      "isBaseVersion": true,
+      "name": "sample-string"
+    }
+  ]
+}

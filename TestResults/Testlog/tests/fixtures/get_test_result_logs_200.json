@@ -1,17 +1,20 @@
-[
-  {
-    "logReference": {
-      "buildId": 1,
-      "filePath": "sample-string",
-      "releaseEnvId": 1,
-      "releaseId": 1,
-      "resultId": 1,
-      "runId": 1,
-      "scope": {},
-      "subResultId": 1
-    },
-    "metaData": {},
-    "modifiedOn": "2026-01-15T10:30:00Z",
-    "size": 1
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "logReference": {
+        "buildId": 1,
+        "filePath": "sample-string",
+        "releaseEnvId": 1,
+        "releaseId": 1,
+        "resultId": 1,
+        "runId": 1,
+        "scope": {},
+        "subResultId": 1
+      },
+      "metaData": {},
+      "modifiedOn": "2026-01-15T10:30:00Z",
+      "size": 1
+    }
+  ]
+}

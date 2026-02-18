@@ -1,50 +1,53 @@
-[
-  {
-    "artifactId": "sample-string",
-    "autoCompleteSetBy": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "closedBy": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "closedDate": "2026-01-15T10:30:00Z",
-    "codeReviewId": 1,
-    "commits": [
-      {
-        "author": {},
-        "changeCounts": {},
-        "changes": {},
-        "comment": {},
-        "commentTruncated": {},
-        "commitId": {},
-        "committer": {}
-      }
-    ],
-    "completionOptions": {
-      "autoCompleteIgnoreConfigIds": [
-        {}
+{
+  "count": 1,
+  "value": [
+    {
+      "artifactId": "sample-string",
+      "autoCompleteSetBy": {
+        "directoryAlias": "sample-string",
+        "id": "sample-string",
+        "imageUrl": "sample-string",
+        "inactive": true,
+        "isAadIdentity": true,
+        "isContainer": true,
+        "isDeletedInOrigin": true,
+        "profileUrl": "sample-string"
+      },
+      "closedBy": {
+        "directoryAlias": "sample-string",
+        "id": "sample-string",
+        "imageUrl": "sample-string",
+        "inactive": true,
+        "isAadIdentity": true,
+        "isContainer": true,
+        "isDeletedInOrigin": true,
+        "profileUrl": "sample-string"
+      },
+      "closedDate": "2026-01-15T10:30:00Z",
+      "codeReviewId": 1,
+      "commits": [
+        {
+          "author": {},
+          "changeCounts": {},
+          "changes": {},
+          "comment": {},
+          "commentTruncated": {},
+          "commitId": {},
+          "committer": {}
+        }
       ],
-      "bypassPolicy": true,
-      "bypassReason": "sample-string",
-      "deleteSourceBranch": true,
-      "mergeCommitMessage": "sample-string",
-      "mergeStrategy": {},
-      "squashMerge": true,
-      "transitionWorkItems": true
+      "completionOptions": {
+        "autoCompleteIgnoreConfigIds": [
+          {}
+        ],
+        "bypassPolicy": true,
+        "bypassReason": "sample-string",
+        "deleteSourceBranch": true,
+        "mergeCommitMessage": "sample-string",
+        "mergeStrategy": {},
+        "squashMerge": true,
+        "transitionWorkItems": true
+      }
     }
-  }
-]
+  ]
+}

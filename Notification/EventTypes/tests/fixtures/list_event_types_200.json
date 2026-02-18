@@ -1,22 +1,25 @@
-[
-  {
-    "category": {
-      "id": "sample-string",
-      "name": "sample-string"
-    },
-    "color": "sample-string",
-    "customSubscriptionsAllowed": true,
-    "eventPublisher": {
-      "id": "sample-string",
-      "subscriptionManagementInfo": {
-        "serviceInstanceType": {},
-        "url": {}
+{
+  "count": 1,
+  "value": [
+    {
+      "category": {
+        "id": "sample-string",
+        "name": "sample-string"
       },
-      "url": "sample-string"
-    },
-    "fields": {},
-    "hasInitiator": true,
-    "icon": "sample-string",
-    "id": "sample-string"
-  }
-]
+      "color": "sample-string",
+      "customSubscriptionsAllowed": true,
+      "eventPublisher": {
+        "id": "sample-string",
+        "subscriptionManagementInfo": {
+          "serviceInstanceType": {},
+          "url": {}
+        },
+        "url": "sample-string"
+      },
+      "fields": {},
+      "hasInitiator": true,
+      "icon": "sample-string",
+      "id": "sample-string"
+    }
+  ]
+}

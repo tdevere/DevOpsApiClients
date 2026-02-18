@@ -1,14 +1,17 @@
-[
-  {
-    "allowedValues": [
-      {}
-    ],
-    "allowGroups": true,
-    "customization": {},
-    "defaultValue": {},
-    "description": "sample-string",
-    "isLocked": true,
-    "name": "sample-string",
-    "readOnly": true
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "allowedValues": [
+        {}
+      ],
+      "allowGroups": true,
+      "customization": {},
+      "defaultValue": {},
+      "description": "sample-string",
+      "isLocked": true,
+      "name": "sample-string",
+      "readOnly": true
+    }
+  ]
+}

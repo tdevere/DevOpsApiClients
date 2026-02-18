@@ -1,16 +1,19 @@
-[
-  {
-    "allowedSizes": [
-      {
-        "columnSpan": {},
-        "rowSpan": {}
-      }
-    ],
-    "areSettingsBlockedForUser": true,
-    "artifactId": "sample-string",
-    "configurationContributionId": "sample-string",
-    "configurationContributionRelativeId": "sample-string",
-    "contentUri": "sample-string",
-    "contributionId": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "allowedSizes": [
+        {
+          "columnSpan": {},
+          "rowSpan": {}
+        }
+      ],
+      "areSettingsBlockedForUser": true,
+      "artifactId": "sample-string",
+      "configurationContributionId": "sample-string",
+      "configurationContributionRelativeId": "sample-string",
+      "contentUri": "sample-string",
+      "contributionId": "sample-string"
+    }
+  ]
+}

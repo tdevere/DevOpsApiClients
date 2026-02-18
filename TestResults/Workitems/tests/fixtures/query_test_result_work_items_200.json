@@ -1,9 +1,12 @@
-[
-  {
-    "id": "sample-string",
-    "name": "sample-string",
-    "type": "sample-string",
-    "url": "sample-string",
-    "webUrl": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "id": "sample-string",
+      "name": "sample-string",
+      "type": "sample-string",
+      "url": "sample-string",
+      "webUrl": "sample-string"
+    }
+  ]
+}

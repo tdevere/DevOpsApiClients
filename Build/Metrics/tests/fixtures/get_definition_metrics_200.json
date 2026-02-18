@@ -1,8 +1,11 @@
-[
-  {
-    "date": "2026-01-15T10:30:00Z",
-    "intValue": 1,
-    "name": "sample-string",
-    "scope": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "date": "2026-01-15T10:30:00Z",
+      "intValue": 1,
+      "name": "sample-string",
+      "scope": "sample-string"
+    }
+  ]
+}

@@ -1,6 +1,9 @@
-[
-  {
-    "properties": {},
-    "type": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "properties": {},
+      "type": "sample-string"
+    }
+  ]
+}

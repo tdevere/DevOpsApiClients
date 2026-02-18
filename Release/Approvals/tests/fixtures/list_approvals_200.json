@@ -1,39 +1,42 @@
-[
-  {
-    "approvalType": {},
-    "approvedBy": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "approver": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "attempt": 1,
-    "comments": "sample-string",
-    "createdOn": "2026-01-15T10:30:00Z",
-    "history": [
-      {
-        "approver": {},
-        "changedBy": {},
-        "comments": {},
-        "createdOn": {},
-        "modifiedOn": {},
-        "revision": {}
-      }
-    ],
-    "id": 1
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "approvalType": {},
+      "approvedBy": {
+        "directoryAlias": "sample-string",
+        "id": "sample-string",
+        "imageUrl": "sample-string",
+        "inactive": true,
+        "isAadIdentity": true,
+        "isContainer": true,
+        "isDeletedInOrigin": true,
+        "profileUrl": "sample-string"
+      },
+      "approver": {
+        "directoryAlias": "sample-string",
+        "id": "sample-string",
+        "imageUrl": "sample-string",
+        "inactive": true,
+        "isAadIdentity": true,
+        "isContainer": true,
+        "isDeletedInOrigin": true,
+        "profileUrl": "sample-string"
+      },
+      "attempt": 1,
+      "comments": "sample-string",
+      "createdOn": "2026-01-15T10:30:00Z",
+      "history": [
+        {
+          "approver": {},
+          "changedBy": {},
+          "comments": {},
+          "createdOn": {},
+          "modifiedOn": {},
+          "revision": {}
+        }
+      ],
+      "id": 1
+    }
+  ]
+}

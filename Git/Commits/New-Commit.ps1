@@ -67,8 +67,8 @@ $headers = New-AdoAuthHeader -Pat $Pat
 
 #--- Build request body -----------------------------------------------------
 $body = @{
-    $skip = $Skip
-    $top = $Top
+    skip = $Skip
+    top = $Top
     author = $Author
     compareVersion = $CompareVersion
     excludeDeletes = $ExcludeDeletes

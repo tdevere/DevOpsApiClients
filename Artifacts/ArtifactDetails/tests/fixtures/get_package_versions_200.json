@@ -1,37 +1,40 @@
-[
-  {
-    "author": "sample-string",
-    "deletedDate": "2026-01-15T10:30:00Z",
-    "dependencies": [
-      {
-        "group": {},
-        "packageName": {},
-        "versionRange": {}
+{
+  "count": 1,
+  "value": [
+    {
+      "author": "sample-string",
+      "deletedDate": "2026-01-15T10:30:00Z",
+      "dependencies": [
+        {
+          "group": {},
+          "packageName": {},
+          "versionRange": {}
+        }
+      ],
+      "description": "sample-string",
+      "files": [
+        {
+          "children": {},
+          "name": {},
+          "protocolMetadata": {}
+        }
+      ],
+      "otherVersions": [
+        {
+          "directUpstreamSourceId": {},
+          "id": {},
+          "isCachedVersion": {},
+          "isDeleted": {},
+          "isLatest": {},
+          "isListed": {},
+          "normalizedVersion": {},
+          "packageDescription": {}
+        }
+      ],
+      "protocolMetadata": {
+        "data": {},
+        "schemaVersion": 1
       }
-    ],
-    "description": "sample-string",
-    "files": [
-      {
-        "children": {},
-        "name": {},
-        "protocolMetadata": {}
-      }
-    ],
-    "otherVersions": [
-      {
-        "directUpstreamSourceId": {},
-        "id": {},
-        "isCachedVersion": {},
-        "isDeleted": {},
-        "isLatest": {},
-        "isListed": {},
-        "normalizedVersion": {},
-        "packageDescription": {}
-      }
-    ],
-    "protocolMetadata": {
-      "data": {},
-      "schemaVersion": 1
     }
-  }
-]
+  ]
+}

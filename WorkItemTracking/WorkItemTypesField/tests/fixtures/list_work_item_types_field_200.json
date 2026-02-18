@@ -1,8 +1,11 @@
-[
-  {
-    "allowedValues": [
-      {}
-    ],
-    "defaultValue": {}
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "allowedValues": [
+        {}
+      ],
+      "defaultValue": {}
+    }
+  ]
+}

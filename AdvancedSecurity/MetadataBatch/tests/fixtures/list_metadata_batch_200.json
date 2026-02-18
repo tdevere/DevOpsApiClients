@@ -1,11 +1,14 @@
-[
-  {
-    "alertId": 1,
-    "metadata": [
-      {
-        "op": {},
-        "value": {}
-      }
-    ]
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "alertId": 1,
+      "metadata": [
+        {
+          "op": {},
+          "value": {}
+        }
+      ]
+    }
+  ]
+}

@@ -48,7 +48,7 @@ $ApiVersion = '7.2'
 $headers = New-AdoAuthHeader -Pat $Pat
 
 #--- Call the API -----------------------------------------------------------
-$uri = New-AdoUrl -Organization $Organization -Path "_apis/wit/workitems/$$Type" -ApiVersion $ApiVersion -Project $ProjectId
+$uri = New-AdoUrl -Organization $Organization -Path "_apis/wit/workitems/$Type" -ApiVersion $ApiVersion -Project $ProjectId
 
 Write-Verbose "GET $uri"
 

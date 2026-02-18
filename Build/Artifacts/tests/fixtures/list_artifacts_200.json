@@ -1,14 +1,17 @@
-[
-  {
-    "id": 1,
-    "name": "sample-string",
-    "resource": {
-      "data": "sample-string",
-      "downloadUrl": "sample-string",
-      "properties": {},
-      "type": "sample-string",
-      "url": "sample-string"
-    },
-    "source": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "id": 1,
+      "name": "sample-string",
+      "resource": {
+        "data": "sample-string",
+        "downloadUrl": "sample-string",
+        "properties": {},
+        "type": "sample-string",
+        "url": "sample-string"
+      },
+      "source": "sample-string"
+    }
+  ]
+}

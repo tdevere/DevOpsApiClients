@@ -1,5 +1,11 @@
-[
-  {
-    "isLocked": true
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "name": "System.Id",
+      "referenceName": "System.Id",
+      "type": "integer",
+      "isLocked": true
+    }
+  ]
+}

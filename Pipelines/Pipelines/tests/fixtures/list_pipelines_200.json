@@ -1,8 +1,14 @@
-[
-  {
-    "configuration": {
-      "type": {}
-    },
-    "url": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "id": 1,
+      "name": "sample-pipeline",
+      "folder": "/",
+      "configuration": {
+        "type": {}
+      },
+      "url": "sample-string"
+    }
+  ]
+}

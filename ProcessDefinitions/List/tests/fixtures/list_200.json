@@ -1,15 +1,18 @@
-[
-  {
-    "abstract": true,
-    "color": "sample-string",
-    "description": "sample-string",
-    "id": "sample-string",
-    "inherits": {
+{
+  "count": 1,
+  "value": [
+    {
+      "abstract": true,
+      "color": "sample-string",
+      "description": "sample-string",
       "id": "sample-string",
-      "url": "sample-string"
-    },
-    "name": "sample-string",
-    "overridden": true,
-    "rank": 1
-  }
-]
+      "inherits": {
+        "id": "sample-string",
+        "url": "sample-string"
+      },
+      "name": "sample-string",
+      "overridden": true,
+      "rank": 1
+    }
+  ]
+}

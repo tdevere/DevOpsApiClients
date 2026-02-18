@@ -188,9 +188,22 @@ jobs:
             fi
           fi
 
+      - name: "Install Pester v5"
+        shell: pwsh
+        run: |
+          # Ensure Pester v5 is available — the OS default on Ubuntu is v3.
+          $installed = (Get-Module Pester -ListAvailable | Sort-Object Version -Descending | Select-Object -First 1).Version
+          if (-not $installed -or $installed.Major -lt 5) {
+            Write-Host "Installing Pester v5..."
+            Install-Module Pester -Force -SkipPublisherCheck -MinimumVersion 5.0 -Scope CurrentUser
+          } else {
+            Write-Host "Pester $installed already satisfies v5 requirement."
+          }
+
       - name: "Run Pester offline tests"
         shell: pwsh
         run: |
+          Import-Module Pester -MinimumVersion 5.0 -Force
           $config = New-PesterConfiguration
           $config.Filter.Tag = 'Offline'
           $config.Output.Verbosity = 'Detailed'

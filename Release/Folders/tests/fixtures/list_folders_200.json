@@ -1,28 +1,31 @@
-[
-  {
-    "createdBy": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "createdOn": "2026-01-15T10:30:00Z",
-    "description": "sample-string",
-    "lastChangedBy": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "lastChangedDate": "2026-01-15T10:30:00Z",
-    "path": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "createdBy": {
+        "directoryAlias": "sample-string",
+        "id": "sample-string",
+        "imageUrl": "sample-string",
+        "inactive": true,
+        "isAadIdentity": true,
+        "isContainer": true,
+        "isDeletedInOrigin": true,
+        "profileUrl": "sample-string"
+      },
+      "createdOn": "2026-01-15T10:30:00Z",
+      "description": "sample-string",
+      "lastChangedBy": {
+        "directoryAlias": "sample-string",
+        "id": "sample-string",
+        "imageUrl": "sample-string",
+        "inactive": true,
+        "isAadIdentity": true,
+        "isContainer": true,
+        "isDeletedInOrigin": true,
+        "profileUrl": "sample-string"
+      },
+      "lastChangedDate": "2026-01-15T10:30:00Z",
+      "path": "sample-string"
+    }
+  ]
+}

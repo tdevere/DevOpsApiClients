@@ -1,8 +1,11 @@
-[
-  {
-    "legacyDescriptor": "sample-string",
-    "origin": "sample-string",
-    "originId": "sample-string",
-    "subjectKind": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "legacyDescriptor": "sample-string",
+      "origin": "sample-string",
+      "originId": "sample-string",
+      "subjectKind": "sample-string"
+    }
+  ]
+}

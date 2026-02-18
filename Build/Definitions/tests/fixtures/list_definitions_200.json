@@ -1,108 +1,126 @@
-[
-  {
-    "authoredBy": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "draftOf": {
-      "createdDate": "2026-01-15T10:30:00Z",
+{
+  "count": 2,
+  "value": [
+    {
       "id": 1,
-      "name": "sample-string",
-      "path": "sample-string",
-      "project": {
-        "abbreviation": {},
-        "defaultTeamImageUrl": {},
-        "description": {},
-        "id": {},
-        "lastUpdateTime": {},
-        "name": {},
-        "revision": {},
-        "state": {}
+      "name": "Build-Alpha",
+      "path": "\\",
+      "queueStatus": "enabled",
+      "authoredBy": {
+        "directoryAlias": "sample-string",
+        "id": "sample-string",
+        "imageUrl": "sample-string",
+        "inactive": true,
+        "isAadIdentity": true,
+        "isContainer": true,
+        "isDeletedInOrigin": true,
+        "profileUrl": "sample-string",
+        "displayName": "Test Author"
       },
-      "queueStatus": {},
-      "revision": 1,
-      "type": {}
-    },
-    "drafts": [
-      {
-        "createdDate": {},
-        "id": {},
-        "name": {},
-        "path": {},
-        "project": {},
+      "draftOf": {
+        "createdDate": "2026-01-15T10:30:00Z",
+        "id": 1,
+        "name": "sample-string",
+        "path": "sample-string",
+        "project": {
+          "abbreviation": {},
+          "defaultTeamImageUrl": {},
+          "description": {},
+          "id": {},
+          "lastUpdateTime": {},
+          "name": {},
+          "revision": {},
+          "state": {}
+        },
         "queueStatus": {},
-        "revision": {},
-        "type": {}
-      }
-    ],
-    "latestBuild": {
-      "agentSpecification": {
-        "identifier": {}
-      },
-      "appendCommitMessageToRunName": true,
-      "buildNumber": "sample-string",
-      "buildNumberRevision": 1,
-      "controller": {
-        "createdDate": {},
-        "description": {},
-        "enabled": {},
-        "status": {},
-        "updatedDate": {},
-        "uri": {}
-      },
-      "definition": {
-        "createdDate": {},
-        "id": {},
-        "name": {},
-        "path": {},
-        "project": {},
-        "queueStatus": {},
-        "revision": {},
+        "revision": 1,
         "type": {}
       },
-      "deleted": true
+      "drafts": [
+        {
+          "createdDate": {},
+          "id": {},
+          "name": {},
+          "path": {},
+          "project": {},
+          "queueStatus": {},
+          "revision": {},
+          "type": {}
+        }
+      ],
+      "latestBuild": {
+        "agentSpecification": {
+          "identifier": {}
+        },
+        "appendCommitMessageToRunName": true,
+        "buildNumber": "sample-string",
+        "buildNumberRevision": 1,
+        "controller": {
+          "createdDate": {},
+          "description": {},
+          "enabled": {},
+          "status": {},
+          "updatedDate": {},
+          "uri": {}
+        },
+        "definition": {
+          "createdDate": {},
+          "id": {},
+          "name": {},
+          "path": {},
+          "project": {},
+          "queueStatus": {},
+          "revision": {},
+          "type": {}
+        },
+        "deleted": true
+      },
+      "latestCompletedBuild": {
+        "agentSpecification": {
+          "identifier": {}
+        },
+        "appendCommitMessageToRunName": true,
+        "buildNumber": "sample-string",
+        "buildNumberRevision": 1,
+        "controller": {
+          "createdDate": {},
+          "description": {},
+          "enabled": {},
+          "status": {},
+          "updatedDate": {},
+          "uri": {}
+        },
+        "definition": {
+          "createdDate": {},
+          "id": {},
+          "name": {},
+          "path": {},
+          "project": {},
+          "queueStatus": {},
+          "revision": {},
+          "type": {}
+        },
+        "deleted": true
+      },
+      "metrics": [
+        {
+          "date": {},
+          "intValue": {},
+          "name": {},
+          "scope": {}
+        }
+      ],
+      "quality": {}
     },
-    "latestCompletedBuild": {
-      "agentSpecification": {
-        "identifier": {}
+    {
+      "id": 2,
+      "name": "Build-Beta",
+      "path": "\\",
+      "queueStatus": "enabled",
+      "authoredBy": {
+        "displayName": "Test Author 2"
       },
-      "appendCommitMessageToRunName": true,
-      "buildNumber": "sample-string",
-      "buildNumberRevision": 1,
-      "controller": {
-        "createdDate": {},
-        "description": {},
-        "enabled": {},
-        "status": {},
-        "updatedDate": {},
-        "uri": {}
-      },
-      "definition": {
-        "createdDate": {},
-        "id": {},
-        "name": {},
-        "path": {},
-        "project": {},
-        "queueStatus": {},
-        "revision": {},
-        "type": {}
-      },
-      "deleted": true
-    },
-    "metrics": [
-      {
-        "date": {},
-        "intValue": {},
-        "name": {},
-        "scope": {}
-      }
-    ],
-    "quality": {}
-  }
-]
+      "quality": {}
+    }
+  ]
+}

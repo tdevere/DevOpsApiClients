@@ -1,53 +1,56 @@
-[
-  {
-    "children": [
-      {
-        "children": {},
-        "clauses": {},
-        "columns": {},
-        "createdBy": {},
-        "createdDate": {},
-        "filterOptions": {},
-        "hasChildren": {},
-        "id": {}
-      }
-    ],
-    "clauses": {
-      "clauses": [
-        {}
+{
+  "count": 1,
+  "value": [
+    {
+      "children": [
+        {
+          "children": {},
+          "clauses": {},
+          "columns": {},
+          "createdBy": {},
+          "createdDate": {},
+          "filterOptions": {},
+          "hasChildren": {},
+          "id": {}
+        }
       ],
-      "field": {
-        "name": {},
-        "referenceName": {},
-        "url": {}
+      "clauses": {
+        "clauses": [
+          {}
+        ],
+        "field": {
+          "name": {},
+          "referenceName": {},
+          "url": {}
+        },
+        "fieldValue": {
+          "name": {},
+          "referenceName": {},
+          "url": {}
+        },
+        "isFieldValue": true,
+        "logicalOperator": {},
+        "operator": {
+          "name": {},
+          "referenceName": {}
+        },
+        "value": "sample-string"
       },
-      "fieldValue": {
-        "name": {},
-        "referenceName": {},
-        "url": {}
+      "columns": [
+        {
+          "name": {},
+          "referenceName": {},
+          "url": {}
+        }
+      ],
+      "createdBy": {
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "name": "sample-string"
       },
-      "isFieldValue": true,
-      "logicalOperator": {},
-      "operator": {
-        "name": {},
-        "referenceName": {}
-      },
-      "value": "sample-string"
-    },
-    "columns": [
-      {
-        "name": {},
-        "referenceName": {},
-        "url": {}
-      }
-    ],
-    "createdBy": {
-      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "name": "sample-string"
-    },
-    "createdDate": "2026-01-15T10:30:00Z",
-    "filterOptions": {},
-    "hasChildren": true,
-    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
-  }
-]
+      "createdDate": "2026-01-15T10:30:00Z",
+      "filterOptions": {},
+      "hasChildren": true,
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    }
+  ]
+}

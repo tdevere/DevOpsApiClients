@@ -1,12 +1,15 @@
-[
-  {
-    "automatedTestName": "sample-string",
-    "automatedTestStorage": "sample-string",
-    "durationInMs": 1.0,
-    "id": 1,
-    "isReRun": true,
-    "outcome": "sample-string",
-    "owner": "sample-string",
-    "priority": 1
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "automatedTestName": "sample-string",
+      "automatedTestStorage": "sample-string",
+      "durationInMs": 1.0,
+      "id": 1,
+      "isReRun": true,
+      "outcome": "sample-string",
+      "owner": "sample-string",
+      "priority": 1
+    }
+  ]
+}

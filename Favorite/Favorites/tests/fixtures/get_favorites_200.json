@@ -1,15 +1,18 @@
-[
-  {
-    "artifactId": "sample-string",
-    "artifactIsDeleted": true,
-    "artifactName": "sample-string",
-    "artifactProperties": {},
-    "artifactScope": {
-      "id": "sample-string",
-      "name": "sample-string",
-      "type": "sample-string"
-    },
-    "artifactType": "sample-string",
-    "creationDate": "2026-01-15T10:30:00Z"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "artifactId": "sample-string",
+      "artifactIsDeleted": true,
+      "artifactName": "sample-string",
+      "artifactProperties": {},
+      "artifactScope": {
+        "id": "sample-string",
+        "name": "sample-string",
+        "type": "sample-string"
+      },
+      "artifactType": "sample-string",
+      "creationDate": "2026-01-15T10:30:00Z"
+    }
+  ]
+}

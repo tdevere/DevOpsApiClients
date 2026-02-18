@@ -1,8 +1,11 @@
-[
-  {
-    "fieldName": "sample-string",
-    "groupsForField": [
-      {}
-    ]
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "fieldName": "sample-string",
+      "groupsForField": [
+        {}
+      ]
+    }
+  ]
+}

@@ -1,12 +1,15 @@
-[
-  {
-    "directoryAlias": "sample-string",
-    "id": "sample-string",
-    "imageUrl": "sample-string",
-    "inactive": true,
-    "isAadIdentity": true,
-    "isContainer": true,
-    "isDeletedInOrigin": true,
-    "profileUrl": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    }
+  ]
+}

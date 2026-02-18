@@ -1,12 +1,15 @@
-[
-  {
-    "agentInteractiveUI": true,
-    "azureId": "sample-string",
-    "desiredIdle": 1,
-    "desiredSize": 1,
-    "maxCapacity": 1,
-    "maxSavedNodeCount": 1,
-    "offlineSince": "2026-01-15T10:30:00Z",
-    "orchestrationType": {}
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "agentInteractiveUI": true,
+      "azureId": "sample-string",
+      "desiredIdle": 1,
+      "desiredSize": 1,
+      "maxCapacity": 1,
+      "maxSavedNodeCount": 1,
+      "offlineSince": "2026-01-15T10:30:00Z",
+      "orchestrationType": {}
+    }
+  ]
+}

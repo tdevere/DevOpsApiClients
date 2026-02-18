@@ -1,34 +1,37 @@
-[
-  {
-    "artifactId": "sample-string",
-    "completedDate": "2026-01-15T10:30:00Z",
-    "configuration": {
-      "createdBy": {
-        "directoryAlias": {},
-        "id": {},
-        "imageUrl": {},
-        "inactive": {},
-        "isAadIdentity": {},
-        "isContainer": {},
-        "isDeletedInOrigin": {},
-        "profileUrl": {}
+{
+  "count": 1,
+  "value": [
+    {
+      "artifactId": "sample-string",
+      "completedDate": "2026-01-15T10:30:00Z",
+      "configuration": {
+        "createdBy": {
+          "directoryAlias": {},
+          "id": {},
+          "imageUrl": {},
+          "inactive": {},
+          "isAadIdentity": {},
+          "isContainer": {},
+          "isDeletedInOrigin": {},
+          "profileUrl": {}
+        },
+        "createdDate": "2026-01-15T10:30:00Z",
+        "isBlocking": true,
+        "isDeleted": true,
+        "isEnabled": true,
+        "isEnterpriseManaged": true,
+        "settings": {
+          "item": {},
+          "type": {}
+        }
       },
-      "createdDate": "2026-01-15T10:30:00Z",
-      "isBlocking": true,
-      "isDeleted": true,
-      "isEnabled": true,
-      "isEnterpriseManaged": true,
-      "settings": {
-        "item": {},
-        "type": {}
-      }
-    },
-    "context": {
-      "item": "sample-string",
-      "type": "sample-string"
-    },
-    "evaluationId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "startedDate": "2026-01-15T10:30:00Z",
-    "status": {}
-  }
-]
+      "context": {
+        "item": "sample-string",
+        "type": "sample-string"
+      },
+      "evaluationId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "startedDate": "2026-01-15T10:30:00Z",
+      "status": {}
+    }
+  ]
+}

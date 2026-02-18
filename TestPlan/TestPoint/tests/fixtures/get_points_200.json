@@ -1,24 +1,27 @@
-[
-  {
-    "comment": "sample-string",
-    "configuration": {
+{
+  "count": 1,
+  "value": [
+    {
+      "comment": "sample-string",
+      "configuration": {
+        "id": 1,
+        "name": "sample-string"
+      },
       "id": 1,
-      "name": "sample-string"
-    },
-    "id": 1,
-    "isActive": true,
-    "isAutomated": true,
-    "lastResetToActive": "2026-01-15T10:30:00Z",
-    "lastUpdatedBy": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "lastUpdatedDate": "2026-01-15T10:30:00Z"
-  }
-]
+      "isActive": true,
+      "isAutomated": true,
+      "lastResetToActive": "2026-01-15T10:30:00Z",
+      "lastUpdatedBy": {
+        "directoryAlias": "sample-string",
+        "id": "sample-string",
+        "imageUrl": "sample-string",
+        "inactive": true,
+        "isAadIdentity": true,
+        "isContainer": true,
+        "isDeletedInOrigin": true,
+        "profileUrl": "sample-string"
+      },
+      "lastUpdatedDate": "2026-01-15T10:30:00Z"
+    }
+  ]
+}

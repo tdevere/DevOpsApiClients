@@ -1,12 +1,32 @@
-[
-  {
-    "abbreviation": "sample-string",
-    "defaultTeamImageUrl": "sample-string",
-    "description": "sample-string",
-    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "lastUpdateTime": "2026-01-15T10:30:00Z",
-    "name": "sample-string",
-    "revision": 1,
-    "state": {}
-  }
-]
+{
+  "count": 3,
+  "value": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "AlphaProject",
+      "description": "First test project",
+      "state": "wellFormed",
+      "revision": 1,
+      "url": "https://dev.azure.com/testorg/_apis/projects/a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "lastUpdateTime": "2026-01-15T10:30:00Z"
+    },
+    {
+      "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+      "name": "BetaProject",
+      "description": "Second test project",
+      "state": "wellFormed",
+      "revision": 2,
+      "url": "https://dev.azure.com/testorg/_apis/projects/b2c3d4e5-f6a7-8901-bcde-f12345678901",
+      "lastUpdateTime": "2026-01-16T10:30:00Z"
+    },
+    {
+      "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "name": "GammaProject",
+      "description": "Third test project",
+      "state": "wellFormed",
+      "revision": 3,
+      "url": "https://dev.azure.com/testorg/_apis/projects/c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "lastUpdateTime": "2026-01-17T10:30:00Z"
+    }
+  ]
+}

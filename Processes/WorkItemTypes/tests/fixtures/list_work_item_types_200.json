@@ -1,29 +1,32 @@
-[
-  {
-    "behaviors": [
-      {
-        "behavior": {},
-        "isDefault": {},
-        "isLegacyDefault": {},
-        "url": {}
+{
+  "count": 1,
+  "value": [
+    {
+      "behaviors": [
+        {
+          "behavior": {},
+          "isDefault": {},
+          "isLegacyDefault": {},
+          "url": {}
+        }
+      ],
+      "color": "sample-string",
+      "customization": {},
+      "description": "sample-string",
+      "icon": "sample-string",
+      "inherits": "sample-string",
+      "isDisabled": true,
+      "layout": {
+        "extensions": [
+          {}
+        ],
+        "pages": [
+          {}
+        ],
+        "systemControls": [
+          {}
+        ]
       }
-    ],
-    "color": "sample-string",
-    "customization": {},
-    "description": "sample-string",
-    "icon": "sample-string",
-    "inherits": "sample-string",
-    "isDisabled": true,
-    "layout": {
-      "extensions": [
-        {}
-      ],
-      "pages": [
-        {}
-      ],
-      "systemControls": [
-        {}
-      ]
     }
-  }
-]
+  ]
+}

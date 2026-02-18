@@ -1,18 +1,21 @@
-[
-  {
-    "displayName": "sample-string",
-    "inputDescriptors": [
-      {
-        "dependencyInputIds": {},
-        "description": {},
-        "groupName": {},
-        "hasDynamicValueInformation": {},
-        "id": {},
-        "inputMode": {},
-        "isConfidential": {},
-        "name": {}
-      }
-    ],
-    "name": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "displayName": "sample-string",
+      "inputDescriptors": [
+        {
+          "dependencyInputIds": {},
+          "description": {},
+          "groupName": {},
+          "hasDynamicValueInformation": {},
+          "id": {},
+          "inputMode": {},
+          "isConfidential": {},
+          "name": {}
+        }
+      ],
+      "name": "sample-string"
+    }
+  ]
+}

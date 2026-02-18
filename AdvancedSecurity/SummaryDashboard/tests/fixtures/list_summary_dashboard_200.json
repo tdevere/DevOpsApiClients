@@ -1,18 +1,21 @@
-[
-  {
-    "alertId": 1,
-    "alertType": {},
-    "introducedDate": "2026-01-15T10:30:00Z",
-    "locations": [
-      {
-        "alertId": {},
-        "filePath": {},
-        "region": {}
-      }
-    ],
-    "projectName": "sample-string",
-    "repositoryName": "sample-string",
-    "severity": {},
-    "state": {}
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "alertId": 1,
+      "alertType": {},
+      "introducedDate": "2026-01-15T10:30:00Z",
+      "locations": [
+        {
+          "alertId": {},
+          "filePath": {},
+          "region": {}
+        }
+      ],
+      "projectName": "sample-string",
+      "repositoryName": "sample-string",
+      "severity": {},
+      "state": {}
+    }
+  ]
+}

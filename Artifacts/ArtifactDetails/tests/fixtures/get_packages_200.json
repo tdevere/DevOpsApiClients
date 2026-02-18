@@ -1,11 +1,14 @@
-[
-  {
-    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "isCached": true,
-    "name": "sample-string",
-    "normalizedName": "sample-string",
-    "protocolType": "sample-string",
-    "starCount": 1,
-    "url": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "isCached": true,
+      "name": "sample-string",
+      "normalizedName": "sample-string",
+      "protocolType": "sample-string",
+      "starCount": 1,
+      "url": "sample-string"
+    }
+  ]
+}

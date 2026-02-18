@@ -1,37 +1,40 @@
-[
-  {
-    "duration": "sample-string",
-    "resultsByOutcome": {},
-    "runSummaryByState": {},
-    "testResultsContext": {
-      "build": {
-        "branchName": {},
-        "buildSystem": {},
-        "definitionId": {},
-        "id": {},
-        "number": {},
-        "repositoryId": {},
-        "uri": {}
+{
+  "count": 1,
+  "value": [
+    {
+      "duration": "sample-string",
+      "resultsByOutcome": {},
+      "runSummaryByState": {},
+      "testResultsContext": {
+        "build": {
+          "branchName": {},
+          "buildSystem": {},
+          "definitionId": {},
+          "id": {},
+          "number": {},
+          "repositoryId": {},
+          "uri": {}
+        },
+        "contextType": {},
+        "pipelineReference": {
+          "jobReference": {},
+          "phaseReference": {},
+          "pipelineDefinitionId": {},
+          "pipelineId": {},
+          "stageReference": {}
+        },
+        "release": {
+          "attempt": {},
+          "creationDate": {},
+          "definitionId": {},
+          "environmentCreationDate": {},
+          "environmentDefinitionId": {},
+          "environmentDefinitionName": {},
+          "environmentId": {},
+          "environmentName": {}
+        }
       },
-      "contextType": {},
-      "pipelineReference": {
-        "jobReference": {},
-        "phaseReference": {},
-        "pipelineDefinitionId": {},
-        "pipelineId": {},
-        "stageReference": {}
-      },
-      "release": {
-        "attempt": {},
-        "creationDate": {},
-        "definitionId": {},
-        "environmentCreationDate": {},
-        "environmentDefinitionId": {},
-        "environmentDefinitionName": {},
-        "environmentId": {},
-        "environmentName": {}
-      }
-    },
-    "totalTests": 1
-  }
-]
+      "totalTests": 1
+    }
+  ]
+}

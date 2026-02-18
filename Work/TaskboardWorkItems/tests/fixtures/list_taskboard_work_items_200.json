@@ -1,8 +1,11 @@
-[
-  {
-    "column": "sample-string",
-    "columnId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "state": "sample-string",
-    "workItemId": 1
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "column": "sample-string",
+      "columnId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "state": "sample-string",
+      "workItemId": 1
+    }
+  ]
+}

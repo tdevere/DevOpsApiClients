@@ -1,11 +1,14 @@
-[
-  {
-    "behavior": {
-      "id": "sample-string",
+{
+  "count": 1,
+  "value": [
+    {
+      "behavior": {
+        "id": "sample-string",
+        "url": "sample-string"
+      },
+      "isDefault": true,
+      "isLegacyDefault": true,
       "url": "sample-string"
-    },
-    "isDefault": true,
-    "isLegacyDefault": true,
-    "url": "sample-string"
-  }
-]
+    }
+  ]
+}

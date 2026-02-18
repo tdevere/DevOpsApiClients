@@ -53,8 +53,14 @@ def generate(definition_path: Path, output_dir: Path, languages: list, dry_run: 
 
     # --- Fixtures ---
     if op.fixture_success:
+        fixture_data = op.fixture_success
+        # Wrap plain list fixtures in ADO paged format { count, value }.
+        # Scripts use Set-StrictMode -Version Latest and access $response.value;
+        # a bare array causes PropertyNotFoundException at runtime.
+        if isinstance(fixture_data, list) and op.http_method.upper() == "GET":
+            fixture_data = {"count": len(fixture_data), "value": fixture_data}
         files_to_write[fixture_dir / op.fixture_filename] = json.dumps(
-            op.fixture_success, indent=2
+            fixture_data, indent=2
         ) + "\n"
     if op.fixture_error_404:
         files_to_write[fixture_dir / f"{op.operation}_404.json"] = json.dumps(

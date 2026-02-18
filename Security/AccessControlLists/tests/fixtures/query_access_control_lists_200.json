@@ -1,8 +1,11 @@
-[
-  {
-    "acesDictionary": {},
-    "includeExtendedInfo": true,
-    "inheritPermissions": true,
-    "token": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "acesDictionary": {},
+      "includeExtendedInfo": true,
+      "inheritPermissions": true,
+      "token": "sample-string"
+    }
+  ]
+}

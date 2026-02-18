@@ -1,7 +1,10 @@
-[
-  {
-    "actionId": "sample-string",
-    "area": "sample-string",
-    "category": {}
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "actionId": "sample-string",
+      "area": "sample-string",
+      "category": {}
+    }
+  ]
+}

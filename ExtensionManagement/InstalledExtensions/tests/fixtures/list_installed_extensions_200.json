@@ -1,24 +1,27 @@
-[
-  {
-    "extensionId": "sample-string",
-    "extensionName": "sample-string",
-    "files": [
-      {
-        "assetType": {},
-        "language": {},
-        "source": {}
-      }
-    ],
-    "flags": {},
-    "installState": {
-      "flags": {},
-      "installationIssues": [
-        {}
+{
+  "count": 1,
+  "value": [
+    {
+      "extensionId": "sample-string",
+      "extensionName": "sample-string",
+      "files": [
+        {
+          "assetType": {},
+          "language": {},
+          "source": {}
+        }
       ],
-      "lastUpdated": "2026-01-15T10:30:00Z"
-    },
-    "lastPublished": "2026-01-15T10:30:00Z",
-    "publisherId": "sample-string",
-    "publisherName": "sample-string"
-  }
-]
+      "flags": {},
+      "installState": {
+        "flags": {},
+        "installationIssues": [
+          {}
+        ],
+        "lastUpdated": "2026-01-15T10:30:00Z"
+      },
+      "lastPublished": "2026-01-15T10:30:00Z",
+      "publisherId": "sample-string",
+      "publisherName": "sample-string"
+    }
+  ]
+}

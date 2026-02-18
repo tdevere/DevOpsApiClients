@@ -1,12 +1,15 @@
-[
-  {
-    "customMessage": "sample-string",
-    "isLocked": true,
-    "name": "sample-string",
-    "newObjectId": "sample-string",
-    "oldObjectId": "sample-string",
-    "rejectedBy": "sample-string",
-    "repositoryId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "success": true
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "customMessage": "sample-string",
+      "isLocked": true,
+      "name": "sample-string",
+      "newObjectId": "sample-string",
+      "oldObjectId": "sample-string",
+      "rejectedBy": "sample-string",
+      "repositoryId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "success": true
+    }
+  ]
+}

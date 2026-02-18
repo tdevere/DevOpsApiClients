@@ -1,71 +1,74 @@
-[
-  {
-    "agent": {
-      "assignedAgentCloudRequest": {
-        "agent": {},
-        "agentCloudId": {},
-        "agentConnectedTime": {},
-        "agentData": {},
-        "agentSpecification": {},
-        "pool": {},
-        "poolProvidersTags": {},
-        "provisionedTime": {}
+{
+  "count": 1,
+  "value": [
+    {
+      "agent": {
+        "assignedAgentCloudRequest": {
+          "agent": {},
+          "agentCloudId": {},
+          "agentConnectedTime": {},
+          "agentData": {},
+          "agentSpecification": {},
+          "pool": {},
+          "poolProvidersTags": {},
+          "provisionedTime": {}
+        },
+        "assignedRequest": {
+          "agentSpecification": {},
+          "data": {},
+          "definition": {},
+          "demands": {},
+          "hostId": {},
+          "jobId": {},
+          "jobName": {},
+          "lockedUntil": {}
+        },
+        "authorization": {
+          "authorizationUrl": {},
+          "clientId": {},
+          "publicKey": {}
+        },
+        "createdOn": "2026-01-15T10:30:00Z",
+        "lastCompletedRequest": {
+          "agentSpecification": {},
+          "data": {},
+          "definition": {},
+          "demands": {},
+          "hostId": {},
+          "jobId": {},
+          "jobName": {},
+          "lockedUntil": {}
+        },
+        "maxParallelism": 1,
+        "pendingUpdate": {
+          "currentState": {},
+          "reason": {},
+          "requestedBy": {},
+          "requestTime": {},
+          "sourceVersion": {},
+          "targetVersion": {}
+        },
+        "properties": {
+          "count": {},
+          "item": {},
+          "keys": {},
+          "values": {}
+        }
       },
-      "assignedRequest": {
-        "agentSpecification": {},
-        "data": {},
-        "definition": {},
-        "demands": {},
-        "hostId": {},
-        "jobId": {},
-        "jobName": {},
-        "lockedUntil": {}
-      },
-      "authorization": {
-        "authorizationUrl": {},
-        "clientId": {},
-        "publicKey": {}
-      },
-      "createdOn": "2026-01-15T10:30:00Z",
-      "lastCompletedRequest": {
-        "agentSpecification": {},
-        "data": {},
-        "definition": {},
-        "demands": {},
-        "hostId": {},
-        "jobId": {},
-        "jobName": {},
-        "lockedUntil": {}
-      },
-      "maxParallelism": 1,
-      "pendingUpdate": {
-        "currentState": {},
-        "reason": {},
-        "requestedBy": {},
-        "requestTime": {},
-        "sourceVersion": {},
-        "targetVersion": {}
-      },
+      "id": 1,
       "properties": {
-        "count": {},
+        "count": 1,
         "item": {},
-        "keys": {},
-        "values": {}
-      }
-    },
-    "id": 1,
-    "properties": {
-      "count": 1,
-      "item": {},
-      "keys": [
-        {}
-      ],
-      "values": [
-        {}
+        "keys": [
+          {}
+        ],
+        "values": [
+          {}
+        ]
+      },
+      "tags": [
+        "sample-string"
       ]
-    },
-    "tags": [
-      "sample-string"
-    ]
-  }
-]
+    }
+  ]
+}

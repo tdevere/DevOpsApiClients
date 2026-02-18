@@ -1,12 +1,15 @@
-[
-  {
-    "agentId": 1,
-    "agentState": {},
-    "computeId": "sample-string",
-    "computeState": {},
-    "desiredState": {},
-    "id": 1,
-    "name": "sample-string",
-    "poolId": 1
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "agentId": 1,
+      "agentState": {},
+      "computeId": "sample-string",
+      "computeState": {},
+      "desiredState": {},
+      "id": 1,
+      "name": "sample-string",
+      "poolId": 1
+    }
+  ]
+}

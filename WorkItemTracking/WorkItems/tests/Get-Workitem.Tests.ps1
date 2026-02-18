@@ -56,7 +56,7 @@ Describe 'Get-Workitem.ps1' -Tag 'Offline', 'WIT' {
 
             Should -InvokeVerifiable
             Should -Invoke Invoke-RestMethod -Times 1 -Exactly -ParameterFilter {
-                $Uri -eq "https://dev.azure.com/testorg/$ProjectGuid/_apis/wit/workitems/$testvalue?api-version=7.2" -and
+                $Uri -eq "https://dev.azure.com/testorg/$ProjectGuid/_apis/wit/workitems/testvalue?api-version=7.2" -and
                 $Method -eq 'Get'
             }
         }

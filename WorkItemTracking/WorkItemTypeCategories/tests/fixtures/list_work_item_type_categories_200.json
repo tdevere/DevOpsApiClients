@@ -1,14 +1,17 @@
-[
-  {
-    "defaultWorkItemType": {
-      "name": "sample-string"
-    },
-    "name": "sample-string",
-    "referenceName": "sample-string",
-    "workItemTypes": [
-      {
-        "name": {}
-      }
-    ]
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "defaultWorkItemType": {
+        "name": "sample-string"
+      },
+      "name": "sample-string",
+      "referenceName": "sample-string",
+      "workItemTypes": [
+        {
+          "name": {}
+        }
+      ]
+    }
+  ]
+}

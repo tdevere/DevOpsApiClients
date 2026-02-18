@@ -1,8 +1,11 @@
-[
-  {
-    "isContainer": true,
-    "path": "sample-string",
-    "type": "sample-string",
-    "url": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "isContainer": true,
+      "path": "sample-string",
+      "type": "sample-string",
+      "url": "sample-string"
+    }
+  ]
+}

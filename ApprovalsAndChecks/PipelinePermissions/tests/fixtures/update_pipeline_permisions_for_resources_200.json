@@ -1,28 +1,31 @@
-[
-  {
-    "allPipelines": {
-      "authorized": true,
-      "authorizedBy": {
-        "directoryAlias": {},
-        "id": {},
-        "imageUrl": {},
-        "inactive": {},
-        "isAadIdentity": {},
-        "isContainer": {},
-        "isDeletedInOrigin": {},
-        "profileUrl": {}
+{
+  "count": 1,
+  "value": [
+    {
+      "allPipelines": {
+        "authorized": true,
+        "authorizedBy": {
+          "directoryAlias": {},
+          "id": {},
+          "imageUrl": {},
+          "inactive": {},
+          "isAadIdentity": {},
+          "isContainer": {},
+          "isDeletedInOrigin": {},
+          "profileUrl": {}
+        },
+        "authorizedOn": "2026-01-15T10:30:00Z"
       },
-      "authorizedOn": "2026-01-15T10:30:00Z"
-    },
-    "pipelines": [
-      {
-        "id": {}
+      "pipelines": [
+        {
+          "id": {}
+        }
+      ],
+      "resource": {
+        "id": "sample-string",
+        "name": "sample-string",
+        "type": "sample-string"
       }
-    ],
-    "resource": {
-      "id": "sample-string",
-      "name": "sample-string",
-      "type": "sample-string"
     }
-  }
-]
+  ]
+}

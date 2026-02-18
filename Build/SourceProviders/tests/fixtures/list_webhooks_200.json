@@ -1,10 +1,13 @@
-[
-  {
-    "lastDeliveryStatus": 1,
-    "name": "sample-string",
-    "types": [
-      {}
-    ],
-    "url": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "lastDeliveryStatus": 1,
+      "name": "sample-string",
+      "types": [
+        {}
+      ],
+      "url": "sample-string"
+    }
+  ]
+}

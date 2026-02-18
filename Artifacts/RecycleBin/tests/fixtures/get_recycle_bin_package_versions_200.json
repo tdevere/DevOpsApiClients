@@ -1,5 +1,8 @@
-[
-  {
-    "scheduledPermanentDeleteDate": "2026-01-15T10:30:00Z"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "scheduledPermanentDeleteDate": "2026-01-15T10:30:00Z"
+    }
+  ]
+}

@@ -1,11 +1,14 @@
-[
-  {
-    "childWorkItemIds": [
-      1
-    ],
-    "id": 1,
-    "teamProject": "sample-string",
-    "title": "sample-string",
-    "workItemTypeName": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "childWorkItemIds": [
+        1
+      ],
+      "id": 1,
+      "teamProject": "sample-string",
+      "title": "sample-string",
+      "workItemTypeName": "sample-string"
+    }
+  ]
+}

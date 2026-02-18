@@ -1,40 +1,43 @@
-[
-  {
-    "artifacts": [
-      {
-        "alias": {},
-        "definitionReference": {},
-        "isPrimary": {},
-        "isRetained": {},
-        "type": {}
-      }
-    ],
-    "comment": "sample-string",
-    "createdBy": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "createdOn": "2026-01-15T10:30:00Z",
-    "description": "sample-string",
-    "environments": [
-      {
-        "badgeUrl": {},
-        "conditions": {},
-        "currentRelease": {},
-        "demands": {},
-        "deployPhases": {},
-        "deployStep": {},
-        "environmentOptions": {},
-        "environmentTriggers": {}
-      }
-    ],
-    "isDeleted": true,
-    "isDisabled": true
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "artifacts": [
+        {
+          "alias": {},
+          "definitionReference": {},
+          "isPrimary": {},
+          "isRetained": {},
+          "type": {}
+        }
+      ],
+      "comment": "sample-string",
+      "createdBy": {
+        "directoryAlias": "sample-string",
+        "id": "sample-string",
+        "imageUrl": "sample-string",
+        "inactive": true,
+        "isAadIdentity": true,
+        "isContainer": true,
+        "isDeletedInOrigin": true,
+        "profileUrl": "sample-string"
+      },
+      "createdOn": "2026-01-15T10:30:00Z",
+      "description": "sample-string",
+      "environments": [
+        {
+          "badgeUrl": {},
+          "conditions": {},
+          "currentRelease": {},
+          "demands": {},
+          "deployPhases": {},
+          "deployStep": {},
+          "environmentOptions": {},
+          "environmentTriggers": {}
+        }
+      ],
+      "isDeleted": true,
+      "isDisabled": true
+    }
+  ]
+}

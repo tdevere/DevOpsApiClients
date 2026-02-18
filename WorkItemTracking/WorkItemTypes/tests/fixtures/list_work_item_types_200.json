@@ -1,25 +1,28 @@
-[
-  {
-    "color": "sample-string",
-    "description": "sample-string",
-    "fieldInstances": [
-      {
-        "allowedValues": {},
-        "defaultValue": {}
-      }
-    ],
-    "fields": [
-      {
-        "allowedValues": {},
-        "defaultValue": {}
-      }
-    ],
-    "icon": {
-      "id": "sample-string",
-      "url": "sample-string"
-    },
-    "isDisabled": true,
-    "name": "sample-string",
-    "referenceName": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "color": "sample-string",
+      "description": "sample-string",
+      "fieldInstances": [
+        {
+          "allowedValues": {},
+          "defaultValue": {}
+        }
+      ],
+      "fields": [
+        {
+          "allowedValues": {},
+          "defaultValue": {}
+        }
+      ],
+      "icon": {
+        "id": "sample-string",
+        "url": "sample-string"
+      },
+      "isDisabled": true,
+      "name": "sample-string",
+      "referenceName": "sample-string"
+    }
+  ]
+}

@@ -1,5 +1,8 @@
-[
-  {
-    "description": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "description": "sample-string"
+    }
+  ]
+}

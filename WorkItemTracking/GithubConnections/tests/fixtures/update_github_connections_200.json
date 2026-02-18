@@ -1,6 +1,9 @@
-[
-  {
-    "errorMessage": "sample-string",
-    "gitHubRepositoryUrl": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "errorMessage": "sample-string",
+      "gitHubRepositoryUrl": "sample-string"
+    }
+  ]
+}

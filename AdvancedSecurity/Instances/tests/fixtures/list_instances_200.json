@@ -1,84 +1,87 @@
-[
-  {
-    "analysisConfiguration": {
-      "analysisConfigurationDetails": {
-        "additionalProperties": {},
-        "gitRef": {},
-        "isDefaultBranch": {},
-        "phaseId": {},
-        "phaseName": {},
-        "pipelineId": {},
-        "pipelineName": {}
-      },
-      "analysisConfigurationId": 1,
-      "analysisConfigurationType": {},
-      "toolName": "sample-string",
-      "toolVersion": "sample-string"
-    },
-    "firstSeen": {
-      "commitId": "sample-string",
-      "configuration": {
-        "analysisConfigurationDetails": {},
-        "analysisConfigurationId": {},
+{
+  "count": 1,
+  "value": [
+    {
+      "analysisConfiguration": {
+        "analysisConfigurationDetails": {
+          "additionalProperties": {},
+          "gitRef": {},
+          "isDefaultBranch": {},
+          "phaseId": {},
+          "phaseName": {},
+          "pipelineId": {},
+          "pipelineName": {}
+        },
+        "analysisConfigurationId": 1,
         "analysisConfigurationType": {},
-        "toolName": {},
-        "toolVersion": {}
+        "toolName": "sample-string",
+        "toolVersion": "sample-string"
       },
-      "createdDate": "2026-01-15T10:30:00Z",
-      "instanceIdentifier": "sample-string",
-      "results": [
-        {}
-      ],
-      "url": "sample-string"
-    },
-    "fixedIn": {
-      "commitId": "sample-string",
-      "configuration": {
-        "analysisConfigurationDetails": {},
-        "analysisConfigurationId": {},
-        "analysisConfigurationType": {},
-        "toolName": {},
-        "toolVersion": {}
+      "firstSeen": {
+        "commitId": "sample-string",
+        "configuration": {
+          "analysisConfigurationDetails": {},
+          "analysisConfigurationId": {},
+          "analysisConfigurationType": {},
+          "toolName": {},
+          "toolVersion": {}
+        },
+        "createdDate": "2026-01-15T10:30:00Z",
+        "instanceIdentifier": "sample-string",
+        "results": [
+          {}
+        ],
+        "url": "sample-string"
       },
-      "createdDate": "2026-01-15T10:30:00Z",
-      "instanceIdentifier": "sample-string",
-      "results": [
-        {}
-      ],
-      "url": "sample-string"
-    },
-    "lastSeen": {
-      "commitId": "sample-string",
-      "configuration": {
-        "analysisConfigurationDetails": {},
-        "analysisConfigurationId": {},
-        "analysisConfigurationType": {},
-        "toolName": {},
-        "toolVersion": {}
+      "fixedIn": {
+        "commitId": "sample-string",
+        "configuration": {
+          "analysisConfigurationDetails": {},
+          "analysisConfigurationId": {},
+          "analysisConfigurationType": {},
+          "toolName": {},
+          "toolVersion": {}
+        },
+        "createdDate": "2026-01-15T10:30:00Z",
+        "instanceIdentifier": "sample-string",
+        "results": [
+          {}
+        ],
+        "url": "sample-string"
       },
-      "createdDate": "2026-01-15T10:30:00Z",
-      "instanceIdentifier": "sample-string",
-      "results": [
-        {}
-      ],
-      "url": "sample-string"
-    },
-    "recentAnalysisInstance": {
-      "commitId": "sample-string",
-      "configuration": {
-        "analysisConfigurationDetails": {},
-        "analysisConfigurationId": {},
-        "analysisConfigurationType": {},
-        "toolName": {},
-        "toolVersion": {}
+      "lastSeen": {
+        "commitId": "sample-string",
+        "configuration": {
+          "analysisConfigurationDetails": {},
+          "analysisConfigurationId": {},
+          "analysisConfigurationType": {},
+          "toolName": {},
+          "toolVersion": {}
+        },
+        "createdDate": "2026-01-15T10:30:00Z",
+        "instanceIdentifier": "sample-string",
+        "results": [
+          {}
+        ],
+        "url": "sample-string"
       },
-      "createdDate": "2026-01-15T10:30:00Z",
-      "instanceIdentifier": "sample-string",
-      "results": [
-        {}
-      ],
-      "url": "sample-string"
-    },
-    "state": {}
-  }
-]
+      "recentAnalysisInstance": {
+        "commitId": "sample-string",
+        "configuration": {
+          "analysisConfigurationDetails": {},
+          "analysisConfigurationId": {},
+          "analysisConfigurationType": {},
+          "toolName": {},
+          "toolVersion": {}
+        },
+        "createdDate": "2026-01-15T10:30:00Z",
+        "instanceIdentifier": "sample-string",
+        "results": [
+          {}
+        ],
+        "url": "sample-string"
+      },
+      "state": {}
+    }
+  ]
+}

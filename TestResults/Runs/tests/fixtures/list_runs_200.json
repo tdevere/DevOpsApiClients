@@ -1,30 +1,33 @@
-[
-  {
-    "build": {
-      "id": "sample-string",
-      "name": "sample-string",
-      "url": "sample-string"
-    },
-    "buildConfiguration": {
-      "branchName": "sample-string",
-      "buildDefinitionId": 1,
-      "buildSystem": "sample-string",
-      "creationDate": "2026-01-15T10:30:00Z",
-      "flavor": "sample-string",
-      "id": 1,
-      "number": "sample-string",
-      "platform": "sample-string"
-    },
-    "comment": "sample-string",
-    "completedDate": "2026-01-15T10:30:00Z",
-    "controller": "sample-string",
-    "createdDate": "2026-01-15T10:30:00Z",
-    "customFields": [
-      {
-        "fieldName": {},
-        "value": {}
-      }
-    ],
-    "dropLocation": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "build": {
+        "id": "sample-string",
+        "name": "sample-string",
+        "url": "sample-string"
+      },
+      "buildConfiguration": {
+        "branchName": "sample-string",
+        "buildDefinitionId": 1,
+        "buildSystem": "sample-string",
+        "creationDate": "2026-01-15T10:30:00Z",
+        "flavor": "sample-string",
+        "id": 1,
+        "number": "sample-string",
+        "platform": "sample-string"
+      },
+      "comment": "sample-string",
+      "completedDate": "2026-01-15T10:30:00Z",
+      "controller": "sample-string",
+      "createdDate": "2026-01-15T10:30:00Z",
+      "customFields": [
+        {
+          "fieldName": {},
+          "value": {}
+        }
+      ],
+      "dropLocation": "sample-string"
+    }
+  ]
+}

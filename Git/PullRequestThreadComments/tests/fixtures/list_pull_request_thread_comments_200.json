@@ -1,20 +1,23 @@
-[
-  {
-    "author": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "commentType": {},
-    "content": "sample-string",
-    "id": 1,
-    "isDeleted": true,
-    "lastContentUpdatedDate": "2026-01-15T10:30:00Z",
-    "lastUpdatedDate": "2026-01-15T10:30:00Z"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "author": {
+        "directoryAlias": "sample-string",
+        "id": "sample-string",
+        "imageUrl": "sample-string",
+        "inactive": true,
+        "isAadIdentity": true,
+        "isContainer": true,
+        "isDeletedInOrigin": true,
+        "profileUrl": "sample-string"
+      },
+      "commentType": {},
+      "content": "sample-string",
+      "id": 1,
+      "isDeleted": true,
+      "lastContentUpdatedDate": "2026-01-15T10:30:00Z",
+      "lastUpdatedDate": "2026-01-15T10:30:00Z"
+    }
+  ]
+}

@@ -1,40 +1,43 @@
-[
-  {
-    "links": {
-      "links": {}
-    },
-    "order": 1,
-    "pointAssignments": [
-      {
-        "configurationName": {},
-        "id": {},
-        "tester": {}
+{
+  "count": 1,
+  "value": [
+    {
+      "links": {
+        "links": {}
+      },
+      "order": 1,
+      "pointAssignments": [
+        {
+          "configurationName": {},
+          "id": {},
+          "tester": {}
+        }
+      ],
+      "project": {
+        "abbreviation": "sample-string",
+        "defaultTeamImageUrl": "sample-string",
+        "description": "sample-string",
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "lastUpdateTime": "2026-01-15T10:30:00Z",
+        "name": "sample-string",
+        "revision": 1,
+        "state": {}
+      },
+      "testPlan": {
+        "id": 1,
+        "name": "sample-string"
+      },
+      "testSuite": {
+        "id": 1,
+        "name": "sample-string"
+      },
+      "workItem": {
+        "id": 1,
+        "name": "sample-string",
+        "workItemFields": [
+          {}
+        ]
       }
-    ],
-    "project": {
-      "abbreviation": "sample-string",
-      "defaultTeamImageUrl": "sample-string",
-      "description": "sample-string",
-      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "lastUpdateTime": "2026-01-15T10:30:00Z",
-      "name": "sample-string",
-      "revision": 1,
-      "state": {}
-    },
-    "testPlan": {
-      "id": 1,
-      "name": "sample-string"
-    },
-    "testSuite": {
-      "id": 1,
-      "name": "sample-string"
-    },
-    "workItem": {
-      "id": 1,
-      "name": "sample-string",
-      "workItemFields": [
-        {}
-      ]
     }
-  }
-]
+  ]
+}

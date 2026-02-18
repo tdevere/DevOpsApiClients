@@ -1,8 +1,11 @@
-[
-  {
-    "fieldId": 1,
-    "fieldName": "sample-string",
-    "fieldType": {},
-    "scope": {}
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "fieldId": 1,
+      "fieldName": "sample-string",
+      "fieldType": {},
+      "scope": {}
+    }
+  ]
+}

@@ -1,27 +1,30 @@
-[
-  {
-    "author": {
-      "date": "2026-01-15T10:30:00Z",
-      "email": "sample-string",
-      "imageUrl": "sample-string",
-      "name": "sample-string"
-    },
-    "changeCounts": {},
-    "changes": [
-      {
-        "changeId": {},
-        "newContentTemplate": {},
-        "originalPath": {}
+{
+  "count": 1,
+  "value": [
+    {
+      "author": {
+        "date": "2026-01-15T10:30:00Z",
+        "email": "sample-string",
+        "imageUrl": "sample-string",
+        "name": "sample-string"
+      },
+      "changeCounts": {},
+      "changes": [
+        {
+          "changeId": {},
+          "newContentTemplate": {},
+          "originalPath": {}
+        }
+      ],
+      "comment": "sample-string",
+      "commentTruncated": true,
+      "commitId": "sample-string",
+      "committer": {
+        "date": "2026-01-15T10:30:00Z",
+        "email": "sample-string",
+        "imageUrl": "sample-string",
+        "name": "sample-string"
       }
-    ],
-    "comment": "sample-string",
-    "commentTruncated": true,
-    "commitId": "sample-string",
-    "committer": {
-      "date": "2026-01-15T10:30:00Z",
-      "email": "sample-string",
-      "imageUrl": "sample-string",
-      "name": "sample-string"
     }
-  }
-]
+  ]
+}

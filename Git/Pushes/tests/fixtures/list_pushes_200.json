@@ -1,33 +1,42 @@
-[
-  {
-    "commits": [
-      {
-        "author": {},
-        "changeCounts": {},
-        "changes": {},
-        "comment": {},
-        "commentTruncated": {},
-        "commitId": {},
-        "committer": {}
+{
+  "count": 1,
+  "value": [
+    {
+      "pushId": 1,
+      "date": "2026-01-15T10:30:00Z",
+      "pushedBy": {
+        "displayName": "Test User",
+        "uniqueName": "testuser@example.com"
+      },
+      "commits": [
+        {
+          "author": {},
+          "changeCounts": {},
+          "changes": {},
+          "comment": {},
+          "commentTruncated": {},
+          "commitId": {},
+          "committer": {}
+        }
+      ],
+      "refUpdates": [
+        {
+          "isLocked": {},
+          "name": {},
+          "newObjectId": {},
+          "oldObjectId": {},
+          "repositoryId": {}
+        }
+      ],
+      "repository": {
+        "creationDate": "2026-01-15T10:30:00Z",
+        "defaultBranch": "sample-string",
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "isDisabled": true,
+        "isFork": true,
+        "isInMaintenance": true,
+        "name": "sample-string"
       }
-    ],
-    "refUpdates": [
-      {
-        "isLocked": {},
-        "name": {},
-        "newObjectId": {},
-        "oldObjectId": {},
-        "repositoryId": {}
-      }
-    ],
-    "repository": {
-      "creationDate": "2026-01-15T10:30:00Z",
-      "defaultBranch": "sample-string",
-      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "isDisabled": true,
-      "isFork": true,
-      "isInMaintenance": true,
-      "name": "sample-string"
     }
-  }
-]
+  ]
+}

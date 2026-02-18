@@ -1,24 +1,27 @@
-[
-  {
-    "detailedStatus": {
-      "allSteps": [
-        {}
+{
+  "count": 1,
+  "value": [
+    {
+      "detailedStatus": {
+        "allSteps": [
+          {}
+        ],
+        "currentStep": 1,
+        "errorMessage": "sample-string"
+      },
+      "operationId": 1,
+      "source": {
+        "collectionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "projectId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "repositoryId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      },
+      "sourceToTargetRefs": [
+        {
+          "sourceRef": {},
+          "targetRef": {}
+        }
       ],
-      "currentStep": 1,
-      "errorMessage": "sample-string"
-    },
-    "operationId": 1,
-    "source": {
-      "collectionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "projectId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "repositoryId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
-    },
-    "sourceToTargetRefs": [
-      {
-        "sourceRef": {},
-        "targetRef": {}
-      }
-    ],
-    "status": {}
-  }
-]
+      "status": {}
+    }
+  ]
+}

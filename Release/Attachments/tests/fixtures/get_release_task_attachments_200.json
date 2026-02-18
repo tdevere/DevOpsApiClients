@@ -1,20 +1,23 @@
-[
-  {
-    "createdOn": "2026-01-15T10:30:00Z",
-    "modifiedBy": {
-      "directoryAlias": "sample-string",
-      "id": "sample-string",
-      "imageUrl": "sample-string",
-      "inactive": true,
-      "isAadIdentity": true,
-      "isContainer": true,
-      "isDeletedInOrigin": true,
-      "profileUrl": "sample-string"
-    },
-    "modifiedOn": "2026-01-15T10:30:00Z",
-    "name": "sample-string",
-    "recordId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "timelineId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "type": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "createdOn": "2026-01-15T10:30:00Z",
+      "modifiedBy": {
+        "directoryAlias": "sample-string",
+        "id": "sample-string",
+        "imageUrl": "sample-string",
+        "inactive": true,
+        "isAadIdentity": true,
+        "isContainer": true,
+        "isDeletedInOrigin": true,
+        "profileUrl": "sample-string"
+      },
+      "modifiedOn": "2026-01-15T10:30:00Z",
+      "name": "sample-string",
+      "recordId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "timelineId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "type": "sample-string"
+    }
+  ]
+}

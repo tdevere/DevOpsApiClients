@@ -1,26 +1,29 @@
-[
-  {
-    "description": "sample-string",
-    "groups": [
-      {
-        "displayName": {},
-        "isExpanded": {},
-        "name": {}
-      }
-    ],
-    "inputs": [
-      {
-        "defaultValue": {},
-        "groupName": {},
-        "help": {},
-        "label": {},
-        "name": {},
-        "options": {},
-        "required": {},
-        "type": {}
-      }
-    ],
-    "name": "sample-string",
-    "ordinal": 1
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "description": "sample-string",
+      "groups": [
+        {
+          "displayName": {},
+          "isExpanded": {},
+          "name": {}
+        }
+      ],
+      "inputs": [
+        {
+          "defaultValue": {},
+          "groupName": {},
+          "help": {},
+          "label": {},
+          "name": {},
+          "options": {},
+          "required": {},
+          "type": {}
+        }
+      ],
+      "name": "sample-string",
+      "ordinal": 1
+    }
+  ]
+}

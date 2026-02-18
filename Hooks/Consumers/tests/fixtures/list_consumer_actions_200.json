@@ -1,24 +1,27 @@
-[
-  {
-    "allowResourceVersionOverride": true,
-    "consumerId": "sample-string",
-    "description": "sample-string",
-    "id": "sample-string",
-    "inputDescriptors": [
-      {
-        "dependencyInputIds": {},
-        "description": {},
-        "groupName": {},
-        "hasDynamicValueInformation": {},
-        "id": {},
-        "inputMode": {},
-        "isConfidential": {},
-        "name": {}
-      }
-    ],
-    "name": "sample-string",
-    "supportedEventTypes": [
-      "sample-string"
-    ]
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "allowResourceVersionOverride": true,
+      "consumerId": "sample-string",
+      "description": "sample-string",
+      "id": "sample-string",
+      "inputDescriptors": [
+        {
+          "dependencyInputIds": {},
+          "description": {},
+          "groupName": {},
+          "hasDynamicValueInformation": {},
+          "id": {},
+          "inputMode": {},
+          "isConfidential": {},
+          "name": {}
+        }
+      ],
+      "name": "sample-string",
+      "supportedEventTypes": [
+        "sample-string"
+      ]
+    }
+  ]
+}

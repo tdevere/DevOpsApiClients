@@ -1,7 +1,10 @@
-[
-  {
-    "artifactType": "sample-string",
-    "linkType": "sample-string",
-    "toolType": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "artifactType": "sample-string",
+      "linkType": "sample-string",
+      "toolType": "sample-string"
+    }
+  ]
+}

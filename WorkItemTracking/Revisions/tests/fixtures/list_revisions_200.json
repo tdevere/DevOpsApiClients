@@ -1,18 +1,21 @@
-[
-  {
-    "commentVersionRef": {
-      "commentId": 1,
-      "createdInRevision": 1,
-      "isDeleted": true,
-      "text": "sample-string",
-      "version": 1
-    },
-    "fields": {},
-    "id": 1,
-    "multilineFieldsFormat": {},
-    "relations": [
-      {}
-    ],
-    "rev": 1
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "commentVersionRef": {
+        "commentId": 1,
+        "createdInRevision": 1,
+        "isDeleted": true,
+        "text": "sample-string",
+        "version": 1
+      },
+      "fields": {},
+      "id": 1,
+      "multilineFieldsFormat": {},
+      "relations": [
+        {}
+      ],
+      "rev": 1
+    }
+  ]
+}

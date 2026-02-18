@@ -1,8 +1,11 @@
-[
-  {
-    "downloadCount": 1.0,
-    "downloadUniqueUsers": 1.0,
-    "lastDownloaded": "2026-01-15T10:30:00Z",
-    "packageId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "downloadCount": 1.0,
+      "downloadUniqueUsers": 1.0,
+      "lastDownloaded": "2026-01-15T10:30:00Z",
+      "packageId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    }
+  ]
+}

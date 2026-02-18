@@ -1,14 +1,17 @@
-[
-  {
-    "name": "sample-string",
-    "supportedCapabilities": {},
-    "supportedTriggers": [
-      {
-        "defaultPollingInterval": {},
-        "notificationType": {},
-        "supportedCapabilities": {},
-        "type": {}
-      }
-    ]
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "name": "sample-string",
+      "supportedCapabilities": {},
+      "supportedTriggers": [
+        {
+          "defaultPollingInterval": {},
+          "notificationType": {},
+          "supportedCapabilities": {},
+          "type": {}
+        }
+      ]
+    }
+  ]
+}

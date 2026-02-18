@@ -1,6 +1,9 @@
-[
-  {
-    "name": "sample-string",
-    "url": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "name": "sample-string",
+      "url": "sample-string"
+    }
+  ]
+}

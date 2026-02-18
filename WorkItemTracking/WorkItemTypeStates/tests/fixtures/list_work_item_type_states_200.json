@@ -1,7 +1,10 @@
-[
-  {
-    "category": "sample-string",
-    "color": "sample-string",
-    "name": "sample-string"
-  }
-]
+{
+  "count": 1,
+  "value": [
+    {
+      "category": "sample-string",
+      "color": "sample-string",
+      "name": "sample-string"
+    }
+  ]
+}
