@@ -49,7 +49,7 @@ Describe 'Get-Project.ps1' -Tag 'Offline', 'Core' {
 
             Should -InvokeVerifiable
             Should -Invoke Invoke-RestMethod -Times 1 -Exactly -ParameterFilter {
-                $Uri -eq "https://dev.azure.com/testorg/_apis/projects/testvalue?api-version=7.2" -and
+                $Uri -eq "https://dev.azure.com/testorg/_apis/projects/testvalue?api-version=7.2-preview.4" -and
                 $Method -eq 'Get'
             }
         }
