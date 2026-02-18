@@ -1,0 +1,262 @@
+# =============================================================================
+# Auto-Heal — Detect CI failures and create fix issues for Copilot
+#
+# Triggers after any CI Test & Release run completes with failure on main.
+# Parses test failure logs, creates a structured GitHub Issue with
+# reproduction steps and acceptance criteria, then assigns to copilot.
+#
+# Guard rails:
+#   - Only triggers on main branch failures (not PR branches)
+#   - Dedup: skips if an open auto-heal issue already exists
+#   - Non-fatal copilot assignment (issue created regardless)
+# =============================================================================
+name: Auto-Heal Test Failures
+
+on:
+  workflow_run:
+    workflows: ["CI Test & Release"]
+    types: [completed]
+
+permissions:
+  issues: write
+  contents: read
+  actions: read
+
+jobs:
+  check-and-heal:
+    name: "Detect & Dispatch Fix"
+    if: >-
+      github.event.workflow_run.conclusion == 'failure' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      # ── 1. Parse failure logs ────────────────────────────────────────
+      - name: "Download and parse CI failure logs"
+        id: logs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          echo "Fetching logs for CI run $RUN_ID"
+
+          # Download failed job logs
+          gh run view "$RUN_ID" \
+            --repo "${{ github.repository }}" \
+            --log-failed > /tmp/failed_logs.txt 2>/dev/null || true
+
+          LOG_SIZE=$(wc -c < /tmp/failed_logs.txt | tr -d ' ')
+          echo "Log size: $LOG_SIZE bytes"
+
+          if [[ "$LOG_SIZE" -lt 10 ]]; then
+            echo "No logs retrieved — workflow may have been cancelled"
+            echo "total_failures=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # ── Extract pytest failures ──
+          grep -E "^FAILED |^FAILED " /tmp/failed_logs.txt \
+            | sed 's/.*FAILED /FAILED /' \
+            > /tmp/pytest_failures.txt 2>/dev/null || true
+          PYTEST_COUNT=$(wc -l < /tmp/pytest_failures.txt | tr -d ' ')
+
+          # Also grab the summary line (e.g. "54 failed, 7511 passed")
+          PYTEST_SUMMARY=$(grep -oP '\d+ failed, \d+ passed' /tmp/failed_logs.txt | tail -1 || echo "")
+
+          # ── Extract PowerShell parse errors ──
+          grep -E "Parse errors in|DuplicateFormalParameter|TermExpected|Missing" /tmp/failed_logs.txt \
+            > /tmp/ps_errors.txt 2>/dev/null || true
+          PS_COUNT=$(wc -l < /tmp/ps_errors.txt | tr -d ' ')
+
+          # ── Extract bash syntax errors ──
+          grep -E "syntax error|bash -n.*failed|not ok" /tmp/failed_logs.txt \
+            > /tmp/bash_errors.txt 2>/dev/null || true
+          BASH_COUNT=$(wc -l < /tmp/bash_errors.txt | tr -d ' ')
+
+          TOTAL=$((PYTEST_COUNT + PS_COUNT + BASH_COUNT))
+          echo "total_failures=$TOTAL" >> "$GITHUB_OUTPUT"
+          echo "pytest_count=$PYTEST_COUNT" >> "$GITHUB_OUTPUT"
+          echo "pytest_summary=$PYTEST_SUMMARY" >> "$GITHUB_OUTPUT"
+          echo "ps_count=$PS_COUNT" >> "$GITHUB_OUTPUT"
+          echo "bash_count=$BASH_COUNT" >> "$GITHUB_OUTPUT"
+          echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+
+          # ── Build failure details (truncated for issue body) ──
+          {
+            echo "failure_details<<ENDOFDETAILS"
+
+            if [[ "$PYTEST_COUNT" -gt 0 ]]; then
+              echo '```'
+              echo "# pytest failures ($PYTEST_COUNT):"
+              head -50 /tmp/pytest_failures.txt
+              if [[ "$PYTEST_COUNT" -gt 50 ]]; then
+                echo "... and $((PYTEST_COUNT - 50)) more"
+              fi
+              echo '```'
+            fi
+
+            if [[ "$PS_COUNT" -gt 0 ]]; then
+              echo '```'
+              echo "# PowerShell errors ($PS_COUNT):"
+              head -20 /tmp/ps_errors.txt
+              echo '```'
+            fi
+
+            if [[ "$BASH_COUNT" -gt 0 ]]; then
+              echo '```'
+              echo "# Bash errors ($BASH_COUNT):"
+              head -20 /tmp/bash_errors.txt
+              echo '```'
+            fi
+
+            echo "ENDOFDETAILS"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Parsed: pytest=$PYTEST_COUNT ps=$PS_COUNT bash=$BASH_COUNT total=$TOTAL"
+
+      # ── 2. Dedup guard ───────────────────────────────────────────────
+      - name: "Check for existing auto-heal issue"
+        id: dedup
+        if: steps.logs.outputs.total_failures != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          OPEN=$(gh issue list \
+            --repo "${{ github.repository }}" \
+            --label "auto-heal" \
+            --state open \
+            --json number \
+            --jq 'length')
+          echo "Open auto-heal issues: $OPEN"
+          echo "open_count=$OPEN" >> "$GITHUB_OUTPUT"
+
+      # ── 3. Create healing issue ──────────────────────────────────────
+      - name: "Create fix issue"
+        id: create
+        if: >-
+          steps.logs.outputs.total_failures != '0' &&
+          steps.dedup.outputs.open_count == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RUN_ID="${{ steps.logs.outputs.run_id }}"
+          PYTEST_COUNT="${{ steps.logs.outputs.pytest_count }}"
+          PYTEST_SUMMARY="${{ steps.logs.outputs.pytest_summary }}"
+          PS_COUNT="${{ steps.logs.outputs.ps_count }}"
+          BASH_COUNT="${{ steps.logs.outputs.bash_count }}"
+          TOTAL="${{ steps.logs.outputs.total_failures }}"
+          FAILURE_DETAILS="${{ steps.logs.outputs.failure_details }}"
+
+          # Ensure labels exist
+          gh label create "auto-heal" \
+            --repo "${{ github.repository }}" \
+            --description "Auto-generated test failure fix" \
+            --color "D93F0B" \
+            2>/dev/null || true
+
+          TITLE="[AUTO-HEAL] Fix $TOTAL test failure(s) from CI run #${RUN_ID}"
+
+          # Build issue body
+          BODY="## Task: Fix test failures detected in CI
+
+          ### Context
+
+          The CI pipeline on \`main\` has **${TOTAL} failure(s)** (${PYTEST_SUMMARY:-details below}).
+          These must be fixed to keep the project healthy.
+
+          **CI Run:** https://github.com/${{ github.repository }}/actions/runs/${RUN_ID}
+
+          | Framework | Failures |
+          |-----------|----------|
+          | pytest | ${PYTEST_COUNT} |
+          | PowerShell | ${PS_COUNT} |
+          | Bash/bats | ${BASH_COUNT} |
+
+          ### Failure Details
+
+          ${FAILURE_DETAILS}
+
+          ### How to Fix
+
+          1. **Reproduce locally** — run the failing tests:
+             \`\`\`bash
+             python -m pytest --tb=short -q 2>&1 | tail -60
+             \`\`\`
+          2. **Common root causes** for generated scripts:
+             - **Fixture mismatch**: Test expects keys that don't exist in \`tests/fixtures/*.json\` — update the fixture
+             - **URL pattern wrong**: Mock URL doesn't match what the script builds — check \`responses.add()\` URL vs script URL
+             - **Import errors**: Missing \`__init__.py\` or wrong relative import — check the domain's package structure
+             - **Unescaped characters**: Apostrophes or quotes in YAML synopsis/description — fix the YAML in \`_generator/definitions/\` and regenerate
+             - **PowerShell duplicate params**: Already fixed in template — regenerate with \`python -m _generator.generate -d <yaml>\`
+          3. **Fix the root cause** (template, YAML definition, or fixture) — not just the symptom
+          4. **Regenerate if needed**: \`python -m _generator.generate -d _generator/definitions/<name>.yaml\`
+          5. **Verify locally** before committing:
+             \`\`\`bash
+             python -m pytest -q --tb=line 2>&1 | tail -10
+             \`\`\`
+
+          ### Acceptance Criteria
+
+          - [ ] \`python -m pytest -q\` exits with 0 failures
+          - [ ] No tests were deleted or skipped to hide failures
+          - [ ] Any template/YAML fixes are applied so future regeneration is clean
+
+          ### Reference
+          See \`.github/copilot-instructions.md\` for project conventions."
+
+          # Dedent the body (heredoc indentation artifact)
+          BODY=$(echo "$BODY" | sed 's/^          //')
+
+          ISSUE_URL=$(gh issue create \
+            --repo "${{ github.repository }}" \
+            --title "$TITLE" \
+            --body "$BODY" \
+            --label "auto-heal" \
+            --label "bug")
+
+          echo "✅ Created: $ISSUE_URL"
+          ISSUE_NUM=$(echo "$ISSUE_URL" | grep -oP '\d+$')
+          echo "issue_number=$ISSUE_NUM" >> "$GITHUB_OUTPUT"
+          echo "issue_url=$ISSUE_URL" >> "$GITHUB_OUTPUT"
+
+      # ── 4. Assign copilot ────────────────────────────────────────────
+      - name: "Assign Copilot to fix issue"
+        if: steps.create.outputs.issue_number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NUM="${{ steps.create.outputs.issue_number }}"
+          echo "Assigning copilot to issue #$ISSUE_NUM..."
+
+          HTTP_CODE=$(curl -s -o /tmp/assign_resp.json -w "%{http_code}" \
+            -X POST \
+            -H "Authorization: token $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUM/assignees" \
+            -d '{"assignees":["copilot"]}')
+
+          if [[ "$HTTP_CODE" -lt 300 ]]; then
+            echo "✅ Assigned copilot to issue #$ISSUE_NUM"
+          else
+            echo "⚠️  Assignment returned HTTP $HTTP_CODE"
+            cat /tmp/assign_resp.json 2>/dev/null | head -5
+            echo ""
+            echo "Issue was created successfully — assign copilot manually:"
+            echo "  ${{ steps.create.outputs.issue_url }}"
+          fi
+
+      # ── 5. Summary ──────────────────────────────────────────────────
+      - name: "Summary"
+        if: always()
+        run: |
+          echo "### Auto-Heal Results" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          TOTAL="${{ steps.logs.outputs.total_failures }}"
+          if [[ "$TOTAL" == "0" ]]; then
+            echo "No test failures detected (workflow may have failed for other reasons)." >> "$GITHUB_STEP_SUMMARY"
+          elif [[ "${{ steps.dedup.outputs.open_count }}" != "0" ]]; then
+            echo "⏸️ **Skipped** — an auto-heal issue is already open." >> "$GITHUB_STEP_SUMMARY"
+          elif [[ -n "${{ steps.create.outputs.issue_url }}" ]]; then
+            echo "🩹 **Created fix issue:** ${{ steps.create.outputs.issue_url }}" >> "$GITHUB_STEP_SUMMARY"
+            echo "**Failures:** $TOTAL (pytest: ${{ steps.logs.outputs.pytest_count }}, PS: ${{ steps.logs.outputs.ps_count }}, bash: ${{ steps.logs.outputs.bash_count }})" >> "$GITHUB_STEP_SUMMARY"
+          fi

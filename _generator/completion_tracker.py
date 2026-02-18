@@ -527,6 +527,35 @@ CHECKS = [
 
 def run_tracker(verbose: bool = False) -> Dict[str, Any]:
     """Run all checks in priority order and return the first task found."""
+
+    # ── Pre-check: block new work if auto-heal issues are open ────────
+    if verbose:
+        print("  Checking for open auto-heal issues...", end=" ", flush=True)
+    try:
+        r = subprocess.run(
+            ["gh", "issue", "list", "--label", "auto-heal", "--state", "open",
+             "--json", "number,title", "--jq", "length"],
+            capture_output=True, text=True, timeout=15,
+        )
+        if r.returncode == 0 and r.stdout.strip().isdigit():
+            open_heal = int(r.stdout.strip())
+            if open_heal > 0:
+                if verbose:
+                    print(f"BLOCKED ({open_heal} open)")
+                return {
+                    "status": "blocked",
+                    "reason": (
+                        f"{open_heal} auto-heal issue(s) still open — "
+                        "waiting for test fixes before creating new work"
+                    ),
+                }
+            if verbose:
+                print("✓ none open")
+    except (subprocess.TimeoutExpired, FileNotFoundError):
+        # gh CLI not available (local dev) — skip this guard
+        if verbose:
+            print("⊘ skipped (gh CLI not available)")
+
     completed = []
     for name, check_fn in CHECKS:
         if verbose:
