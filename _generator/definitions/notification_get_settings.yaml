@@ -10,7 +10,7 @@ api_version: '7.2'
 docs_url: https://learn.microsoft.com/en-us/rest/api/azure/devops/notification/settings/get?view=azure-devops-rest-7.2
 synopsis: Get for Settings
 project_scoped: false
-base_host: '{service}dev.azure.com'
+base_host: 'dev.azure.com'
 version_guard_keys:
 - defaultGroupDeliveryPreference
 output_mode: message

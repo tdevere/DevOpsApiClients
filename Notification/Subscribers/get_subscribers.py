@@ -42,7 +42,7 @@ logger.info("Get delivery preferences of a notifications subscriber.")
 # ---------------------------------------------------------------------------
 # API call
 # ---------------------------------------------------------------------------
-url = build_url(ORGANIZATION, f"_apis/notification/subscribers/{SUBSCRIBER_ID}", API_VERSION, base_host="{service}dev.azure.com")
+url = build_url(ORGANIZATION, f"_apis/notification/subscribers/{SUBSCRIBER_ID}", API_VERSION, base_host="dev.azure.com")
 logger.info(f"GET {url}")
 
 response = execute_request("GET", url, HEADERS)

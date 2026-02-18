@@ -10,7 +10,7 @@ api_version: '7.2'
 docs_url: https://learn.microsoft.com/en-us/rest/api/azure/devops/notification/diagnostics/update?view=azure-devops-rest-7.2
 synopsis: Update the diagnostics settings for a subscription.
 project_scoped: false
-base_host: '{service}dev.azure.com'
+base_host: 'dev.azure.com'
 params:
 - name: subscription_id
   env_var: SUBSCRIPTION_ID

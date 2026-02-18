@@ -10,7 +10,7 @@ api_version: '7.2'
 docs_url: https://learn.microsoft.com/en-us/rest/api/azure/devops/notification/subscribers/update?view=azure-devops-rest-7.2
 synopsis: Update delivery preferences of a notifications subscriber.
 project_scoped: false
-base_host: '{service}dev.azure.com'
+base_host: 'dev.azure.com'
 params:
 - name: subscriber_id
   env_var: SUBSCRIBER_ID

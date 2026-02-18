@@ -41,7 +41,7 @@ logger.info("List available event types for this service.")
 # ---------------------------------------------------------------------------
 # API call
 # ---------------------------------------------------------------------------
-url = build_url(ORGANIZATION, f"_apis/notification/eventtypes", API_VERSION, base_host="{service}dev.azure.com")
+url = build_url(ORGANIZATION, f"_apis/notification/eventtypes", API_VERSION, base_host="dev.azure.com")
 logger.info(f"GET {url}")
 
 response = execute_request("GET", url, HEADERS)

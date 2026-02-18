@@ -169,10 +169,14 @@ def render_python_test(op: OperationDef) -> str:
     lines.append(f'        pat = "fakepat1234567890"')
     lines.append(f'        expected_url = "{expected_url}"')
     lines.append(f'')
-    lines.append(f'        fixture = json.loads((FIXTURES / "{op.fixture_filename}").read_text())')
-
     method_const = f'responses.{op.http_method}'
-    lines.append(f'        responses.add({method_const}, expected_url, json=fixture, status={op.success_status})')
+    if op.success_status == 204:
+        # HTTP 204 No Content — do NOT attach a body or the responses
+        # library will set Content-Length, causing ChunkedEncodingError.
+        lines.append(f'        responses.add({method_const}, expected_url, status=204)')
+    else:
+        lines.append(f'        fixture = json.loads((FIXTURES / "{op.fixture_filename}").read_text())')
+        lines.append(f'        responses.add({method_const}, expected_url, json=fixture, status={op.success_status})')
     lines.append(f'')
     lines.append(f'        import requests as req')
     lines.append(f'')

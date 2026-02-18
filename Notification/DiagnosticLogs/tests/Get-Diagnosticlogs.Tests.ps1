@@ -55,7 +55,7 @@ Describe 'Get-Diagnosticlogs.ps1' -Tag 'Offline', 'Notification' {
 
             Should -InvokeVerifiable
             Should -Invoke Invoke-RestMethod -Times 1 -Exactly -ParameterFilter {
-                $Uri -eq "https://{service}dev.azure.com/testorg/_apis/notification/diagnosticlogs/testvalue/entries/testvalue?api-version=7.2" -and
+                $Uri -eq "https://dev.azure.com/testorg/_apis/notification/diagnosticlogs/testvalue/entries/testvalue?api-version=7.2" -and
                 $Method -eq 'Get'
             }
         }

@@ -61,7 +61,7 @@ body = {
 # ---------------------------------------------------------------------------
 # API call
 # ---------------------------------------------------------------------------
-url = build_url(ORGANIZATION, f"_apis/notification/subscriptions/{SUBSCRIPTION_ID}/diagnostics", API_VERSION, base_host="{service}dev.azure.com")
+url = build_url(ORGANIZATION, f"_apis/notification/subscriptions/{SUBSCRIPTION_ID}/diagnostics", API_VERSION, base_host="dev.azure.com")
 logger.info(f"PUT {url}")
 
 response = execute_request("PUT", url, HEADERS, body=body)

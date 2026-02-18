@@ -56,7 +56,7 @@ $body = @{
 } | ConvertTo-Json -Depth 3
 
 #--- Call the API -----------------------------------------------------------
-$uri = New-AdoUrl -Organization $Organization -Path "_apis/notification/subscribers/$SubscriberId" -ApiVersion $ApiVersion -BaseHost "{service}dev.azure.com"
+$uri = New-AdoUrl -Organization $Organization -Path "_apis/notification/subscribers/$SubscriberId" -ApiVersion $ApiVersion -BaseHost "dev.azure.com"
 
 Write-Verbose "PATCH $uri"
 

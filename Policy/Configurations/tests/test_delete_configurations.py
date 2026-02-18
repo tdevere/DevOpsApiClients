@@ -117,8 +117,7 @@ class TestDeleteConfigurationsURLAndAuth:
         pat = "fakepat1234567890"
         expected_url = "https://dev.azure.com/testorg/a1b2c3d4-e5f6-7890-abcd-ef1234567890/_apis/policy/configurations/test-value-configuration_id?api-version=7.2"
 
-        fixture = json.loads((FIXTURES / "delete_configurations_204.json").read_text())
-        responses.add(responses.DELETE, expected_url, json=fixture, status=204)
+        responses.add(responses.DELETE, expected_url, status=204)
 
         import requests as req
 

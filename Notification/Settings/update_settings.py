@@ -56,7 +56,7 @@ body = {
 # ---------------------------------------------------------------------------
 # API call
 # ---------------------------------------------------------------------------
-url = build_url(ORGANIZATION, f"_apis/notification/settings", API_VERSION, base_host="{service}dev.azure.com")
+url = build_url(ORGANIZATION, f"_apis/notification/settings", API_VERSION, base_host="dev.azure.com")
 logger.info(f"PATCH {url}")
 
 response = execute_request("PATCH", url, HEADERS, body=body)

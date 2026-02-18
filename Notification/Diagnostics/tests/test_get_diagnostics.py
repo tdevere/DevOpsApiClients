@@ -104,7 +104,7 @@ class TestGetDiagnosticsURLAndAuth:
 
         org = "testorg"
         pat = "fakepat1234567890"
-        expected_url = "https://{service}dev.azure.com/testorg/_apis/notification/subscriptions/test-value-subscription_id/diagnostics?api-version=7.2"
+        expected_url = "https://dev.azure.com/testorg/_apis/notification/subscriptions/test-value-subscription_id/diagnostics?api-version=7.2"
 
         fixture = json.loads((FIXTURES / "get_diagnostics_200.json").read_text())
         responses.add(responses.GET, expected_url, json=fixture, status=200)
@@ -131,7 +131,7 @@ class TestGetDiagnosticsHTTPErrors:
     @pytest.mark.notification
     @responses.activate
     def test_401_unauthorized(self):
-        url = "https://{service}dev.azure.com/testorg/_apis/notification/subscriptions/test-value-subscription_id/diagnostics?api-version=7.2"
+        url = "https://dev.azure.com/testorg/_apis/notification/subscriptions/test-value-subscription_id/diagnostics?api-version=7.2"
         responses.add(responses.GET, url, json={"message": "unauthorized"}, status=401)
 
         import requests as req
@@ -143,7 +143,7 @@ class TestGetDiagnosticsHTTPErrors:
     @pytest.mark.notification
     @responses.activate
     def test_404_not_found(self):
-        url = "https://{service}dev.azure.com/testorg/_apis/notification/subscriptions/test-value-subscription_id/diagnostics?api-version=7.2"
+        url = "https://dev.azure.com/testorg/_apis/notification/subscriptions/test-value-subscription_id/diagnostics?api-version=7.2"
         responses.add(responses.GET, url, json={"message": "not_found"}, status=404)
 
         import requests as req

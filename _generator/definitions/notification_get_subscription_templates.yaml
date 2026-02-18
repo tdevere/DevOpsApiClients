@@ -10,7 +10,7 @@ api_version: '7.2'
 docs_url: https://learn.microsoft.com/en-us/rest/api/azure/devops/notification/subscriptions/get-subscription-templates?view=azure-devops-rest-7.2
 synopsis: Get available subscription templates.
 project_scoped: false
-base_host: '{service}dev.azure.com'
+base_host: 'dev.azure.com'
 output_mode: table
 fixture_success:
 - description: sample-string

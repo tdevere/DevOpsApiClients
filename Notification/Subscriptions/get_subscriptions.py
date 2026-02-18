@@ -42,7 +42,7 @@ logger.info("Get a notification subscription by its ID.")
 # ---------------------------------------------------------------------------
 # API call
 # ---------------------------------------------------------------------------
-url = build_url(ORGANIZATION, f"_apis/notification/subscriptions/{SUBSCRIPTION_ID}", API_VERSION, base_host="{service}dev.azure.com")
+url = build_url(ORGANIZATION, f"_apis/notification/subscriptions/{SUBSCRIPTION_ID}", API_VERSION, base_host="dev.azure.com")
 logger.info(f"GET {url}")
 
 response = execute_request("GET", url, HEADERS)

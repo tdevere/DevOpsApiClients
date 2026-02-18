@@ -43,7 +43,7 @@ EOF
 # ---------------------------------------------------------------------------
 # API call
 # ---------------------------------------------------------------------------
-URL=$(ado_build_url "$ORG" "_apis/notification/subscriptionquery" "$API_VERSION" "" "{service}dev.azure.com")
+URL=$(ado_build_url "$ORG" "_apis/notification/subscriptionquery" "$API_VERSION" "" "dev.azure.com")
 
 RESPONSE=$(curl --silent --fail --show-error \
     -X POST \

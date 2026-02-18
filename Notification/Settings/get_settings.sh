@@ -32,7 +32,7 @@ AUTH=$(ado_build_auth "$PAT")
 # ---------------------------------------------------------------------------
 # API call
 # ---------------------------------------------------------------------------
-URL=$(ado_build_url "$ORG" "_apis/notification/settings" "$API_VERSION" "" "{service}dev.azure.com")
+URL=$(ado_build_url "$ORG" "_apis/notification/settings" "$API_VERSION" "" "dev.azure.com")
 
 RESPONSE=$(curl --silent --fail --show-error \
     -X GET \

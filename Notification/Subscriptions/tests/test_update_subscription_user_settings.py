@@ -115,7 +115,7 @@ class TestUpdateSubscriptionUserSettingsURLAndAuth:
 
         org = "testorg"
         pat = "fakepat1234567890"
-        expected_url = "https://{service}dev.azure.com/testorg/_apis/notification/Subscriptions/test-value-subscription_id/usersettings/test-value-user_id?api-version=7.2"
+        expected_url = "https://dev.azure.com/testorg/_apis/notification/Subscriptions/test-value-subscription_id/usersettings/test-value-user_id?api-version=7.2"
 
         fixture = json.loads((FIXTURES / "update_subscription_user_settings_200.json").read_text())
         responses.add(responses.PUT, expected_url, json=fixture, status=200)
@@ -142,7 +142,7 @@ class TestUpdateSubscriptionUserSettingsHTTPErrors:
     @pytest.mark.notification
     @responses.activate
     def test_401_unauthorized(self):
-        url = "https://{service}dev.azure.com/testorg/_apis/notification/Subscriptions/test-value-subscription_id/usersettings/test-value-user_id?api-version=7.2"
+        url = "https://dev.azure.com/testorg/_apis/notification/Subscriptions/test-value-subscription_id/usersettings/test-value-user_id?api-version=7.2"
         responses.add(responses.PUT, url, json={"message": "unauthorized"}, status=401)
 
         import requests as req
@@ -154,7 +154,7 @@ class TestUpdateSubscriptionUserSettingsHTTPErrors:
     @pytest.mark.notification
     @responses.activate
     def test_404_not_found(self):
-        url = "https://{service}dev.azure.com/testorg/_apis/notification/Subscriptions/test-value-subscription_id/usersettings/test-value-user_id?api-version=7.2"
+        url = "https://dev.azure.com/testorg/_apis/notification/Subscriptions/test-value-subscription_id/usersettings/test-value-user_id?api-version=7.2"
         responses.add(responses.PUT, url, json={"message": "not_found"}, status=404)
 
         import requests as req

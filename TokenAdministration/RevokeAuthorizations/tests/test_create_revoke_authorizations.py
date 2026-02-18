@@ -106,8 +106,7 @@ class TestCreateRevokeAuthorizationsURLAndAuth:
         pat = "fakepat1234567890"
         expected_url = "https://dev.azure.com/testorg/_apis/tokenadministration/tokenrevocations?api-version=5.2"
 
-        fixture = json.loads((FIXTURES / "create_revoke_authorizations_204.json").read_text())
-        responses.add(responses.POST, expected_url, json=fixture, status=204)
+        responses.add(responses.POST, expected_url, status=204)
 
         import requests as req
 
