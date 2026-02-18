@@ -1,0 +1,68 @@
+{
+  "author": {
+    "directoryAlias": "sample-string",
+    "id": "sample-string",
+    "imageUrl": "sample-string",
+    "inactive": true,
+    "isAadIdentity": true,
+    "isContainer": true,
+    "isDeletedInOrigin": true,
+    "profileUrl": "sample-string"
+  },
+  "changeList": [
+    {
+      "changeTrackingId": 1
+    }
+  ],
+  "commits": [
+    {
+      "author": {
+        "date": {},
+        "email": {},
+        "imageUrl": {},
+        "name": {}
+      },
+      "changeCounts": {},
+      "changes": [
+        {}
+      ],
+      "comment": "sample-string",
+      "commentTruncated": true,
+      "commitId": "sample-string",
+      "committer": {
+        "date": {},
+        "email": {},
+        "imageUrl": {},
+        "name": {}
+      }
+    }
+  ],
+  "commonRefCommit": {
+    "author": {
+      "date": "2026-01-15T10:30:00Z",
+      "email": "sample-string",
+      "imageUrl": "sample-string",
+      "name": "sample-string"
+    },
+    "changeCounts": {},
+    "changes": [
+      {
+        "changeId": {},
+        "newContentTemplate": {},
+        "originalPath": {}
+      }
+    ],
+    "comment": "sample-string",
+    "commentTruncated": true,
+    "commitId": "sample-string",
+    "committer": {
+      "date": "2026-01-15T10:30:00Z",
+      "email": "sample-string",
+      "imageUrl": "sample-string",
+      "name": "sample-string"
+    }
+  },
+  "createdDate": "2026-01-15T10:30:00Z",
+  "description": "sample-string",
+  "hasMoreCommits": true
+}

@@ -1,0 +1,52 @@
+{
+  "id": 1,
+  "name": "CI-Pipeline",
+  "url": "https://dev.azure.com/testorg/ProjectAlpha/_apis/build/definitions/1",
+  "path": "\\",
+  "type": "build",
+  "queueStatus": "enabled",
+  "revision": 5,
+  "createdDate": "2025-06-01T10:00:00Z",
+  "project": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
+    "name": "ProjectAlpha",
+    "state": "wellFormed"
+  },
+  "authoredBy": {
+    "displayName": "Alice Developer",
+    "uniqueName": "alice@contoso.com"
+  },
+  "process": {
+    "type": 1
+  },
+  "repository": {
+    "id": "r1a2b3c4-d5e6-7890-abcd-ef1234567890",
+    "type": "TfsGit",
+    "name": "ContosoRepo",
+    "url": "https://dev.azure.com/testorg/ProjectAlpha/_git/ContosoRepo",
+    "defaultBranch": "refs/heads/main",
+    "clean": null,
+    "checkoutSubmodules": false
+  },
+  "queue": {
+    "id": 10,
+    "name": "Azure Pipelines",
+    "pool": {
+      "id": 1,
+      "name": "Azure Pipelines"
+    }
+  },
+  "triggers": [],
+  "variables": {},
+  "_links": {
+    "self": {
+      "href": "https://dev.azure.com/testorg/ProjectAlpha/_apis/build/definitions/1"
+    },
+    "web": {
+      "href": "https://dev.azure.com/testorg/ProjectAlpha/_build?definitionId=1"
+    },
+    "editor": {
+      "href": "https://dev.azure.com/testorg/ProjectAlpha/_build?definitionId=1&_a=editor"
+    }
+  }
+}

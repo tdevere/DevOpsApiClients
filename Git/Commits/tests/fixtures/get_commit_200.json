@@ -1,0 +1,23 @@
+{
+  "commitId": "abc123def456789012345678901234567890abcd",
+  "comment": "Fix null reference in parser module",
+  "author": {
+    "name": "Alice Developer",
+    "email": "alice@example.com",
+    "date": "2026-02-17T10:00:00Z"
+  },
+  "committer": {
+    "name": "Alice Developer",
+    "email": "alice@example.com",
+    "date": "2026-02-17T10:00:00Z"
+  },
+  "changeCounts": {
+    "Add": 2,
+    "Edit": 3,
+    "Delete": 0
+  },
+  "url": "https://dev.azure.com/testorg/_apis/git/repositories/r1/commits/abc123def456789012345678901234567890abcd",
+  "parents": [
+    "def456789012345678901234567890abcdef1234"
+  ]
+}

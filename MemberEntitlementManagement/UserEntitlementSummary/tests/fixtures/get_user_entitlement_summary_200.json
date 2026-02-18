@@ -1,0 +1,60 @@
+{
+  "availableAccessLevels": [
+    {
+      "accountLicenseType": {},
+      "assignmentSource": {},
+      "gitHubLicenseType": {},
+      "licenseDisplayName": "sample-string",
+      "licensingSource": {},
+      "msdnLicenseType": {},
+      "status": {},
+      "statusMessage": "sample-string"
+    }
+  ],
+  "defaultAccessLevel": {
+    "accountLicenseType": {},
+    "assignmentSource": {},
+    "gitHubLicenseType": {},
+    "licenseDisplayName": "sample-string",
+    "licensingSource": {},
+    "msdnLicenseType": {},
+    "status": {},
+    "statusMessage": "sample-string"
+  },
+  "groupOptions": [
+    {
+      "accessLevel": {
+        "accountLicenseType": {},
+        "assignmentSource": {},
+        "gitHubLicenseType": {},
+        "licenseDisplayName": {},
+        "licensingSource": {},
+        "msdnLicenseType": {},
+        "status": {},
+        "statusMessage": {}
+      },
+      "group": {
+        "displayName": {},
+        "groupType": {}
+      }
+    }
+  ],
+  "licenses": [
+    {
+      "accountLicenseType": {},
+      "disabled": 1,
+      "gitHubLicenseType": {},
+      "isPurchasable": true,
+      "licenseName": "sample-string",
+      "msdnExpired": 1,
+      "msdnLicenseType": {},
+      "nextBillingDate": "2026-01-15T10:30:00Z"
+    }
+  ],
+  "projectRefs": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "sample-string"
+    }
+  ]
+}

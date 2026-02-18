@@ -1,0 +1,18 @@
+[
+  {
+    "abstract": true,
+    "color": "sample-string",
+    "custom": true,
+    "description": "sample-string",
+    "fields": [
+      {
+        "behaviorFieldId": {},
+        "id": {},
+        "name": {}
+      }
+    ],
+    "id": "sample-string",
+    "inherits": "sample-string",
+    "name": "sample-string"
+  }
+]

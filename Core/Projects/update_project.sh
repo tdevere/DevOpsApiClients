@@ -17,6 +17,9 @@
 # ============================================================================
 set -euo pipefail
 
+# Source shared helpers
+source "$(dirname "$0")/../../_shared/common.sh"
+
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
@@ -31,9 +34,11 @@ PAT="${AZURE_DEVOPS_PAT:?ERROR: Set the AZURE_DEVOPS_PAT environment variable.}"
 BODY="${1:?ERROR: Pass a JSON body as the first argument, e.g. '{\"description\":\"New description\"}'}"
 
 # ---------------------------------------------------------------------------
-# Auth
+# Auth & logging
 # ---------------------------------------------------------------------------
-AUTH=$(printf ':%s' "$PAT" | base64 -w0)
+AUTH=$(ado_build_auth "$PAT")
+ado_log_init "update_project"
+ado_log_info "Updating project '${PROJECT}' in org '${ORG}'"
 
 # ---------------------------------------------------------------------------
 # Resolve project GUID — PATCH requires a GUID, not a name

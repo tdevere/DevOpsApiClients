@@ -1,0 +1,35 @@
+{
+  "createdBy": {
+    "directoryAlias": "sample-string",
+    "id": "sample-string",
+    "imageUrl": "sample-string",
+    "inactive": true,
+    "isAadIdentity": true,
+    "isContainer": true,
+    "isDeletedInOrigin": true,
+    "profileUrl": "sample-string"
+  },
+  "createdDate": "2026-01-15T10:30:00Z",
+  "createdOnBehalfDate": "2026-01-15T10:30:00Z",
+  "createdOnBehalfOf": {
+    "directoryAlias": "sample-string",
+    "id": "sample-string",
+    "imageUrl": "sample-string",
+    "inactive": true,
+    "isAadIdentity": true,
+    "isContainer": true,
+    "isDeletedInOrigin": true,
+    "profileUrl": "sample-string"
+  },
+  "format": {},
+  "id": 1,
+  "isDeleted": true,
+  "mentions": [
+    {
+      "artifactId": "sample-string",
+      "artifactType": "sample-string",
+      "commentId": 1,
+      "targetId": "sample-string"
+    }
+  ]
+}

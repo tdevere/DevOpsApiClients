@@ -1,0 +1,19 @@
+{
+  "aheadCount": 1,
+  "allChangesIncluded": true,
+  "baseCommit": "sample-string",
+  "behindCount": 1,
+  "changeCounts": {},
+  "changes": [
+    {
+      "changeId": 1,
+      "newContentTemplate": {
+        "name": {},
+        "type": {}
+      },
+      "originalPath": "sample-string"
+    }
+  ],
+  "commonCommit": "sample-string",
+  "targetCommit": "sample-string"
+}

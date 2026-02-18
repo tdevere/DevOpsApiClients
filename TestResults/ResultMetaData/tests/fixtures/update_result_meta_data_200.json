@@ -1,0 +1,14 @@
+{
+  "automatedTestName": "sample-string",
+  "automatedTestStorage": "sample-string",
+  "flakyIdentifiers": [
+    {
+      "branchName": "sample-string",
+      "isFlaky": true
+    }
+  ],
+  "owner": "sample-string",
+  "priority": 1,
+  "testCaseReferenceId": 1,
+  "testCaseTitle": "sample-string"
+}

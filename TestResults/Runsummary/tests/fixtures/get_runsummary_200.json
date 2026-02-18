@@ -1,0 +1,20 @@
+{
+  "run": {
+    "id": "sample-string",
+    "name": "sample-string",
+    "url": "sample-string"
+  },
+  "runStatistics": [
+    {
+      "count": 1,
+      "outcome": "sample-string",
+      "resolutionState": {
+        "id": {},
+        "name": {},
+        "project": {}
+      },
+      "resultMetadata": {},
+      "state": "sample-string"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "message": "Environment not found",
+  "typeKey": "EnvironmentNotFoundException",
+  "errorCode": 0
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "author": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "changesetId": 1,
+    "checkedInBy": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "comment": "sample-string",
+    "commentTruncated": true,
+    "createdDate": "2026-01-15T10:30:00Z",
+    "url": "sample-string"
+  }
+]

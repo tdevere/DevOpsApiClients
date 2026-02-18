@@ -1,0 +1,18 @@
+{
+  "automatedTestName": "sample-string",
+  "branch": "sample-string",
+  "buildDefinitionId": 1,
+  "continuationToken": "sample-string",
+  "groupBy": {},
+  "maxCompleteDate": "2026-01-15T10:30:00Z",
+  "releaseEnvDefinitionId": 1,
+  "resultsForGroup": [
+    {
+      "displayName": "sample-string",
+      "groupByValue": "sample-string",
+      "results": [
+        {}
+      ]
+    }
+  ]
+}

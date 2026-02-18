@@ -1,0 +1,60 @@
+# Operation Definition: WorkItemTracking / Wiql / Query Work Items
+# Single source of truth — generates Python, PowerShell, Bash + tests + fixtures.
+
+domain: WorkItemTracking
+resource: Wiql
+operation: query_work_items
+ps_verb: Invoke
+ps_noun: Wiql
+
+http_method: POST
+url_path: "_apis/wit/wiql"
+api_version: "7.2-preview.2"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/wiql/query-by-wiql?view=azure-devops-rest-7.2"
+
+synopsis: "Execute a WIQL query to search for work items."
+description: "Runs a Work Item Query Language (WIQL) query and returns matching work item IDs and URLs."
+
+project_scoped: true
+
+params:
+  - name: wiql_query
+    env_var: WIQL_QUERY
+    description: "WIQL query string (e.g. SELECT [System.Id] FROM workitems WHERE [System.State] = 'Active')"
+    required: true
+
+body_fields:
+  - json_path: query
+    source: "param:wiql_query"
+    description: "The WIQL query text"
+
+version_guard_keys:
+  - workItems
+  - columns
+
+success_status: 200
+output_mode: json
+
+fixture_success:
+  queryType: "flat"
+  queryResultType: "workItem"
+  asOf: "2026-02-17T12:00:00Z"
+  columns:
+    - referenceName: "System.Id"
+      name: "ID"
+      url: "https://dev.azure.com/testorg/_apis/wit/fields/System.Id"
+    - referenceName: "System.Title"
+      name: "Title"
+      url: "https://dev.azure.com/testorg/_apis/wit/fields/System.Title"
+  workItems:
+    - id: 1
+      url: "https://dev.azure.com/testorg/_apis/wit/workItems/1"
+    - id: 2
+      url: "https://dev.azure.com/testorg/_apis/wit/workItems/2"
+    - id: 3
+      url: "https://dev.azure.com/testorg/_apis/wit/workItems/3"
+
+fixture_error_404:
+  message: "Project not found"
+  typeKey: "ProjectDoesNotExistWithNameException"
+  errorCode: 0

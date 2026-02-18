@@ -1,0 +1,5 @@
+{
+  "message": "Subject Lookup not found",
+  "typeKey": "SubjectLookupNotFoundException",
+  "errorCode": 0
+}

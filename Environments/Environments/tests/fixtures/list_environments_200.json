@@ -1,0 +1,33 @@
+[
+  {
+    "createdBy": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "createdOn": "2026-01-15T10:30:00Z",
+    "description": "sample-string",
+    "id": 1,
+    "lastModifiedBy": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "lastModifiedOn": "2026-01-15T10:30:00Z",
+    "name": "sample-string",
+    "project": {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "sample-string"
+    }
+  }
+]

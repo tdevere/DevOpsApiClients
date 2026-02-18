@@ -1,0 +1,29 @@
+{
+  "id": 42,
+  "name": "CI-Build",
+  "state": "completed",
+  "result": "succeeded",
+  "createdDate": "2026-02-17T10:00:00Z",
+  "finishedDate": "2026-02-17T10:03:22Z",
+  "pipeline": {
+    "id": 1,
+    "name": "CI-Build",
+    "folder": "\\ci",
+    "revision": 3
+  },
+  "resources": {
+    "repositories": {
+      "self": {
+        "refName": "refs/heads/main"
+      }
+    }
+  },
+  "_links": {
+    "self": {
+      "href": "https://dev.azure.com/testorg/testproject/_apis/pipelines/1/runs/42"
+    },
+    "web": {
+      "href": "https://dev.azure.com/testorg/testproject/_build/results?buildId=42"
+    }
+  }
+}

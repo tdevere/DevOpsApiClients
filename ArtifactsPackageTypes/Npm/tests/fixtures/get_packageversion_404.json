@@ -1,0 +1,5 @@
+{
+  "message": "Npm not found",
+  "typeKey": "NpmNotFoundException",
+  "errorCode": 0
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1,
+    "project": {
+      "abbreviation": "sample-string",
+      "defaultTeamImageUrl": "sample-string",
+      "description": "sample-string",
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "lastUpdateTime": "2026-01-15T10:30:00Z",
+      "name": "sample-string",
+      "revision": 1,
+      "state": {}
+    }
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "fields": [
+    "sample-string"
+  ],
+  "results": [
+    {
+      "afnStripId": 1,
+      "area": {
+        "id": {},
+        "name": {},
+        "url": {}
+      },
+      "associatedBugs": [
+        {}
+      ],
+      "automatedTestId": "sample-string",
+      "automatedTestName": "sample-string",
+      "automatedTestStorage": "sample-string",
+      "automatedTestType": "sample-string",
+      "automatedTestTypeId": "sample-string"
+    }
+  ],
+  "resultsFilter": {
+    "automatedTestName": "sample-string",
+    "branch": "sample-string",
+    "executedIn": {},
+    "groupBy": "sample-string",
+    "maxCompleteDate": "2026-01-15T10:30:00Z",
+    "resultsCount": 1,
+    "testCaseId": 1,
+    "testCaseReferenceIds": [
+      1
+    ]
+  }
+}

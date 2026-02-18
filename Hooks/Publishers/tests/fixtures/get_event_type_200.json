@@ -1,0 +1,24 @@
+{
+  "description": "sample-string",
+  "id": "sample-string",
+  "inputDescriptors": [
+    {
+      "dependencyInputIds": [
+        {}
+      ],
+      "description": "sample-string",
+      "groupName": "sample-string",
+      "hasDynamicValueInformation": true,
+      "id": "sample-string",
+      "inputMode": {},
+      "isConfidential": true,
+      "name": "sample-string"
+    }
+  ],
+  "name": "sample-string",
+  "publisherId": "sample-string",
+  "supportedResourceVersions": [
+    "sample-string"
+  ],
+  "url": "sample-string"
+}

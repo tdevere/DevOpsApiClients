@@ -1,0 +1,13 @@
+{
+  "id": 42,
+  "code": 200,
+  "deletedBy": "Alice Developer",
+  "deletedDate": "2026-02-17T12:00:00Z",
+  "name": "Fix login bug",
+  "project": {
+    "id": "p1a2b3c4-d5e6-7890-abcd-ef1234567890",
+    "name": "TestProject"
+  },
+  "type": "Bug",
+  "url": "https://dev.azure.com/testorg/_apis/wit/recyclebin/42"
+}

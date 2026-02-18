@@ -1,0 +1,32 @@
+{
+  "artifactId": "sample-string",
+  "completedDate": "2026-01-15T10:30:00Z",
+  "configuration": {
+    "createdBy": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "createdDate": "2026-01-15T10:30:00Z",
+    "isBlocking": true,
+    "isDeleted": true,
+    "isEnabled": true,
+    "isEnterpriseManaged": true,
+    "settings": {
+      "item": "sample-string",
+      "type": "sample-string"
+    }
+  },
+  "context": {
+    "item": "sample-string",
+    "type": "sample-string"
+  },
+  "evaluationId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "startedDate": "2026-01-15T10:30:00Z",
+  "status": {}
+}

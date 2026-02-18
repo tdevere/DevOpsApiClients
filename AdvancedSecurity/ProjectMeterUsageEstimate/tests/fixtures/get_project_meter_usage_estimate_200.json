@@ -1,0 +1,20 @@
+{
+  "codeSecurityMeterUsageEstimate": {
+    "billedUsers": [
+      {
+        "cuid": {},
+        "userIdentity": {}
+      }
+    ],
+    "uniqueCommitterCount": 1
+  },
+  "secretProtectionMeterUsageEstimate": {
+    "billedUsers": [
+      {
+        "cuid": {},
+        "userIdentity": {}
+      }
+    ],
+    "uniqueCommitterCount": 1
+  }
+}

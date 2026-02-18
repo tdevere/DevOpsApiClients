@@ -1,0 +1,23 @@
+{
+  "build": {
+    "id": "sample-string",
+    "name": "sample-string",
+    "url": "sample-string"
+  },
+  "coverageData": [
+    {
+      "buildFlavor": "sample-string",
+      "buildPlatform": "sample-string",
+      "coverageStats": [
+        {}
+      ]
+    }
+  ],
+  "coverageDetailedSummaryStatus": {},
+  "deltaBuild": {
+    "id": "sample-string",
+    "name": "sample-string",
+    "url": "sample-string"
+  },
+  "status": {}
+}

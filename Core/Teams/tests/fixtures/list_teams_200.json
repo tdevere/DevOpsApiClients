@@ -1,0 +1,21 @@
+{
+  "count": 2,
+  "value": [
+    {
+      "id": "t1a2b3c4-d5e6-7890-abcd-ef1234567890",
+      "name": "ProjectAlpha Team",
+      "description": "Default team for ProjectAlpha",
+      "url": "https://dev.azure.com/testorg/_apis/projects/a1b2c3d4-e5f6-7890-abcd-ef1234567890/teams/t1a2b3c4-d5e6-7890-abcd-ef1234567890",
+      "projectName": "ProjectAlpha",
+      "projectId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    {
+      "id": "t2b3c4d5-e6f7-8901-bcde-f12345678901",
+      "name": "Backend Team",
+      "description": "Backend development team",
+      "url": "https://dev.azure.com/testorg/_apis/projects/a1b2c3d4-e5f6-7890-abcd-ef1234567890/teams/t2b3c4d5-e6f7-8901-bcde-f12345678901",
+      "projectName": "ProjectAlpha",
+      "projectId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    }
+  ]
+}

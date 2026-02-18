@@ -1,0 +1,5 @@
+{
+  "ageLimitInDays": 1,
+  "countLimit": 1,
+  "daysToKeepRecentlyDownloadedPackages": 1
+}

@@ -1,0 +1,19 @@
+[
+  {
+    "actions": [
+      {
+        "bit": {},
+        "displayName": {},
+        "name": {},
+        "namespaceId": {}
+      }
+    ],
+    "dataspaceCategory": "sample-string",
+    "displayName": "sample-string",
+    "elementLength": 1,
+    "extensionType": "sample-string",
+    "isRemotable": true,
+    "name": "sample-string",
+    "namespaceId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  }
+]

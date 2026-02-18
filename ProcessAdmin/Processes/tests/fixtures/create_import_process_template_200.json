@@ -1,0 +1,21 @@
+{
+  "checkExistenceResult": {
+    "doesTemplateExist": true,
+    "existingTemplateName": "sample-string",
+    "existingTemplateTypeId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "requestedTemplateName": "sample-string"
+  },
+  "helpUrl": "sample-string",
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "isNew": true,
+  "promoteJobId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "validationResults": [
+    {
+      "description": "sample-string",
+      "file": "sample-string",
+      "helpLink": "sample-string",
+      "issueType": {},
+      "line": 1
+    }
+  ]
+}

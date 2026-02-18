@@ -1,0 +1,10 @@
+{
+  "agentId": 1,
+  "agentState": {},
+  "computeId": "sample-string",
+  "computeState": {},
+  "desiredState": {},
+  "id": 1,
+  "name": "sample-string",
+  "poolId": 1
+}

@@ -1,0 +1,49 @@
+{
+  "conditions": [
+    {}
+  ],
+  "createdOn": "2026-01-15T10:30:00Z",
+  "definitionEnvironmentId": 1,
+  "deployPhasesSnapshot": [
+    {
+      "name": "sample-string",
+      "phaseType": {},
+      "rank": 1,
+      "refName": "sample-string",
+      "workflowTasks": [
+        {}
+      ]
+    }
+  ],
+  "deploySteps": [
+    {
+      "attempt": 1,
+      "deploymentId": 1,
+      "hasStarted": true,
+      "id": 1,
+      "issues": [
+        {}
+      ],
+      "lastModifiedBy": {
+        "directoryAlias": {},
+        "id": {},
+        "imageUrl": {},
+        "inactive": {},
+        "isAadIdentity": {},
+        "isContainer": {},
+        "isDeletedInOrigin": {},
+        "profileUrl": {}
+      },
+      "lastModifiedOn": "2026-01-15T10:30:00Z",
+      "operationStatus": {}
+    }
+  ],
+  "environmentOptions": {
+    "autoLinkWorkItems": true,
+    "badgeEnabled": true,
+    "publishDeploymentStatus": true,
+    "pullRequestDeploymentEnabled": true
+  },
+  "id": 1,
+  "modifiedOn": "2026-01-15T10:30:00Z"
+}

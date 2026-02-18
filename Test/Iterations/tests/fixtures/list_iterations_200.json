@@ -1,0 +1,30 @@
+[
+  {
+    "actionResults": [
+      {
+        "actionPath": {},
+        "actualResultMessage": {},
+        "iterationId": {},
+        "sharedStepModel": {},
+        "stepIdentifier": {},
+        "url": {}
+      }
+    ],
+    "attachments": [
+      {
+        "actionPath": {},
+        "id": {},
+        "iterationId": {},
+        "name": {},
+        "size": {},
+        "url": {}
+      }
+    ],
+    "comment": "sample-string",
+    "completedDate": "2026-01-15T10:30:00Z",
+    "durationInMs": 1.0,
+    "errorMessage": "sample-string",
+    "id": 1,
+    "outcome": "sample-string"
+  }
+]

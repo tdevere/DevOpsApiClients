@@ -1,0 +1,30 @@
+{
+  "totalCount": 2,
+  "count": 2,
+  "comments": [
+    {
+      "id": 1,
+      "workItemId": 42,
+      "text": "Started investigating this issue.",
+      "createdBy": {
+        "displayName": "Alice Developer",
+        "uniqueName": "alice@example.com"
+      },
+      "createdDate": "2026-02-10T09:00:00Z",
+      "modifiedDate": "2026-02-10T09:00:00Z",
+      "url": "https://dev.azure.com/testorg/testproject/_apis/wit/workItems/42/comments/1"
+    },
+    {
+      "id": 2,
+      "workItemId": 42,
+      "text": "Found root cause \u2014 null reference in parser.",
+      "createdBy": {
+        "displayName": "Alice Developer",
+        "uniqueName": "alice@example.com"
+      },
+      "createdDate": "2026-02-11T14:30:00Z",
+      "modifiedDate": "2026-02-11T14:30:00Z",
+      "url": "https://dev.azure.com/testorg/testproject/_apis/wit/workItems/42/comments/2"
+    }
+  ]
+}

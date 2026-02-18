@@ -1,0 +1,41 @@
+{
+  "asOf": "2026-01-15T10:30:00Z",
+  "columns": [
+    {
+      "name": "sample-string",
+      "referenceName": "sample-string",
+      "url": "sample-string"
+    }
+  ],
+  "queryResultType": {},
+  "queryType": {},
+  "sortColumns": [
+    {
+      "descending": true,
+      "field": {
+        "name": {},
+        "referenceName": {},
+        "url": {}
+      }
+    }
+  ],
+  "workItemRelations": [
+    {
+      "rel": "sample-string",
+      "source": {
+        "id": {},
+        "url": {}
+      },
+      "target": {
+        "id": {},
+        "url": {}
+      }
+    }
+  ],
+  "workItems": [
+    {
+      "id": 1,
+      "url": "sample-string"
+    }
+  ]
+}

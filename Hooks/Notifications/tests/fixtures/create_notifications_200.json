@@ -1,0 +1,36 @@
+{
+  "createdDate": "2026-01-15T10:30:00Z",
+  "details": {
+    "completedDate": "2026-01-15T10:30:00Z",
+    "consumerActionId": "sample-string",
+    "consumerId": "sample-string",
+    "consumerInputs": {},
+    "dequeuedDate": "2026-01-15T10:30:00Z",
+    "errorDetail": "sample-string",
+    "errorMessage": "sample-string",
+    "event": {
+      "createdDate": "2026-01-15T10:30:00Z",
+      "detailedMessage": {
+        "html": {},
+        "markdown": {},
+        "text": {}
+      },
+      "eventType": "sample-string",
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "message": {
+        "html": {},
+        "markdown": {},
+        "text": {}
+      },
+      "publisherId": "sample-string",
+      "resource": {},
+      "resourceContainers": {}
+    }
+  },
+  "eventId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "id": 1,
+  "modifiedDate": "2026-01-15T10:30:00Z",
+  "result": {},
+  "status": {},
+  "subscriberId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+}

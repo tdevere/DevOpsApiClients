@@ -1,0 +1,29 @@
+[
+  {
+    "commitId": "sample-string",
+    "gitObjectType": {},
+    "latestProcessedChange": {
+      "author": {
+        "date": {},
+        "email": {},
+        "imageUrl": {},
+        "name": {}
+      },
+      "changeCounts": {},
+      "changes": [
+        {}
+      ],
+      "comment": "sample-string",
+      "commentTruncated": true,
+      "commitId": "sample-string",
+      "committer": {
+        "date": {},
+        "email": {},
+        "imageUrl": {},
+        "name": {}
+      }
+    },
+    "objectId": "sample-string",
+    "originalObjectId": "sample-string"
+  }
+]

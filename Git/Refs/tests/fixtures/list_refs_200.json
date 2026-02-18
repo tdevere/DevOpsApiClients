@@ -1,0 +1,39 @@
+[
+  {
+    "creator": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "isLocked": true,
+    "isLockedBy": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "name": "sample-string",
+    "objectId": "sample-string",
+    "peeledObjectId": "sample-string",
+    "statuses": [
+      {
+        "context": {},
+        "createdBy": {},
+        "creationDate": {},
+        "description": {},
+        "id": {},
+        "state": {},
+        "targetUrl": {}
+      }
+    ]
+  }
+]

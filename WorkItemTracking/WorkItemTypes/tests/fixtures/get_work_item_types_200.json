@@ -1,0 +1,27 @@
+{
+  "color": "sample-string",
+  "description": "sample-string",
+  "fieldInstances": [
+    {
+      "allowedValues": [
+        {}
+      ],
+      "defaultValue": "sample-string"
+    }
+  ],
+  "fields": [
+    {
+      "allowedValues": [
+        {}
+      ],
+      "defaultValue": "sample-string"
+    }
+  ],
+  "icon": {
+    "id": "sample-string",
+    "url": "sample-string"
+  },
+  "isDisabled": true,
+  "name": "sample-string",
+  "referenceName": "sample-string"
+}

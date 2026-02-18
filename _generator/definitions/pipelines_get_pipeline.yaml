@@ -1,0 +1,53 @@
+# Operation Definition: Pipelines / Pipelines / Get Pipeline
+# Single source of truth — generates Python, PowerShell, Bash + tests + fixtures.
+
+domain: Pipelines
+resource: Pipelines
+operation: get_pipeline
+ps_verb: Get
+ps_noun: Pipeline
+
+http_method: GET
+url_path: "_apis/pipelines/{pipeline_id}"
+api_version: "7.2-preview.1"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/pipelines/pipelines/get?view=azure-devops-rest-7.2"
+
+synopsis: "Get a specific pipeline by ID."
+description: "Returns details of a single pipeline in the specified project."
+
+project_scoped: true
+
+params:
+  - name: pipeline_id
+    env_var: PIPELINE_ID
+    description: "Pipeline ID (integer)"
+    required: true
+
+version_guard_keys:
+  - id
+  - name
+
+success_status: 200
+output_mode: json
+
+fixture_success:
+  id: 1
+  name: "CI-Build"
+  folder: "\\ci"
+  revision: 3
+  configuration:
+    type: "yaml"
+    path: "/azure-pipelines.yml"
+    repository:
+      id: "repo-guid-1234"
+      type: "azureReposGit"
+  _links:
+    self:
+      href: "https://dev.azure.com/testorg/testproject/_apis/pipelines/1?revision=3"
+    web:
+      href: "https://dev.azure.com/testorg/testproject/_build/definition?definitionId=1"
+
+fixture_error_404:
+  message: "Pipeline not found"
+  typeKey: "PipelineNotFoundException"
+  errorCode: 0

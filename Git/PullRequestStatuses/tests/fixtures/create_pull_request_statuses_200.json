@@ -1,0 +1,13 @@
+{
+  "iterationId": 1,
+  "properties": {
+    "count": 1,
+    "item": {},
+    "keys": [
+      "sample-string"
+    ],
+    "values": [
+      "sample-string"
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+# Operation Definition: Core / Teams / List Teams
+# Single source of truth — generates Python, PowerShell, Bash + tests + fixtures.
+
+domain: Core
+resource: Teams
+operation: list_teams
+ps_verb: List
+ps_noun: Teams
+
+http_method: GET
+url_path: "_apis/projects/{project_id}/teams"
+api_version: "7.2-preview.3"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/core/teams/get-teams?view=azure-devops-rest-7.2"
+
+synopsis: "List all teams in an Azure DevOps project."
+description: "Returns all teams within the specified project."
+
+project_scoped: false
+
+params:
+  - name: project_id
+    env_var: PROJECT_ID
+    ps_name: ProjectId
+    description: "Project name or GUID"
+    required: true
+
+version_guard_keys:
+  - count
+  - value
+
+success_status: 200
+output_mode: table
+table_columns:
+  - name
+  - id
+  - description
+
+fixture_success:
+  count: 2
+  value:
+    - id: "t1a2b3c4-d5e6-7890-abcd-ef1234567890"
+      name: "ProjectAlpha Team"
+      description: "Default team for ProjectAlpha"
+      url: "https://dev.azure.com/testorg/_apis/projects/a1b2c3d4-e5f6-7890-abcd-ef1234567890/teams/t1a2b3c4-d5e6-7890-abcd-ef1234567890"
+      projectName: "ProjectAlpha"
+      projectId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    - id: "t2b3c4d5-e6f7-8901-bcde-f12345678901"
+      name: "Backend Team"
+      description: "Backend development team"
+      url: "https://dev.azure.com/testorg/_apis/projects/a1b2c3d4-e5f6-7890-abcd-ef1234567890/teams/t2b3c4d5-e6f7-8901-bcde-f12345678901"
+      projectName: "ProjectAlpha"
+      projectId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+
+fixture_error_404:
+  message: "Project not found"
+  typeKey: "ProjectDoesNotExistWithNameException"
+  errorCode: 0

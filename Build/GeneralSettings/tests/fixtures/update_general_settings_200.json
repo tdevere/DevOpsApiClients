@@ -1,0 +1,10 @@
+{
+  "auditEnforceSettableVar": true,
+  "buildsEnabledForForks": true,
+  "disableClassicBuildPipelineCreation": true,
+  "disableClassicPipelineCreation": true,
+  "disableClassicReleasePipelineCreation": true,
+  "disableImpliedYAMLCiTrigger": true,
+  "enableShellTasksArgsSanitizing": true,
+  "enableShellTasksArgsSanitizingAudit": true
+}

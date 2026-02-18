@@ -1,0 +1,53 @@
+# Operation Definition: WorkItemTracking / Queries / Get Query
+domain: WorkItemTracking
+resource: Queries
+operation: get_query
+ps_verb: Get
+ps_noun: Query
+
+http_method: GET
+url_path: "_apis/wit/queries/{query_id}"
+api_version: "7.2-preview.2"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/queries/get?view=azure-devops-rest-7.2"
+
+synopsis: "Get a saved query by ID or path."
+description: "Returns the definition of a saved query, including its WIQL text and metadata."
+
+project_scoped: true
+
+params:
+  - name: query_id
+    env_var: QUERY_ID
+    description: "Query ID (GUID) or path (e.g. 'Shared Queries/Active Bugs')"
+    required: true
+
+version_guard_keys:
+  - id
+  - name
+
+success_status: 200
+output_mode: message
+output_message: "Query: {name} (path: {path})"
+
+fixture_success:
+  id: "q2a2b3c4-d5e6-7890-abcd-ef1234567890"
+  name: "My Active Bugs"
+  path: "My Queries/My Active Bugs"
+  isFolder: false
+  isPublic: false
+  wiql: "SELECT [System.Id], [System.Title], [System.State] FROM workitems WHERE [System.State] = 'Active' AND [System.WorkItemType] = 'Bug' AND [System.AssignedTo] = @Me ORDER BY [System.Id]"
+  createdBy:
+    displayName: "Alice Developer"
+    uniqueName: "alice@example.com"
+  createdDate: "2026-01-10T09:00:00Z"
+  lastModifiedBy:
+    displayName: "Alice Developer"
+    uniqueName: "alice@example.com"
+  lastModifiedDate: "2026-02-15T11:00:00Z"
+  queryType: "flat"
+  url: "https://dev.azure.com/testorg/testproject/_apis/wit/queries/q2a2b3c4-d5e6-7890-abcd-ef1234567890"
+
+fixture_error_404:
+  message: "Query not found"
+  typeKey: "QueryDoesNotExistException"
+  errorCode: 0

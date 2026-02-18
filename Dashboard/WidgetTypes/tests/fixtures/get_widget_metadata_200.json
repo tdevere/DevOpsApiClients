@@ -1,0 +1,18 @@
+{
+  "uri": "sample-string",
+  "widgetMetadata": {
+    "allowedSizes": [
+      {
+        "columnSpan": {},
+        "rowSpan": {}
+      }
+    ],
+    "analyticsServiceRequired": true,
+    "catalogIconUrl": "sample-string",
+    "catalogInfoUrl": "sample-string",
+    "configurationContributionId": "sample-string",
+    "configurationContributionRelativeId": "sample-string",
+    "configurationRequired": true,
+    "contentUri": "sample-string"
+  }
+}

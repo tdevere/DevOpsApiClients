@@ -1,0 +1,9 @@
+{
+  "continuationToken": "sample-string",
+  "items": [
+    {
+      "user": {}
+    }
+  ],
+  "totalCount": 1
+}

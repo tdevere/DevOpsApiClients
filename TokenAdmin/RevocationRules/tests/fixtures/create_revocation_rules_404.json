@@ -1,0 +1,5 @@
+{
+  "message": "Revocation Rules not found",
+  "typeKey": "RevocationRulesNotFoundException",
+  "errorCode": 0
+}

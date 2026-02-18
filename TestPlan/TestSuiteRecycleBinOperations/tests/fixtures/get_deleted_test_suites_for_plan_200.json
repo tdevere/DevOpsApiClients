@@ -1,0 +1,30 @@
+[
+  {
+    "children": [
+      {
+        "children": {},
+        "hasChildren": {},
+        "id": {},
+        "lastError": {},
+        "lastPopulatedDate": {},
+        "lastUpdatedBy": {},
+        "lastUpdatedDate": {}
+      }
+    ],
+    "hasChildren": true,
+    "id": 1,
+    "lastError": "sample-string",
+    "lastPopulatedDate": "2026-01-15T10:30:00Z",
+    "lastUpdatedBy": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "lastUpdatedDate": "2026-01-15T10:30:00Z"
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "allow": 1,
+  "deny": 1,
+  "descriptor": {
+    "identifier": "sample-string",
+    "identityType": "sample-string"
+  },
+  "extendedInfo": {
+    "effectiveAllow": 1,
+    "effectiveDeny": 1,
+    "inheritedAllow": 1,
+    "inheritedDeny": 1
+  }
+}

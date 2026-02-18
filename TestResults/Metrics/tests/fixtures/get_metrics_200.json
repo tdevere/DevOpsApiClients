@@ -1,0 +1,97 @@
+{
+  "currentContext": {
+    "jobReference": {
+      "attempt": 1,
+      "jobName": "sample-string"
+    },
+    "phaseReference": {
+      "attempt": 1,
+      "phaseName": "sample-string"
+    },
+    "pipelineDefinitionId": 1,
+    "pipelineId": 1,
+    "stageReference": {
+      "attempt": 1,
+      "stageName": "sample-string"
+    }
+  },
+  "resultsAnalysis": {
+    "previousContext": {
+      "jobReference": {
+        "attempt": {},
+        "jobName": {}
+      },
+      "phaseReference": {
+        "attempt": {},
+        "phaseName": {}
+      },
+      "pipelineDefinitionId": 1,
+      "pipelineId": 1,
+      "stageReference": {
+        "attempt": {},
+        "stageName": {}
+      }
+    },
+    "resultsDifference": {
+      "increaseInDuration": "sample-string",
+      "increaseInFailures": 1,
+      "increaseInNonImpactedTests": 1,
+      "increaseInOtherTests": 1,
+      "increaseInPassedTests": 1,
+      "increaseInTotalTests": 1
+    },
+    "testFailuresAnalysis": {
+      "existingFailures": {
+        "count": {},
+        "testResults": {}
+      },
+      "fixedTests": {
+        "count": {},
+        "testResults": {}
+      },
+      "newFailures": {
+        "count": {},
+        "testResults": {}
+      }
+    }
+  },
+  "resultSummary": {
+    "resultSummaryByRunState": {}
+  },
+  "runSummary": {
+    "duration": "sample-string",
+    "noConfigRunsCount": 1,
+    "runSummaryByOutcome": {},
+    "runSummaryByState": {},
+    "totalRunsCount": 1
+  },
+  "summaryAtChild": [
+    {
+      "currentContext": {
+        "jobReference": {},
+        "phaseReference": {},
+        "pipelineDefinitionId": {},
+        "pipelineId": {},
+        "stageReference": {}
+      },
+      "resultsAnalysis": {
+        "previousContext": {},
+        "resultsDifference": {},
+        "testFailuresAnalysis": {}
+      },
+      "resultSummary": {
+        "resultSummaryByRunState": {}
+      },
+      "runSummary": {
+        "duration": {},
+        "noConfigRunsCount": {},
+        "runSummaryByOutcome": {},
+        "runSummaryByState": {},
+        "totalRunsCount": {}
+      },
+      "summaryAtChild": [
+        {}
+      ]
+    }
+  ]
+}

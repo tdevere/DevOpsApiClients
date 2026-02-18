@@ -1,0 +1,13 @@
+{
+  "applicationContainer": {
+    "attributes": {},
+    "containerName": "sample-string",
+    "revision": 1
+  },
+  "coreAttributes": {},
+  "coreRevision": 1,
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "profileState": {},
+  "revision": 1,
+  "timeStamp": "2026-01-15T10:30:00Z"
+}

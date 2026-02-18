@@ -1,0 +1,164 @@
+{
+  "assignedAgentCloudRequest": {
+    "agent": {
+      "accessPoint": "sample-string",
+      "enabled": true,
+      "id": 1,
+      "name": "sample-string",
+      "osDescription": "sample-string",
+      "provisioningState": "sample-string",
+      "status": {}
+    },
+    "agentCloudId": 1,
+    "agentConnectedTime": "2026-01-15T10:30:00Z",
+    "agentData": {
+      "item": {
+        "first": {},
+        "hasValues": {},
+        "item": {},
+        "last": {},
+        "next": {},
+        "parent": {},
+        "path": {},
+        "previous": {}
+      },
+      "type": "sample-string"
+    },
+    "agentSpecification": {
+      "item": {
+        "first": {},
+        "hasValues": {},
+        "item": {},
+        "last": {},
+        "next": {},
+        "parent": {},
+        "path": {},
+        "previous": {}
+      },
+      "type": "sample-string"
+    },
+    "pool": {
+      "id": 1,
+      "isHosted": true,
+      "isLegacy": true,
+      "name": "sample-string",
+      "options": {},
+      "poolType": {},
+      "scope": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "size": 1
+    },
+    "poolProvidersTags": {},
+    "provisionedTime": "2026-01-15T10:30:00Z"
+  },
+  "assignedRequest": {
+    "agentSpecification": {
+      "item": {
+        "first": {},
+        "hasValues": {},
+        "item": {},
+        "last": {},
+        "next": {},
+        "parent": {},
+        "path": {},
+        "previous": {}
+      },
+      "type": "sample-string"
+    },
+    "data": {},
+    "definition": {
+      "id": 1,
+      "name": "sample-string"
+    },
+    "demands": [
+      {
+        "name": {},
+        "value": {}
+      }
+    ],
+    "hostId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "jobId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "jobName": "sample-string",
+    "lockedUntil": "2026-01-15T10:30:00Z"
+  },
+  "authorization": {
+    "authorizationUrl": "sample-string",
+    "clientId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "publicKey": {
+      "exponent": [
+        {}
+      ],
+      "modulus": [
+        {}
+      ]
+    }
+  },
+  "createdOn": "2026-01-15T10:30:00Z",
+  "lastCompletedRequest": {
+    "agentSpecification": {
+      "item": {
+        "first": {},
+        "hasValues": {},
+        "item": {},
+        "last": {},
+        "next": {},
+        "parent": {},
+        "path": {},
+        "previous": {}
+      },
+      "type": "sample-string"
+    },
+    "data": {},
+    "definition": {
+      "id": 1,
+      "name": "sample-string"
+    },
+    "demands": [
+      {
+        "name": {},
+        "value": {}
+      }
+    ],
+    "hostId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "jobId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "jobName": "sample-string",
+    "lockedUntil": "2026-01-15T10:30:00Z"
+  },
+  "maxParallelism": 1,
+  "pendingUpdate": {
+    "currentState": "sample-string",
+    "reason": {
+      "code": {}
+    },
+    "requestedBy": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "requestTime": "2026-01-15T10:30:00Z",
+    "sourceVersion": {
+      "major": 1,
+      "minor": 1,
+      "patch": 1
+    },
+    "targetVersion": {
+      "major": 1,
+      "minor": 1,
+      "patch": 1
+    }
+  },
+  "properties": {
+    "count": 1,
+    "item": {},
+    "keys": [
+      "sample-string"
+    ],
+    "values": [
+      "sample-string"
+    ]
+  }
+}

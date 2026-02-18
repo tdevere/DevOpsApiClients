@@ -1,0 +1,27 @@
+{
+  "count": 2,
+  "value": [
+    {
+      "id": 1,
+      "rev": 5,
+      "url": "https://dev.azure.com/testorg/_apis/wit/workItems/1",
+      "fields": {
+        "System.Id": 1,
+        "System.Title": "Setup CI pipeline",
+        "System.State": "Active",
+        "System.WorkItemType": "Task"
+      }
+    },
+    {
+      "id": 2,
+      "rev": 3,
+      "url": "https://dev.azure.com/testorg/_apis/wit/workItems/2",
+      "fields": {
+        "System.Id": 2,
+        "System.Title": "Fix login bug",
+        "System.State": "Resolved",
+        "System.WorkItemType": "Bug"
+      }
+    }
+  ]
+}

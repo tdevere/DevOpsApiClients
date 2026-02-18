@@ -1,0 +1,5 @@
+{
+  "message": "Subscription not found",
+  "typeKey": "SubscriptionNotFoundException",
+  "errorCode": 0
+}

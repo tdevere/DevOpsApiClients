@@ -1,0 +1,15 @@
+{
+  "continuationToken": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "value": [
+    {
+      "accessId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "alternateToken": "sample-string",
+      "authorizationId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "claims": {},
+      "clientId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "crossCompanyCorrelatingId": "sample-string",
+      "displayName": "sample-string",
+      "hostAuthorizationId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    }
+  ]
+}

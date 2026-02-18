@@ -1,0 +1,5 @@
+{
+  "message": "Pats not found",
+  "typeKey": "PatsNotFoundException",
+  "errorCode": 0
+}

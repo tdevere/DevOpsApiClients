@@ -1,0 +1,5 @@
+{
+  "message": "Settings not found",
+  "typeKey": "SettingsNotFoundException",
+  "errorCode": 0
+}

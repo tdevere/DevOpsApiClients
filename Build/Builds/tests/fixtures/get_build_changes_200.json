@@ -1,0 +1,21 @@
+[
+  {
+    "author": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "displayUri": "sample-string",
+    "id": "sample-string",
+    "location": "sample-string",
+    "message": "sample-string",
+    "messageTruncated": true,
+    "pusher": "sample-string",
+    "timestamp": "2026-01-15T10:30:00Z"
+  }
+]

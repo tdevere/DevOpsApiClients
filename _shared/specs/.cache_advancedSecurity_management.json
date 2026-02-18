@@ -1,0 +1,1310 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "title": "Management",
+    "description": "",
+    "termsOfService": "https://go.microsoft.com/fwlink/?LinkId=329770",
+    "contact": {
+      "name": "nugetvss",
+      "email": "nugetvss@microsoft.com"
+    },
+    "license": {
+      "name": "MICROSOFT SOFTWARE LICENSE TERMS",
+      "url": "https://go.microsoft.com/fwlink/?LinkId=329770"
+    },
+    "version": "7.2-preview"
+  },
+  "host": "advsec.dev.azure.com",
+  "x-ms-vss-area": "Management",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Meter Usage"
+    },
+    {
+      "name": "Org Enablement"
+    },
+    {
+      "name": "Org Meter Usage Estimate"
+    },
+    {
+      "name": "Project Enablement"
+    },
+    {
+      "name": "Project Meter Usage Estimate"
+    },
+    {
+      "name": "Repo Enablement"
+    },
+    {
+      "name": "Repo Meter Usage Estimate"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/{organization}/_apis/management/enablement": {
+      "get": {
+        "tags": [
+          "Org Enablement"
+        ],
+        "x-ms-docs-override-version": "7.2-preview.3",
+        "x-ms-vss-resource": "orgEnablement",
+        "x-ms-vss-method": "GetOrgEnablementStatus2",
+        "x-ms-preview": true,
+        "description": "Get the current status of Advanced Security for the organization",
+        "operationId": "Org Enablement_Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization",
+            "description": "The name of the Azure DevOps organization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "includeAllProperties",
+            "description": "When true, also determine if pushes are blocked if they contain secrets",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "$ref": "#/parameters/api-Version-preview.3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrgEnablementSettings"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "vso.advsec"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Org Enablement"
+        ],
+        "x-ms-docs-override-version": "7.2-preview.3",
+        "x-ms-vss-resource": "orgEnablement",
+        "x-ms-vss-method": "UpdateOrgEnablementStatus2",
+        "x-ms-preview": true,
+        "description": "Update the status of Advanced Security for the organization",
+        "operationId": "Org Enablement_Update",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization",
+            "description": "The name of the Azure DevOps organization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The new status",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrgEnablementSettings"
+            }
+          },
+          {
+            "$ref": "#/parameters/api-Version-preview.3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "vso.advsec_manage"
+            ]
+          }
+        ]
+      }
+    },
+    "/{organization}/_apis/management/meterusage/default": {
+      "get": {
+        "tags": [
+          "Meter Usage"
+        ],
+        "x-ms-docs-override-version": "7.2-preview.3",
+        "x-ms-vss-resource": "meterUsage",
+        "x-ms-vss-method": "GetMeterUsage2",
+        "x-ms-preview": true,
+        "description": "Get commiters used when calculating billing information.",
+        "operationId": "Meter Usage_Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization",
+            "description": "The name of the Azure DevOps organization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "plan",
+            "description": "The plan to query. Plans supported: CodeSecurity and SecretProtection. This is a mandatory parameter.",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "codeSecurity",
+              "secretProtection",
+              "all"
+            ],
+            "x-ms-enum": {
+              "name": "Plan",
+              "values": [
+                {
+                  "value": "codeSecurity",
+                  "description": "The Code Security plan"
+                },
+                {
+                  "value": "secretProtection",
+                  "description": "The Secret Protection plan"
+                },
+                {
+                  "value": "all",
+                  "description": "Include all plans"
+                }
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "billingDate",
+            "description": "The date to query, or if not provided, today",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "$ref": "#/parameters/api-Version-preview.3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/MeterUsageForPlan"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "vso.advsec"
+            ]
+          }
+        ]
+      }
+    },
+    "/{organization}/_apis/management/meterUsageEstimate/default": {
+      "get": {
+        "tags": [
+          "Org Meter Usage Estimate"
+        ],
+        "x-ms-docs-override-version": "7.2-preview.3",
+        "x-ms-vss-resource": "orgMeterUsageEstimate",
+        "x-ms-vss-method": "GetEstimatedBillablePushersDetailsForOrg2",
+        "x-ms-preview": true,
+        "description": "Estimate the pushers that would be added to the customer's usage if Advanced Security was enabled for this organization.",
+        "operationId": "Org Meter Usage Estimate_Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization",
+            "description": "The name of the Azure DevOps organization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "plan",
+            "description": "The plan to query.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "codeSecurity",
+              "secretProtection",
+              "all"
+            ],
+            "x-ms-enum": {
+              "name": "Plan",
+              "values": [
+                {
+                  "value": "codeSecurity",
+                  "description": "The Code Security plan"
+                },
+                {
+                  "value": "secretProtection",
+                  "description": "The Secret Protection plan"
+                },
+                {
+                  "value": "all",
+                  "description": "Include all plans"
+                }
+              ]
+            }
+          },
+          {
+            "$ref": "#/parameters/api-Version-preview.3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/MeterUsageEstimate"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "vso.advsec"
+            ]
+          }
+        ]
+      }
+    },
+    "/{organization}/{project}/_apis/management/enablement": {
+      "get": {
+        "tags": [
+          "Project Enablement"
+        ],
+        "x-ms-docs-override-version": "7.2-preview.3",
+        "x-ms-vss-resource": "projectEnablement",
+        "x-ms-vss-method": "GetProjectEnablementStatus2",
+        "x-ms-preview": true,
+        "description": "Get the current status of Advanced Security for a project",
+        "operationId": "Project Enablement_Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization",
+            "description": "The name of the Azure DevOps organization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "project",
+            "description": "Project ID or project name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "includeAllProperties",
+            "description": "When true, also determine if pushes are blocked if they contain secrets",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "$ref": "#/parameters/api-Version-preview.3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ProjectEnablementSettings"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "vso.advsec"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Project Enablement"
+        ],
+        "x-ms-docs-override-version": "7.2-preview.3",
+        "x-ms-vss-resource": "projectEnablement",
+        "x-ms-vss-method": "UpdateProjectEnablementStatus2",
+        "x-ms-preview": true,
+        "description": "Update the status of Advanced Security for the project",
+        "operationId": "Project Enablement_Update",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization",
+            "description": "The name of the Azure DevOps organization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The new status",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectEnablementSettings"
+            }
+          },
+          {
+            "in": "path",
+            "name": "project",
+            "description": "Project ID or project name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/api-Version-preview.3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "vso.advsec_manage"
+            ]
+          }
+        ]
+      }
+    },
+    "/{organization}/{project}/_apis/management/meterUsageEstimate/default": {
+      "get": {
+        "tags": [
+          "Project Meter Usage Estimate"
+        ],
+        "x-ms-docs-override-version": "7.2-preview.3",
+        "x-ms-vss-resource": "projectMeterUsageEstimate",
+        "x-ms-vss-method": "GetEstimatedBillablePushersDetailsForProject2",
+        "x-ms-preview": true,
+        "description": "Estimate the pushers that would be added to the customer's usage if Advanced Security was enabled for this project.",
+        "operationId": "Project Meter Usage Estimate_Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization",
+            "description": "The name of the Azure DevOps organization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "project",
+            "description": "Project ID or project name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "plan",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "codeSecurity",
+              "secretProtection",
+              "all"
+            ],
+            "x-ms-enum": {
+              "name": "Plan",
+              "values": [
+                {
+                  "value": "codeSecurity",
+                  "description": "The Code Security plan"
+                },
+                {
+                  "value": "secretProtection",
+                  "description": "The Secret Protection plan"
+                },
+                {
+                  "value": "all",
+                  "description": "Include all plans"
+                }
+              ]
+            }
+          },
+          {
+            "$ref": "#/parameters/api-Version-preview.3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/MeterUsageEstimate"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "vso.advsec"
+            ]
+          }
+        ]
+      }
+    },
+    "/{organization}/{project}/_apis/management/repositories/{repository}/enablement": {
+      "get": {
+        "tags": [
+          "Repo Enablement"
+        ],
+        "x-ms-docs-override-version": "7.2-preview.3",
+        "x-ms-vss-resource": "repoEnablement",
+        "x-ms-vss-method": "GetRepoEnablementStatus2",
+        "x-ms-preview": true,
+        "description": "Determines if Code Security, Secret Protection, and their features are enabled for the repository.",
+        "operationId": "Repo Enablement_Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization",
+            "description": "The name of the Azure DevOps organization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "project",
+            "description": "Project ID or project name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "repository",
+            "description": "The name or ID of the repository",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "includeAllProperties",
+            "description": "When true, will also determine if pushes are blocked when secrets are detected",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "$ref": "#/parameters/api-Version-preview.3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RepoEnablementSettings"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "vso.advsec"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Repo Enablement"
+        ],
+        "x-ms-docs-override-version": "7.2-preview.3",
+        "x-ms-vss-resource": "repoEnablement",
+        "x-ms-vss-method": "UpdateRepoAdvSecEnablementStatus2",
+        "x-ms-preview": true,
+        "description": "Update the enablement status of Code Security and Secret Protection, along with their respective features, for a given repository.",
+        "operationId": "Repo Enablement_Update",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization",
+            "description": "The name of the Azure DevOps organization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "new status",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RepoEnablementSettings"
+            }
+          },
+          {
+            "in": "path",
+            "name": "project",
+            "description": "Project ID or project name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "repository",
+            "description": "Name or ID of the repository",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/api-Version-preview.3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "vso.advsec_manage"
+            ]
+          }
+        ]
+      }
+    },
+    "/{organization}/{project}/_apis/management/repositories/{repository}/meterUsageEstimate/default": {
+      "get": {
+        "tags": [
+          "Repo Meter Usage Estimate"
+        ],
+        "x-ms-docs-override-version": "7.2-preview.3",
+        "x-ms-vss-resource": "repoMeterUsageEstimate",
+        "x-ms-vss-method": "GetEstimatedBillableCommittersDetailsForRepo2",
+        "x-ms-preview": true,
+        "description": "Estimate the pushers that would be added to the customer's usage if Advanced Security was enabled for this repository.",
+        "operationId": "Repo Meter Usage Estimate_Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization",
+            "description": "The name of the Azure DevOps organization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "project",
+            "description": "Project ID or project name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "repository",
+            "description": "The name or ID of the repository",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "plan",
+            "description": "The plan to query.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "codeSecurity",
+              "secretProtection",
+              "all"
+            ],
+            "x-ms-enum": {
+              "name": "Plan",
+              "values": [
+                {
+                  "value": "codeSecurity",
+                  "description": "The Code Security plan"
+                },
+                {
+                  "value": "secretProtection",
+                  "description": "The Secret Protection plan"
+                },
+                {
+                  "value": "all",
+                  "description": "Include all plans"
+                }
+              ]
+            }
+          },
+          {
+            "$ref": "#/parameters/api-Version-preview.3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/MeterUsageEstimate"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "vso.advsec"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AdvSecEnablementFeatures": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "codeQLEnabled": {
+          "description": "CodeQL default setup enablement status set to False when not using default setup and True when using default setup; Null is never explicitly set.",
+          "type": "boolean"
+        },
+        "dependencyScanningInjectionEnabled": {
+          "description": "Dependency Scanning Injection enablement status set to False when disabled and True when enabled; Null is never explicitly set. <br /> If Advanced Security is NOT already enabled, behavior will depend on if Advanced Security is to be enabled/disabled. DependencyScanningInjectionEnabled will not affect anything in this scenario. <br /> If Advanced Security is to be disabled, the value of DependencyScanningInjectionEnabled will have no effect. <br /> Setting Dependency Scanning enablement state is only supported for repo enablement and not org or project enablement at this time.",
+          "type": "boolean"
+        }
+      }
+    },
+    "AdvSecEnablementSettings": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "enableBlockPushesOnCreate": {
+          "description": "Automatically enable blocking of pushes that contain secrets. If EnableOnCreate is not enabled this feature cannot be enabled.",
+          "type": "boolean"
+        },
+        "enableCodeQLOnCreate": {
+          "description": "Automatically enable CodeQL. If EnableOnCreate is not enabled this feature cannot be enabled.",
+          "type": "boolean"
+        },
+        "enableDependabotOnCreate": {
+          "description": "Automatically enable Dependabot. If EnableOnCreate is not enabled this feature cannot be enabled.",
+          "type": "boolean"
+        },
+        "enableDependencyScanningInjectionOnCreate": {
+          "description": "Automatically enable Dependency Scanning Injection. If EnableOnCreate is not enabled this feature cannot be enabled.",
+          "type": "boolean"
+        },
+        "enableOnCreate": {
+          "description": "Automatically enable Advanced Security on newly created repositories.",
+          "type": "boolean"
+        },
+        "reposEnablementStatus": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AdvSecEnablementStatus"
+          }
+        }
+      }
+    },
+    "AdvSecEnablementSettingsUpdate": {
+      "description": "",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AdvSecEnablementStatusUpdate"
+        }
+      ],
+      "properties": {
+        "enableBlockPushesOnCreate": {
+          "description": "Automatically enable blocking of pushes that contain secrets. If EnableOnCreate is not enabled this feature cannot be enabled.",
+          "type": "boolean"
+        },
+        "enableCodeQLOnCreate": {
+          "description": "Automatically enable CodeQL. If EnableOnCreate is not enabled this feature cannot be enabled.",
+          "type": "boolean"
+        },
+        "enableDependabotOnCreate": {
+          "description": "Automatically enable Dependabot. If EnableOnCreate is not enabled this feature cannot be enabled.",
+          "type": "boolean"
+        },
+        "enableDependencyScanningInjectionOnCreate": {
+          "description": "Automatically enable Dependency Scanning Injection. If EnableOnCreate is not enabled this feature cannot be enabled.",
+          "type": "boolean"
+        },
+        "enableOnCreate": {
+          "description": "Automatically enable Advanced Security on newly created repositories.",
+          "type": "boolean"
+        }
+      }
+    },
+    "AdvSecEnablementStatus": {
+      "description": "",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AdvSecEnablementStatusUpdate"
+        }
+      ],
+      "properties": {
+        "advSecEnablementLastChangedDate": {
+          "description": "The last time the status of Advanced Security for this repository was updated",
+          "type": "string",
+          "format": "date-time"
+        },
+        "projectId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "repositoryId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "AdvSecEnablementStatusUpdate": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "advSecEnabled": {
+          "description": "Advanced Security enablement status set to False when disabled and True when enabled; Null is never explicitly set.",
+          "type": "boolean"
+        },
+        "advSecEnablementFeatures": {
+          "description": "Includes additional features that can be enabled alongside Advanced Security.",
+          "$ref": "#/definitions/AdvSecEnablementFeatures"
+        },
+        "blockPushes": {
+          "description": "When true, pushes containing secrets will be blocked. <br />When false, pushes are scanned for secrets and are not blocked. <br />If includeAllProperties in the request is false, this value will be null.",
+          "type": "boolean"
+        }
+      }
+    },
+    "AgentPoolDetails": {
+      "description": "This Data Contract contains the Advanced Security CodeQL One Click Details Panel Information",
+      "type": "object",
+      "properties": {
+        "allAvailableAgentPools": {
+          "description": "List of All Available agent pools in the org",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "currentAgentPool": {
+          "description": "Currently selected pool Advanced Security is Using",
+          "type": "string"
+        }
+      }
+    },
+    "BillableCommitterDetails": {
+      "description": "Billable Committers Details for Advanced Security Services",
+      "type": "object",
+      "properties": {
+        "commitId": {
+          "description": "ID (SHA-1) of the commit.",
+          "type": "string"
+        },
+        "committerEmail": {
+          "description": "Committer email address after parsing.",
+          "type": "string"
+        },
+        "commitTime": {
+          "description": "Time reported by the commit.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "displayName": {
+          "description": "DisplayName of the Pusher.",
+          "type": "string"
+        },
+        "mailNickName": {
+          "description": "MailNickName of the Pusher.",
+          "type": "string"
+        },
+        "projectId": {
+          "description": "Project Id commit was pushed to.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "projectName": {
+          "description": "Project name commit was pushed to.",
+          "type": "string"
+        },
+        "pushedTime": {
+          "description": "Time of the push that contained the commit.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "pusherId": {
+          "description": "Pusher Id for the push.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "pushId": {
+          "description": "Push Id that contained the commit.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "repoId": {
+          "description": "RepositoryId commit was pushed to.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "repoName": {
+          "description": "Repository name commit was pushed to.",
+          "type": "string"
+        },
+        "samAccountName": {
+          "description": "SamAccountName of the Pusher.",
+          "type": "string"
+        },
+        "vsid": {
+          "description": "Visual Studio ID /Team Foundation ID",
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "BilledCommitter": {
+      "description": "Information related to billed committers using Advanced Security services",
+      "type": "object",
+      "properties": {
+        "cuid": {
+          "description": "Cuid of the billed committer. CUID is unique across an Azure Subscription.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "userIdentity": {
+          "description": "Identity Reference object of the billed committer",
+          "$ref": "#/definitions/IdentityRef"
+        }
+      }
+    },
+    "BilledCommittersList": {
+      "description": "A list of billed committers",
+      "type": "object",
+      "properties": {
+        "billedUsers": {
+          "description": "A list of BilledCommitter objects that contain the identityRef of committers.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BilledCommitter"
+          }
+        },
+        "uniqueCommitterCount": {
+          "description": "Count of billed committers in BilledUsers",
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "BulkEnablementSettingsBase": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "codeSecurityFeatures": {
+          "description": "Includes code security features that can be enabled.",
+          "$ref": "#/definitions/CodeSecurityFeatures"
+        },
+        "enablementOnCreateSettings": {
+          "description": "Auto enablement setting for newly created repositories.",
+          "$ref": "#/definitions/EnablementOnCreateSettings"
+        },
+        "reposEnablementStatus": {
+          "description": "A list of enablement statuses for repositories within the specified organization or project.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RepoEnablementSettings"
+          }
+        },
+        "secretProtectionFeatures": {
+          "description": "Includes secret protection features that can be enabled.",
+          "$ref": "#/definitions/SecretProtectionFeatures"
+        }
+      }
+    },
+    "CodeSecurityFeatures": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "codeQLEnabled": {
+          "description": "CodeQL default setup enablement status set to False when not using default setup and True when using default setup; Null is never explicitly set.",
+          "type": "boolean"
+        },
+        "codeSecurityChangedBy": {
+          "description": "The VSID of the last user who modified the enablement status of Code Security.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "codeSecurityEnabled": {
+          "description": "Code Security enablement status set to False when disabled and True when enabled; Null is never explicitly set.",
+          "type": "boolean"
+        },
+        "codeSecurityEnablementLastChangedDate": {
+          "description": "The last time the status of Code Security for this repository was updated",
+          "type": "string",
+          "format": "date-time"
+        },
+        "dependencyScanningInjectionEnabled": {
+          "description": "Dependency Scanning Injection enablement status set to False when disabled and True when enabled; Null is never explicitly set. <br /> If Advanced Security is NOT already enabled, behavior will depend on if Advanced Security is to be enabled/disabled. DependencyScanningInjectionEnabled will not affect anything in this scenario. <br /> If Advanced Security is to be disabled, the value of DependencyScanningInjectionEnabled will have no effect.",
+          "type": "boolean"
+        }
+      }
+    },
+    "EnablementOnCreateSettings": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "enableBlockPushesOnCreate": {
+          "description": "Automatically enable blocking of pushes that contain secrets when Secret Protection is auto-enabled. If EnableSecretProtectionOnCreate is not true this flag is ignored.",
+          "type": "boolean"
+        },
+        "enableCodeQLOnCreate": {
+          "description": "Automatically enable CodeQL when Code Security is auto-enabled. If EnableCodeSecurityOnCreate is not true this flag is ignored.",
+          "type": "boolean"
+        },
+        "enableCodeSecurityOnCreate": {
+          "description": "Automatically enable Code Security on newly created repositories.",
+          "type": "boolean"
+        },
+        "enableDependabotOnCreate": {
+          "description": "Automatically enable Dependabot when Code Security is auto-enabled. If EnableCodeSecurityOnCreate is not true this flag is ignored.",
+          "type": "boolean"
+        },
+        "enableDependencyScanningInjectionOnCreate": {
+          "description": "Automatically enable Dependency Scanning Injection when Code Security is auto-enabled. If EnableCodeSecurityOnCreate is not true this flag is ignored.",
+          "type": "boolean"
+        },
+        "enableSecretProtectionOnCreate": {
+          "description": "Automatically enable Secret Protection on newly created repositories.",
+          "type": "boolean"
+        }
+      }
+    },
+    "GraphSubjectBase": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "_links": {
+          "description": "This field contains zero or more interesting links about the graph subject. These links may be invoked to obtain additional relationships or more detailed information about this graph subject.",
+          "$ref": "#/definitions/ReferenceLinks"
+        },
+        "descriptor": {
+          "description": "The descriptor is the primary way to reference the graph subject while the system is running. This field will uniquely identify the same graph subject across both Accounts and Organizations.",
+          "type": "string"
+        },
+        "displayName": {
+          "description": "This is the non-unique display name of the graph subject. To change this field, you must alter its value in the source provider.",
+          "type": "string"
+        },
+        "url": {
+          "description": "This url is the full route to the source resource of this graph subject.",
+          "type": "string"
+        }
+      }
+    },
+    "IdentityRef": {
+      "description": "",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/GraphSubjectBase"
+        }
+      ],
+      "properties": {
+        "directoryAlias": {
+          "description": "Deprecated - Can be retrieved by querying the Graph user referenced in the \"self\" entry of the IdentityRef \"_links\" dictionary",
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "description": "Deprecated - Available in the \"avatar\" entry of the IdentityRef \"_links\" dictionary",
+          "type": "string"
+        },
+        "inactive": {
+          "description": "Deprecated - Can be retrieved by querying the Graph membership state referenced in the \"membershipState\" entry of the GraphUser \"_links\" dictionary",
+          "type": "boolean"
+        },
+        "isAadIdentity": {
+          "description": "Deprecated - Can be inferred from the subject type of the descriptor (Descriptor.IsAadUserType/Descriptor.IsAadGroupType)",
+          "type": "boolean"
+        },
+        "isContainer": {
+          "description": "Deprecated - Can be inferred from the subject type of the descriptor (Descriptor.IsGroupType)",
+          "type": "boolean"
+        },
+        "isDeletedInOrigin": {
+          "type": "boolean"
+        },
+        "profileUrl": {
+          "description": "Deprecated - not in use in most preexisting implementations of ToIdentityRef",
+          "type": "string"
+        },
+        "uniqueName": {
+          "description": "Deprecated - use Domain+PrincipalName instead",
+          "type": "string"
+        }
+      }
+    },
+    "MeterUsage": {
+      "description": "Information related to billing for Advanced Security services",
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "description": "The Azure DevOps account",
+          "type": "string",
+          "format": "uuid"
+        },
+        "azureSubscriptionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "billedCommitters": {
+          "description": "Deprecated - use BilledCommittersIdentities instead A list of Cuids for the commiters to the repositories that have Advanced Security features enabled",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "billedUsers": {
+          "description": "A list of BilledCommitter objects that contain the identityRef of committers that have AdvSec enabled",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BilledCommitter"
+          }
+        },
+        "billingDate": {
+          "description": "The date this billing information pertains to",
+          "type": "string",
+          "format": "date-time"
+        },
+        "isAdvSecBillable": {
+          "description": "True when a bill is generated for Advanced Security feature usage in this organziation",
+          "type": "boolean"
+        },
+        "isAdvSecEnabled": {
+          "description": "True when Advanced Security features are enabled in this organization",
+          "type": "boolean"
+        },
+        "tenantId": {
+          "description": "The Azure subscription",
+          "type": "string",
+          "format": "uuid"
+        },
+        "uniqueCommitterCount": {
+          "description": "The number of commiters to repositories that have Advanced Security features enabled",
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "MeterUsageEstimate": {
+      "description": "Information related to meter usage estimate for Code Security plan and/or Secret Protection plan",
+      "type": "object",
+      "properties": {
+        "codeSecurityMeterUsageEstimate": {
+          "description": "Meter usage estimate when enabling Code Security plan",
+          "$ref": "#/definitions/BilledCommittersList"
+        },
+        "secretProtectionMeterUsageEstimate": {
+          "description": "Meter usage estimate when enabling Secret Protection plan",
+          "$ref": "#/definitions/BilledCommittersList"
+        }
+      }
+    },
+    "MeterUsageForPlan": {
+      "description": "Information related to meter usage for a Scanning plan",
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "description": "The Azure DevOps account",
+          "type": "string",
+          "format": "uuid"
+        },
+        "azureSubscriptionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "billedUsers": {
+          "description": "The identityRef of committers that contributed to repositories with Scanning plan enabled",
+          "$ref": "#/definitions/BilledCommittersList"
+        },
+        "billingDate": {
+          "description": "The date this billing information pertains to",
+          "type": "string",
+          "format": "date-time"
+        },
+        "isPlanEnabled": {
+          "description": "True when the Scanning plan is enabled in this organization",
+          "type": "boolean"
+        },
+        "tenantId": {
+          "description": "The Azure subscription",
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "OrgEnablementSettings": {
+      "description": "",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/BulkEnablementSettingsBase"
+        }
+      ],
+      "properties": {}
+    },
+    "ProjectEnablementSettings": {
+      "description": "",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/BulkEnablementSettingsBase"
+        }
+      ],
+      "properties": {}
+    },
+    "ReferenceLinks": {
+      "description": "The class to represent a collection of REST reference links.",
+      "type": "object",
+      "properties": {
+        "links": {
+          "description": "The readonly view of the links.  Because Reference links are readonly, we only want to expose them as read only.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "RepoEnablementSettings": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "codeSecurityFeatures": {
+          "description": "Includes Code Security features that can be enabled.",
+          "$ref": "#/definitions/CodeSecurityFeatures"
+        },
+        "projectId": {
+          "description": "The project Id",
+          "type": "string",
+          "format": "uuid"
+        },
+        "repositoryId": {
+          "description": "The repository Id",
+          "type": "string",
+          "format": "uuid"
+        },
+        "secretProtectionFeatures": {
+          "description": "Includes Secret Protection features that can be enabled.",
+          "$ref": "#/definitions/SecretProtectionFeatures"
+        }
+      }
+    },
+    "SecretProtectionFeatures": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "blockPushes": {
+          "description": "When true, pushes containing secrets will be blocked. <br />When false, pushes are scanned for secrets and are not blocked. <br />If includeAllProperties in the request is false, this value will be null.",
+          "type": "boolean"
+        },
+        "secretProtectionChangedBy": {
+          "description": "The VSID of the last user who modified the enablement status of Secret Protection.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "secretProtectionEnabled": {
+          "description": "Secret Protection enablement status set to False when disabled and True when enabled; Null is never explicitly set.",
+          "type": "boolean"
+        },
+        "secretProtectionEnablementLastChangedDate": {
+          "description": "The last time the status of Secret Protection for this repository was updated",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "parameters": {
+    "api-Version-preview.1": {
+      "name": "api-version",
+      "in": "query",
+      "description": "Version of the API to use.  This should be set to '7.2-preview.1' to use this version of the api.",
+      "required": true,
+      "type": "string"
+    },
+    "api-Version-preview.3": {
+      "name": "api-version",
+      "in": "query",
+      "description": "Version of the API to use.  This should be set to '7.2-preview.3' to use this version of the api.",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "securityDefinitions": {
+    "accessToken": {
+      "type": "basic",
+      "description": "Personal access token. Use any value for the user name and the token as the password."
+    },
+    "oauth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "https://app.vssps.visualstudio.com/oauth2/authorize&response_type=Assertion",
+      "tokenUrl": "https://app.vssps.visualstudio.com/oauth2/token?client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer",
+      "scopes": {
+        "vso.advsec": "Grants the ability to read alerts, result instances, analysis result instances",
+        "vso.advsec_manage": "Grants the ability to access sarif upload information, delete analysis, and update alerts"
+      }
+    }
+  },
+  "security": [
+    {
+      "accessToken": []
+    }
+  ],
+  "externalDocs": {
+    "description": "Azure DevOps REST APIs",
+    "url": "https://aka.ms/azure-devops-rest-apis"
+  }
+}

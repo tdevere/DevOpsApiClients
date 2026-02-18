@@ -1,0 +1,19 @@
+{
+  "lastChangedBy": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "lastChangedOn": "2026-01-15T10:30:00Z",
+  "records": [
+    {
+      "attempt": 1,
+      "changeId": 1,
+      "currentOperation": "sample-string",
+      "details": {
+        "changeId": {},
+        "id": {},
+        "url": {}
+      },
+      "errorCount": 1,
+      "finishTime": "2026-01-15T10:30:00Z",
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    }
+  ]
+}

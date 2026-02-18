@@ -1,0 +1,40 @@
+[
+  {
+    "adminSettings": {
+      "blockUserOptOut": true
+    },
+    "channel": {
+      "type": "sample-string"
+    },
+    "description": "sample-string",
+    "diagnostics": {
+      "deliveryResults": {
+        "enabled": {},
+        "endDate": {},
+        "maxTracedEntries": {},
+        "startDate": {},
+        "tracedEntries": {}
+      },
+      "deliveryTracing": {
+        "enabled": {},
+        "endDate": {},
+        "maxTracedEntries": {},
+        "startDate": {},
+        "tracedEntries": {}
+      },
+      "evaluationTracing": {
+        "enabled": {},
+        "endDate": {},
+        "maxTracedEntries": {},
+        "startDate": {},
+        "tracedEntries": {}
+      }
+    },
+    "extendedProperties": {},
+    "filter": {
+      "eventType": "sample-string",
+      "type": "sample-string"
+    },
+    "flags": {}
+  }
+]

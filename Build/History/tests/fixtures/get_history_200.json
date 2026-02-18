@@ -1,0 +1,10 @@
+{
+  "buildRetentionSamples": [
+    {
+      "builds": "sample-string",
+      "definitions": "sample-string",
+      "files": "sample-string",
+      "sampleTime": "2026-01-15T10:30:00Z"
+    }
+  ]
+}

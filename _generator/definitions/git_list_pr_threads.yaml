@@ -1,0 +1,80 @@
+# Operation Definition: Git / PullRequestThreads / List PR Threads
+domain: Git
+resource: PullRequestThreads
+operation: list_pr_threads
+ps_verb: List
+ps_noun: PullRequestThreads
+
+http_method: GET
+url_path: "_apis/git/repositories/{repository_id}/pullrequests/{pull_request_id}/threads"
+api_version: "7.2"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/git/pull-request-threads/list?view=azure-devops-rest-7.2"
+
+synopsis: "List all comment threads on a pull request."
+description: "Returns all discussion threads (comments, code reviews) on a pull request."
+
+project_scoped: true
+
+params:
+  - name: repository_id
+    env_var: REPO_ID
+    description: "Repository name or GUID"
+    required: true
+  - name: pull_request_id
+    env_var: PULL_REQUEST_ID
+    description: "Pull request ID (integer)"
+    required: true
+
+version_guard_keys:
+  - count
+  - value
+
+success_status: 200
+output_mode: table
+table_columns:
+  - id
+  - status
+  - publishedDate
+
+fixture_success:
+  count: 2
+  value:
+    - id: 1
+      publishedDate: "2026-01-15T11:00:00Z"
+      lastUpdatedDate: "2026-01-15T12:00:00Z"
+      status: "active"
+      comments:
+        - id: 1
+          parentCommentId: 0
+          content: "Please add unit tests for this function."
+          publishedDate: "2026-01-15T11:00:00Z"
+          author:
+            displayName: "Bob Engineer"
+            uniqueName: "bob@example.com"
+          commentType: "text"
+      threadContext:
+        filePath: "/src/main.py"
+        rightFileStart:
+          line: 42
+          offset: 1
+        rightFileEnd:
+          line: 42
+          offset: 30
+    - id: 2
+      publishedDate: "2026-01-15T14:00:00Z"
+      lastUpdatedDate: "2026-01-15T14:00:00Z"
+      status: "closed"
+      comments:
+        - id: 1
+          parentCommentId: 0
+          content: "Looks good overall."
+          publishedDate: "2026-01-15T14:00:00Z"
+          author:
+            displayName: "Alice Developer"
+            uniqueName: "alice@example.com"
+          commentType: "text"
+
+fixture_error_404:
+  message: "Pull request not found"
+  typeKey: "GitPullRequestNotFoundException"
+  errorCode: 0

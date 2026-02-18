@@ -1,0 +1,39 @@
+{
+  "id": 42,
+  "buildNumber": "20260217.1",
+  "status": "completed",
+  "result": "succeeded",
+  "definition": {
+    "id": 1,
+    "name": "CI-Build"
+  },
+  "project": {
+    "id": "p1a2b3c4-d5e6-7890-abcd-ef1234567890",
+    "name": "TestProject"
+  },
+  "sourceBranch": "refs/heads/main",
+  "sourceVersion": "abc123def456",
+  "queueTime": "2026-02-17T10:00:00Z",
+  "startTime": "2026-02-17T10:00:05Z",
+  "finishTime": "2026-02-17T10:03:22Z",
+  "requestedBy": {
+    "displayName": "Alice Developer",
+    "uniqueName": "alice@example.com"
+  },
+  "requestedFor": {
+    "displayName": "Alice Developer",
+    "uniqueName": "alice@example.com"
+  },
+  "url": "https://dev.azure.com/testorg/testproject/_apis/build/builds/42",
+  "_links": {
+    "self": {
+      "href": "https://dev.azure.com/testorg/testproject/_apis/build/builds/42"
+    },
+    "web": {
+      "href": "https://dev.azure.com/testorg/testproject/_build/results?buildId=42"
+    },
+    "timeline": {
+      "href": "https://dev.azure.com/testorg/testproject/_apis/build/builds/42/timeline"
+    }
+  }
+}

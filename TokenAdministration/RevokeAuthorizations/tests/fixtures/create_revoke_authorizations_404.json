@@ -1,0 +1,5 @@
+{
+  "message": "Revoke Authorizations not found",
+  "typeKey": "RevokeAuthorizationsNotFoundException",
+  "errorCode": 0
+}

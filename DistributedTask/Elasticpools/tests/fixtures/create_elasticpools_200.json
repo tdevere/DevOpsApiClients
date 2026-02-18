@@ -1,0 +1,64 @@
+{
+  "agentPool": {
+    "agentCloudId": 1,
+    "autoProvision": true,
+    "autoSize": true,
+    "autoUpdate": true,
+    "createdBy": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "createdOn": "2026-01-15T10:30:00Z",
+    "owner": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "properties": {
+      "count": 1,
+      "item": {},
+      "keys": [
+        {}
+      ],
+      "values": [
+        {}
+      ]
+    }
+  },
+  "agentQueue": {
+    "id": 1,
+    "name": "sample-string",
+    "pool": {
+      "id": 1,
+      "isHosted": true,
+      "isLegacy": true,
+      "name": "sample-string",
+      "options": {},
+      "poolType": {},
+      "scope": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "size": 1
+    },
+    "projectId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  },
+  "elasticPool": {
+    "agentInteractiveUI": true,
+    "azureId": "sample-string",
+    "desiredIdle": 1,
+    "desiredSize": 1,
+    "maxCapacity": 1,
+    "maxSavedNodeCount": 1,
+    "offlineSince": "2026-01-15T10:30:00Z",
+    "orchestrationType": {}
+  }
+}

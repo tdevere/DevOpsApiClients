@@ -1,0 +1,18 @@
+[
+  {
+    "displayName": "sample-string",
+    "inputDescriptors": [
+      {
+        "dependencyInputIds": {},
+        "description": {},
+        "groupName": {},
+        "hasDynamicValueInformation": {},
+        "id": {},
+        "inputMode": {},
+        "isConfidential": {},
+        "name": {}
+      }
+    ],
+    "name": "sample-string"
+  }
+]

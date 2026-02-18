@@ -1,0 +1,11 @@
+[
+  {
+    "allowPermissions": 1,
+    "denyPermissions": 1,
+    "description": "sample-string",
+    "displayName": "sample-string",
+    "identifier": "sample-string",
+    "name": "sample-string",
+    "scope": "sample-string"
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "defaultWorkItemType": {
+    "name": "sample-string"
+  },
+  "name": "sample-string",
+  "referenceName": "sample-string",
+  "workItemTypes": [
+    {
+      "name": "sample-string"
+    }
+  ]
+}

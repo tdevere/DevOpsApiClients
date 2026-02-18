@@ -1,0 +1,21 @@
+[
+  {
+    "color": "sample-string",
+    "customization": {},
+    "description": "sample-string",
+    "fields": [
+      {
+        "name": {},
+        "referenceName": {},
+        "url": {}
+      }
+    ],
+    "inherits": {
+      "behaviorRefName": "sample-string",
+      "url": "sample-string"
+    },
+    "name": "sample-string",
+    "rank": 1,
+    "referenceName": "sample-string"
+  }
+]

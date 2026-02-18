@@ -1,0 +1,19 @@
+[
+  {
+    "badgesEnabled": true,
+    "defaultViewId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "deletedDate": "2026-01-15T10:30:00Z",
+    "description": "sample-string",
+    "hideDeletedPackageVersions": true,
+    "permanentDeletedDate": "2026-01-15T10:30:00Z",
+    "permissions": [
+      {
+        "displayName": {},
+        "identityDescriptor": {},
+        "identityId": {},
+        "isInheritedRole": {},
+        "role": {}
+      }
+    ]
+  }
+]

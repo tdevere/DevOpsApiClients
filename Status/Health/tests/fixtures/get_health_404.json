@@ -1,0 +1,5 @@
+{
+  "message": "Health not found",
+  "typeKey": "HealthNotFoundException",
+  "errorCode": 0
+}

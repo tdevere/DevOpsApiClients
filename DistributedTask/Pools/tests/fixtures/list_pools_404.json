@@ -1,0 +1,5 @@
+{
+  "message": "Organization not found",
+  "typeKey": "OrganizationNotFoundException",
+  "errorCode": 0
+}

@@ -1,0 +1,17 @@
+{
+  "id": 42,
+  "rev": 3,
+  "url": "https://dev.azure.com/testorg/_apis/wit/workItems/42",
+  "fields": {
+    "System.Id": 42,
+    "System.Title": "Updated title",
+    "System.State": "Active",
+    "System.WorkItemType": "Task",
+    "System.AreaPath": "TestProject",
+    "System.IterationPath": "TestProject\\Sprint 1",
+    "System.AssignedTo": {
+      "displayName": "Test User",
+      "uniqueName": "testuser@example.com"
+    }
+  }
+}

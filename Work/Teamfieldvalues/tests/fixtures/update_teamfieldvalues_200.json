@@ -1,0 +1,13 @@
+{
+  "defaultValue": "sample-string",
+  "field": {
+    "referenceName": "sample-string",
+    "url": "sample-string"
+  },
+  "values": [
+    {
+      "includeChildren": true,
+      "value": "sample-string"
+    }
+  ]
+}

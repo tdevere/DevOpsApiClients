@@ -1,0 +1,38 @@
+{
+  "allowedMappings": {},
+  "canEdit": true,
+  "columns": [
+    {
+      "columnType": {},
+      "description": "sample-string",
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "isSplit": true,
+      "itemLimit": 1,
+      "name": "sample-string",
+      "stateMappings": {}
+    }
+  ],
+  "fields": {
+    "columnField": {
+      "referenceName": "sample-string",
+      "url": "sample-string"
+    },
+    "doneField": {
+      "referenceName": "sample-string",
+      "url": "sample-string"
+    },
+    "rowField": {
+      "referenceName": "sample-string",
+      "url": "sample-string"
+    }
+  },
+  "isValid": true,
+  "revision": 1,
+  "rows": [
+    {
+      "color": "sample-string",
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "sample-string"
+    }
+  ]
+}

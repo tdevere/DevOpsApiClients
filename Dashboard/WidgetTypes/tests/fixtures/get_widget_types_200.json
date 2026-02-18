@@ -1,0 +1,17 @@
+{
+  "uri": "sample-string",
+  "widgetTypes": [
+    {
+      "allowedSizes": [
+        {}
+      ],
+      "analyticsServiceRequired": true,
+      "catalogIconUrl": "sample-string",
+      "catalogInfoUrl": "sample-string",
+      "configurationContributionId": "sample-string",
+      "configurationContributionRelativeId": "sample-string",
+      "configurationRequired": true,
+      "contentUri": "sample-string"
+    }
+  ]
+}

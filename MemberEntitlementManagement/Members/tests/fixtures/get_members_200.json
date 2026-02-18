@@ -1,0 +1,14 @@
+{
+  "continuationToken": "sample-string",
+  "items": [
+    {
+      "user": {}
+    }
+  ],
+  "members": [
+    {
+      "user": {}
+    }
+  ],
+  "totalCount": 1
+}

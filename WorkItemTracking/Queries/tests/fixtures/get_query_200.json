@@ -1,0 +1,20 @@
+{
+  "id": "q2a2b3c4-d5e6-7890-abcd-ef1234567890",
+  "name": "My Active Bugs",
+  "path": "My Queries/My Active Bugs",
+  "isFolder": false,
+  "isPublic": false,
+  "wiql": "SELECT [System.Id], [System.Title], [System.State] FROM workitems WHERE [System.State] = 'Active' AND [System.WorkItemType] = 'Bug' AND [System.AssignedTo] = @Me ORDER BY [System.Id]",
+  "createdBy": {
+    "displayName": "Alice Developer",
+    "uniqueName": "alice@example.com"
+  },
+  "createdDate": "2026-01-10T09:00:00Z",
+  "lastModifiedBy": {
+    "displayName": "Alice Developer",
+    "uniqueName": "alice@example.com"
+  },
+  "lastModifiedDate": "2026-02-15T11:00:00Z",
+  "queryType": "flat",
+  "url": "https://dev.azure.com/testorg/testproject/_apis/wit/queries/q2a2b3c4-d5e6-7890-abcd-ef1234567890"
+}

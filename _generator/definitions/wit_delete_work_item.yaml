@@ -1,0 +1,47 @@
+# Operation Definition: WorkItemTracking / WorkItems / Delete Work Item
+domain: WorkItemTracking
+resource: WorkItems
+operation: delete_work_item
+ps_verb: Remove
+ps_noun: WorkItem
+
+http_method: DELETE
+url_path: "_apis/wit/workitems/{work_item_id}"
+api_version: "7.2-preview.3"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/delete?view=azure-devops-rest-7.2"
+
+synopsis: "Delete (recycle) a work item."
+description: "Moves a work item to the recycle bin. Use destroy=true query parameter to permanently delete."
+
+project_scoped: false
+
+params:
+  - name: work_item_id
+    env_var: WORK_ITEM_ID
+    description: "Work item ID (integer)"
+    required: true
+
+version_guard_keys:
+  - id
+  - code
+
+success_status: 200
+output_mode: message
+output_message: "Work item {id} deleted (moved to recycle bin)"
+
+fixture_success:
+  id: 42
+  code: 200
+  deletedBy: "Alice Developer"
+  deletedDate: "2026-02-17T12:00:00Z"
+  name: "Fix login bug"
+  project:
+    id: "p1a2b3c4-d5e6-7890-abcd-ef1234567890"
+    name: "TestProject"
+  type: "Bug"
+  url: "https://dev.azure.com/testorg/_apis/wit/recyclebin/42"
+
+fixture_error_404:
+  message: "Work item 99999 does not exist"
+  typeKey: "WorkItemNotFoundException"
+  errorCode: 0

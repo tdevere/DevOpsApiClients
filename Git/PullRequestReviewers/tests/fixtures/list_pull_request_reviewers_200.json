@@ -1,0 +1,21 @@
+[
+  {
+    "hasDeclined": true,
+    "isFlagged": true,
+    "isReapprove": true,
+    "isRequired": true,
+    "reviewerUrl": "sample-string",
+    "vote": 1,
+    "votedFor": [
+      {
+        "hasDeclined": {},
+        "isFlagged": {},
+        "isReapprove": {},
+        "isRequired": {},
+        "reviewerUrl": {},
+        "vote": {},
+        "votedFor": {}
+      }
+    ]
+  }
+]

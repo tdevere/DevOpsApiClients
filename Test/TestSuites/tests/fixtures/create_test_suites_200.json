@@ -1,0 +1,17 @@
+[
+  {
+    "pointAssignments": [
+      {
+        "configuration": {},
+        "tester": {}
+      }
+    ],
+    "testCase": {
+      "id": "sample-string",
+      "name": "sample-string",
+      "type": "sample-string",
+      "url": "sample-string",
+      "webUrl": "sample-string"
+    }
+  }
+]

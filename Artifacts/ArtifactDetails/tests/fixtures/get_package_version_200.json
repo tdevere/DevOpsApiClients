@@ -1,0 +1,40 @@
+{
+  "author": "sample-string",
+  "deletedDate": "2026-01-15T10:30:00Z",
+  "dependencies": [
+    {
+      "group": "sample-string",
+      "packageName": "sample-string",
+      "versionRange": "sample-string"
+    }
+  ],
+  "description": "sample-string",
+  "files": [
+    {
+      "children": [
+        {}
+      ],
+      "name": "sample-string",
+      "protocolMetadata": {
+        "data": {},
+        "schemaVersion": {}
+      }
+    }
+  ],
+  "otherVersions": [
+    {
+      "directUpstreamSourceId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "isCachedVersion": true,
+      "isDeleted": true,
+      "isLatest": true,
+      "isListed": true,
+      "normalizedVersion": "sample-string",
+      "packageDescription": "sample-string"
+    }
+  ],
+  "protocolMetadata": {
+    "data": {},
+    "schemaVersion": 1
+  }
+}

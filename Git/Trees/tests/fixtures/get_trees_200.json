@@ -1,0 +1,15 @@
+{
+  "objectId": "sample-string",
+  "size": 1,
+  "treeEntries": [
+    {
+      "gitObjectType": {},
+      "mode": "sample-string",
+      "objectId": "sample-string",
+      "relativePath": "sample-string",
+      "size": 1,
+      "url": "sample-string"
+    }
+  ],
+  "url": "sample-string"
+}

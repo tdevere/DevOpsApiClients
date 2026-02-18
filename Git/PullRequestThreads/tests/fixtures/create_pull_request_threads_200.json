@@ -1,0 +1,30 @@
+{
+  "pullRequestThreadContext": {
+    "changeTrackingId": 1,
+    "iterationContext": {
+      "firstComparingIteration": 1,
+      "secondComparingIteration": 1
+    },
+    "trackingCriteria": {
+      "firstComparingIteration": 1,
+      "origFilePath": "sample-string",
+      "origLeftFileEnd": {
+        "line": {},
+        "offset": {}
+      },
+      "origLeftFileStart": {
+        "line": {},
+        "offset": {}
+      },
+      "origRightFileEnd": {
+        "line": {},
+        "offset": {}
+      },
+      "origRightFileStart": {
+        "line": {},
+        "offset": {}
+      },
+      "secondComparingIteration": 1
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "detailedStatus": {
+    "allSteps": [
+      "sample-string"
+    ],
+    "currentStep": 1,
+    "errorMessage": "sample-string"
+  },
+  "importRequestId": 1,
+  "parameters": {
+    "deleteServiceEndpointAfterImportIsDone": true,
+    "gitSource": {
+      "overwrite": true,
+      "url": "sample-string"
+    },
+    "serviceEndpointId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "tfvcSource": {
+      "importHistory": true,
+      "importHistoryDurationInDays": 1,
+      "path": "sample-string"
+    }
+  },
+  "repository": {
+    "creationDate": "2026-01-15T10:30:00Z",
+    "defaultBranch": "sample-string",
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "isDisabled": true,
+    "isFork": true,
+    "isInMaintenance": true,
+    "name": "sample-string"
+  },
+  "status": {},
+  "url": "sample-string"
+}

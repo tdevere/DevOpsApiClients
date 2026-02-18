@@ -1,0 +1,11 @@
+{
+  "teams": [
+    {
+      "teamCapacityPerDay": 1.0,
+      "teamId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "teamTotalDaysOff": 1
+    }
+  ],
+  "totalIterationCapacityPerDay": 1.0,
+  "totalIterationDaysOff": 1
+}

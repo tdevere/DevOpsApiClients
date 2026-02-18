@@ -1,0 +1,17 @@
+{
+  "pullRequestId": 101,
+  "title": "Add new feature",
+  "status": "completed",
+  "closedBy": {
+    "displayName": "Alice Developer",
+    "uniqueName": "alice@example.com"
+  },
+  "closedDate": "2026-02-17T15:00:00Z",
+  "sourceRefName": "refs/heads/feature/new-feature",
+  "targetRefName": "refs/heads/main",
+  "mergeStatus": "succeeded",
+  "lastMergeCommit": {
+    "commitId": "abc123def456",
+    "url": "https://dev.azure.com/testorg/_apis/git/repositories/r1/commits/abc123def456"
+  }
+}

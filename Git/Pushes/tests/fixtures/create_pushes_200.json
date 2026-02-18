@@ -1,0 +1,43 @@
+{
+  "commits": [
+    {
+      "author": {
+        "date": {},
+        "email": {},
+        "imageUrl": {},
+        "name": {}
+      },
+      "changeCounts": {},
+      "changes": [
+        {}
+      ],
+      "comment": "sample-string",
+      "commentTruncated": true,
+      "commitId": "sample-string",
+      "committer": {
+        "date": {},
+        "email": {},
+        "imageUrl": {},
+        "name": {}
+      }
+    }
+  ],
+  "refUpdates": [
+    {
+      "isLocked": true,
+      "name": "sample-string",
+      "newObjectId": "sample-string",
+      "oldObjectId": "sample-string",
+      "repositoryId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    }
+  ],
+  "repository": {
+    "creationDate": "2026-01-15T10:30:00Z",
+    "defaultBranch": "sample-string",
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "isDisabled": true,
+    "isFork": true,
+    "isInMaintenance": true,
+    "name": "sample-string"
+  }
+}

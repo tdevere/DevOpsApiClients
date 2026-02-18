@@ -1,0 +1,25 @@
+[
+  {
+    "addPanelFields": [
+      {
+        "name": {},
+        "referenceName": {},
+        "url": {}
+      }
+    ],
+    "color": "sample-string",
+    "columnFields": [
+      {
+        "columnFieldReference": {},
+        "width": {}
+      }
+    ],
+    "defaultWorkItemType": {
+      "name": "sample-string"
+    },
+    "id": "sample-string",
+    "isHidden": true,
+    "name": "sample-string",
+    "rank": 1
+  }
+]

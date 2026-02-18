@@ -1,0 +1,37 @@
+{
+  "advancedFlakyDetectionSettings": {
+    "filingBugThreshold": 1,
+    "flakyTestBugConfig": {
+      "bugMetadata": [
+        {}
+      ],
+      "bugPriority": 1,
+      "bugTemplateId": "sample-string",
+      "teamId": "sample-string"
+    },
+    "markingFlakyThreshold": 1,
+    "weightedScores": [
+      {
+        "lookbackPeriod": {},
+        "parameterType": {},
+        "weight": {}
+      }
+    ]
+  },
+  "flakySettings": {
+    "advancedSystemDetectionMode": {},
+    "flakyDetection": {
+      "flakyDetectionPipelines": {
+        "allowedPipelines": {},
+        "isAllPipelinesAllowed": {}
+      },
+      "flakyDetectionType": {}
+    },
+    "flakyInSummaryReport": true,
+    "isFlakyBugCreated": true,
+    "manualMarkUnmarkFlaky": true
+  },
+  "newTestResultLoggingSettings": {
+    "logNewTests": true
+  }
+}

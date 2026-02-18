@@ -1,0 +1,55 @@
+# Operation Definition: WorkItemTracking / Comments / Add Comment
+domain: WorkItemTracking
+resource: Comments
+operation: add_comment
+ps_verb: Add
+ps_noun: WorkItemComment
+
+http_method: POST
+url_path: "_apis/wit/workitems/{work_item_id}/comments"
+api_version: "7.2-preview.4"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/comments/add?view=azure-devops-rest-7.2"
+
+synopsis: "Add a comment to a work item."
+description: "Posts a new discussion comment on the specified work item."
+
+project_scoped: true
+
+params:
+  - name: work_item_id
+    env_var: WORK_ITEM_ID
+    description: "Work item ID (integer)"
+    required: true
+  - name: comment_text
+    env_var: COMMENT_TEXT
+    description: "Comment text (supports HTML)"
+    required: true
+
+body_fields:
+  - json_path: text
+    source: "param:comment_text"
+    description: "Comment text content"
+
+version_guard_keys:
+  - id
+  - text
+
+success_status: 200
+output_mode: message
+output_message: "Comment {id} added to work item {workItemId}"
+
+fixture_success:
+  id: 3
+  workItemId: 42
+  text: "Deployed the fix to staging."
+  createdBy:
+    displayName: "Alice Developer"
+    uniqueName: "alice@example.com"
+  createdDate: "2026-02-17T12:00:00Z"
+  modifiedDate: "2026-02-17T12:00:00Z"
+  url: "https://dev.azure.com/testorg/testproject/_apis/wit/workItems/42/comments/3"
+
+fixture_error_404:
+  message: "Work item not found"
+  typeKey: "WorkItemNotFoundException"
+  errorCode: 0

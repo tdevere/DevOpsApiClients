@@ -1,0 +1,26 @@
+{
+  "count": 1,
+  "results": [
+    {
+      "collection": {
+        "name": {}
+      },
+      "contentId": "sample-string",
+      "fileName": "sample-string",
+      "matches": {},
+      "path": "sample-string",
+      "project": {
+        "id": {},
+        "name": {}
+      },
+      "repository": {
+        "id": {},
+        "name": {},
+        "type": {}
+      },
+      "versions": [
+        {}
+      ]
+    }
+  ]
+}

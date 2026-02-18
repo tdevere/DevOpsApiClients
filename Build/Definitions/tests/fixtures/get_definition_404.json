@@ -1,0 +1,9 @@
+{
+  "$id": "1",
+  "innerException": null,
+  "message": "Build definition 99999 does not exist.",
+  "typeName": "Microsoft.TeamFoundation.Build.WebApi.DefinitionNotFoundException",
+  "typeKey": "DefinitionNotFoundException",
+  "errorCode": 0,
+  "eventId": 3000
+}

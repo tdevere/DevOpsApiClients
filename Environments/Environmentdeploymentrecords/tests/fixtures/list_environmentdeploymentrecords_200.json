@@ -1,0 +1,18 @@
+[
+  {
+    "definition": {
+      "id": 1,
+      "name": "sample-string"
+    },
+    "environmentId": 1,
+    "finishTime": "2026-01-15T10:30:00Z",
+    "id": 1,
+    "jobAttempt": 1,
+    "jobName": "sample-string",
+    "owner": {
+      "id": 1,
+      "name": "sample-string"
+    },
+    "planId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  }
+]

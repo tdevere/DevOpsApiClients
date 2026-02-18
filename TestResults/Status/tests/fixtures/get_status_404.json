@@ -1,0 +1,5 @@
+{
+  "message": "Status not found",
+  "typeKey": "StatusNotFoundException",
+  "errorCode": 0
+}

@@ -1,0 +1,36 @@
+{
+  "description": "sample-string",
+  "id": "sample-string",
+  "inputDescriptors": [
+    {
+      "dependencyInputIds": [
+        {}
+      ],
+      "description": "sample-string",
+      "groupName": "sample-string",
+      "hasDynamicValueInformation": true,
+      "id": "sample-string",
+      "inputMode": {},
+      "isConfidential": true,
+      "name": "sample-string"
+    }
+  ],
+  "name": "sample-string",
+  "serviceInstanceType": "sample-string",
+  "supportedEvents": [
+    {
+      "description": "sample-string",
+      "id": "sample-string",
+      "inputDescriptors": [
+        {}
+      ],
+      "name": "sample-string",
+      "publisherId": "sample-string",
+      "supportedResourceVersions": [
+        {}
+      ],
+      "url": "sample-string"
+    }
+  ],
+  "url": "sample-string"
+}

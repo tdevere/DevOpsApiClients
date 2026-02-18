@@ -1,0 +1,26 @@
+{
+  "allPipelines": {
+    "authorized": true,
+    "authorizedBy": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "authorizedOn": "2026-01-15T10:30:00Z"
+  },
+  "pipelines": [
+    {
+      "id": 1
+    }
+  ],
+  "resource": {
+    "id": "sample-string",
+    "name": "sample-string",
+    "type": "sample-string"
+  }
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "description": "sample-string",
+    "filter": {
+      "eventType": "sample-string",
+      "type": "sample-string"
+    },
+    "id": "sample-string",
+    "notificationEventInformation": {
+      "category": {
+        "id": {},
+        "name": {}
+      },
+      "color": "sample-string",
+      "customSubscriptionsAllowed": true,
+      "eventPublisher": {
+        "id": {},
+        "subscriptionManagementInfo": {},
+        "url": {}
+      },
+      "fields": {},
+      "hasInitiator": true,
+      "icon": "sample-string",
+      "id": "sample-string"
+    },
+    "type": {}
+  }
+]

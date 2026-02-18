@@ -1,0 +1,19 @@
+{
+  "currentValues": {},
+  "inputValues": [
+    {
+      "defaultValue": "sample-string",
+      "error": {
+        "message": {}
+      },
+      "inputId": "sample-string",
+      "isDisabled": true,
+      "isLimitedToPossibleValues": true,
+      "isReadOnly": true,
+      "possibleValues": [
+        {}
+      ]
+    }
+  ],
+  "resource": {}
+}

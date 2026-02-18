@@ -1,0 +1,31 @@
+{
+  "deploymentJobs": [
+    {
+      "job": {
+        "agentName": {},
+        "finishTime": {},
+        "id": {},
+        "issues": {},
+        "lineCount": {},
+        "logUrl": {},
+        "name": {},
+        "percentComplete": {}
+      },
+      "tasks": [
+        {}
+      ]
+    }
+  ],
+  "id": 1,
+  "ignoredGates": [
+    {
+      "lastModifiedOn": "2026-01-15T10:30:00Z",
+      "name": "sample-string"
+    }
+  ],
+  "lastModifiedOn": "2026-01-15T10:30:00Z",
+  "runPlanId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "stabilizationCompletedOn": "2026-01-15T10:30:00Z",
+  "startedOn": "2026-01-15T10:30:00Z",
+  "status": {}
+}

@@ -1,59 +1,11 @@
-{
-  "value": [
-    {
-      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "name": "ContosoRepo",
-      "url": "https://dev.azure.com/testorg/_apis/git/repositories/a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "project": {
-        "id": "d1e2f3a4-b5c6-7890-1234-567890abcdef",
-        "name": "ProjectAlpha",
-        "state": "wellFormed",
-        "visibility": "private"
-      },
-      "defaultBranch": "refs/heads/main",
-      "size": 10485760,
-      "remoteUrl": "https://dev.azure.com/testorg/ProjectAlpha/_git/ContosoRepo",
-      "sshUrl": "git@ssh.dev.azure.com:v3/testorg/ProjectAlpha/ContosoRepo",
-      "webUrl": "https://dev.azure.com/testorg/ProjectAlpha/_git/ContosoRepo",
-      "isDisabled": false,
-      "isFork": false
-    },
-    {
-      "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
-      "name": "WidgetService",
-      "url": "https://dev.azure.com/testorg/_apis/git/repositories/b2c3d4e5-f6a7-8901-bcde-f12345678901",
-      "project": {
-        "id": "d1e2f3a4-b5c6-7890-1234-567890abcdef",
-        "name": "ProjectAlpha",
-        "state": "wellFormed",
-        "visibility": "private"
-      },
-      "defaultBranch": "refs/heads/main",
-      "size": 5242880,
-      "remoteUrl": "https://dev.azure.com/testorg/ProjectAlpha/_git/WidgetService",
-      "sshUrl": "git@ssh.dev.azure.com:v3/testorg/ProjectAlpha/WidgetService",
-      "webUrl": "https://dev.azure.com/testorg/ProjectAlpha/_git/WidgetService",
-      "isDisabled": false,
-      "isFork": false
-    },
-    {
-      "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
-      "name": "InfraAsCode",
-      "url": "https://dev.azure.com/testorg/_apis/git/repositories/c3d4e5f6-a7b8-9012-cdef-123456789012",
-      "project": {
-        "id": "e2f3a4b5-c6d7-8901-2345-678901abcdef",
-        "name": "ProjectBeta",
-        "state": "wellFormed",
-        "visibility": "private"
-      },
-      "defaultBranch": "refs/heads/develop",
-      "size": 2097152,
-      "remoteUrl": "https://dev.azure.com/testorg/ProjectBeta/_git/InfraAsCode",
-      "sshUrl": "git@ssh.dev.azure.com:v3/testorg/ProjectBeta/InfraAsCode",
-      "webUrl": "https://dev.azure.com/testorg/ProjectBeta/_git/InfraAsCode",
-      "isDisabled": false,
-      "isFork": true
-    }
-  ],
-  "count": 3
-}
+[
+  {
+    "creationDate": "2026-01-15T10:30:00Z",
+    "defaultBranch": "sample-string",
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "isDisabled": true,
+    "isFork": true,
+    "isInMaintenance": true,
+    "name": "sample-string"
+  }
+]

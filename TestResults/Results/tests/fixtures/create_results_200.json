@@ -1,0 +1,22 @@
+[
+  {
+    "afnStripId": 1,
+    "area": {
+      "id": "sample-string",
+      "name": "sample-string",
+      "url": "sample-string"
+    },
+    "associatedBugs": [
+      {
+        "id": {},
+        "name": {},
+        "url": {}
+      }
+    ],
+    "automatedTestId": "sample-string",
+    "automatedTestName": "sample-string",
+    "automatedTestStorage": "sample-string",
+    "automatedTestType": "sample-string",
+    "automatedTestTypeId": "sample-string"
+  }
+]

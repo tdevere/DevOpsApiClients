@@ -1,0 +1,15 @@
+{
+  "badgeEnabled": true,
+  "buildNumberFormat": "sample-string",
+  "comment": "sample-string",
+  "demands": [
+    {
+      "name": "sample-string",
+      "value": "sample-string"
+    }
+  ],
+  "description": "sample-string",
+  "dropLocation": "sample-string",
+  "jobAuthorizationScope": {},
+  "jobCancelTimeoutInMinutes": 1
+}

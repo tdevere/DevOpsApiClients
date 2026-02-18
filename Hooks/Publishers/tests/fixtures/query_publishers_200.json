@@ -1,0 +1,21 @@
+{
+  "publisherIds": [
+    "sample-string"
+  ],
+  "publisherInputs": {},
+  "results": [
+    {
+      "description": "sample-string",
+      "id": "sample-string",
+      "inputDescriptors": [
+        {}
+      ],
+      "name": "sample-string",
+      "serviceInstanceType": "sample-string",
+      "supportedEvents": [
+        {}
+      ],
+      "url": "sample-string"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+# Operation Definition: Pipelines / Runs / Get Run
+domain: Pipelines
+resource: Runs
+operation: get_run
+ps_verb: Get
+ps_noun: PipelineRun
+
+http_method: GET
+url_path: "_apis/pipelines/{pipeline_id}/runs/{run_id}"
+api_version: "7.2-preview.1"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/pipelines/runs/get?view=azure-devops-rest-7.2"
+
+synopsis: "Get details of a specific pipeline run."
+description: "Returns detailed information about a pipeline run by its ID."
+
+project_scoped: true
+
+params:
+  - name: pipeline_id
+    env_var: PIPELINE_ID
+    description: "Pipeline ID (integer)"
+    required: true
+  - name: run_id
+    env_var: RUN_ID
+    description: "Run ID (integer)"
+    required: true
+
+version_guard_keys:
+  - id
+  - state
+
+success_status: 200
+output_mode: message
+output_message: "Run {id}: {state} — result: {result}"
+
+fixture_success:
+  id: 42
+  name: "CI-Build"
+  state: "completed"
+  result: "succeeded"
+  createdDate: "2026-02-17T10:00:00Z"
+  finishedDate: "2026-02-17T10:03:22Z"
+  pipeline:
+    id: 1
+    name: "CI-Build"
+    folder: "\\ci"
+    revision: 3
+  resources:
+    repositories:
+      self:
+        refName: "refs/heads/main"
+  _links:
+    self:
+      href: "https://dev.azure.com/testorg/testproject/_apis/pipelines/1/runs/42"
+    web:
+      href: "https://dev.azure.com/testorg/testproject/_build/results?buildId=42"
+
+fixture_error_404:
+  message: "Run not found"
+  typeKey: "PipelineRunNotFoundException"
+  errorCode: 0

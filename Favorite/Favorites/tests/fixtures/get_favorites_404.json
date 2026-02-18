@@ -1,0 +1,5 @@
+{
+  "message": "Favorites not found",
+  "typeKey": "FavoritesNotFoundException",
+  "errorCode": 0
+}

@@ -1,0 +1,36 @@
+{
+  "changes": [
+    {
+      "mergeSources": [
+        {}
+      ],
+      "pendingVersion": 1
+    }
+  ],
+  "notes": [
+    {
+      "name": "sample-string",
+      "value": "sample-string"
+    }
+  ],
+  "policyOverride": {
+    "comment": "sample-string",
+    "policyFailures": [
+      {
+        "message": {},
+        "policyName": {}
+      }
+    ]
+  },
+  "workItems": [
+    {
+      "assignedTo": "sample-string",
+      "id": 1,
+      "state": "sample-string",
+      "title": "sample-string",
+      "url": "sample-string",
+      "webUrl": "sample-string",
+      "workItemType": "sample-string"
+    }
+  ]
+}

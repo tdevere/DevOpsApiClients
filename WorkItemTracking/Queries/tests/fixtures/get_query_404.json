@@ -1,0 +1,5 @@
+{
+  "message": "Query not found",
+  "typeKey": "QueryDoesNotExistException",
+  "errorCode": 0
+}

@@ -1,0 +1,20 @@
+{
+  "count": 1,
+  "feedChanges": [
+    {
+      "changeType": {},
+      "feed": {
+        "badgesEnabled": {},
+        "defaultViewId": {},
+        "deletedDate": {},
+        "description": {},
+        "hideDeletedPackageVersions": {},
+        "permanentDeletedDate": {},
+        "permissions": {}
+      },
+      "feedContinuationToken": 1,
+      "latestPackageContinuationToken": 1
+    }
+  ],
+  "nextFeedContinuationToken": 1
+}

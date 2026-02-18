@@ -1,0 +1,41 @@
+{
+  "extensions": [
+    {
+      "id": "sample-string"
+    }
+  ],
+  "pages": [
+    {
+      "contribution": {
+        "contributionId": {},
+        "height": {},
+        "inputs": {},
+        "showOnDeletedWorkItem": {}
+      },
+      "id": "sample-string",
+      "inherited": true,
+      "isContribution": true,
+      "label": "sample-string",
+      "locked": true,
+      "order": 1,
+      "overridden": true
+    }
+  ],
+  "systemControls": [
+    {
+      "contribution": {
+        "contributionId": {},
+        "height": {},
+        "inputs": {},
+        "showOnDeletedWorkItem": {}
+      },
+      "controlType": "sample-string",
+      "height": 1,
+      "id": "sample-string",
+      "inherited": true,
+      "isContribution": true,
+      "label": "sample-string",
+      "metadata": "sample-string"
+    }
+  ]
+}

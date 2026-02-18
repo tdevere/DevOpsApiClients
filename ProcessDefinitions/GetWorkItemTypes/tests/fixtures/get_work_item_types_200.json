@@ -1,0 +1,18 @@
+[
+  {
+    "behaviors": [
+      {
+        "behavior": {},
+        "isDefault": {},
+        "url": {}
+      }
+    ],
+    "class": {},
+    "color": "sample-string",
+    "description": "sample-string",
+    "icon": "sample-string",
+    "id": "sample-string",
+    "inherits": "sample-string",
+    "isDisabled": true
+  }
+]

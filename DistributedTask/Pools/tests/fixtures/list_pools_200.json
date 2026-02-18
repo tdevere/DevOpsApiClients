@@ -1,0 +1,32 @@
+{
+  "count": 3,
+  "value": [
+    {
+      "id": 1,
+      "name": "Azure Pipelines",
+      "isHosted": true,
+      "poolType": "automation",
+      "size": 0,
+      "autoProvision": true,
+      "autoSize": true
+    },
+    {
+      "id": 2,
+      "name": "Default",
+      "isHosted": false,
+      "poolType": "automation",
+      "size": 3,
+      "autoProvision": false,
+      "autoSize": false
+    },
+    {
+      "id": 3,
+      "name": "Self-Hosted Linux",
+      "isHosted": false,
+      "poolType": "automation",
+      "size": 5,
+      "autoProvision": false,
+      "autoSize": false
+    }
+  ]
+}

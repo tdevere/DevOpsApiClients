@@ -1,0 +1,40 @@
+{
+  "bugWorkItems": {
+    "name": "sample-string",
+    "referenceName": "sample-string",
+    "workItemTypes": [
+      {
+        "name": {}
+      }
+    ]
+  },
+  "portfolioBacklogs": [
+    {
+      "name": "sample-string",
+      "referenceName": "sample-string",
+      "workItemTypes": [
+        {}
+      ]
+    }
+  ],
+  "requirementBacklog": {
+    "name": "sample-string",
+    "referenceName": "sample-string",
+    "workItemTypes": [
+      {
+        "name": {}
+      }
+    ]
+  },
+  "taskBacklog": {
+    "name": "sample-string",
+    "referenceName": "sample-string",
+    "workItemTypes": [
+      {
+        "name": {}
+      }
+    ]
+  },
+  "typeFields": {},
+  "url": "sample-string"
+}

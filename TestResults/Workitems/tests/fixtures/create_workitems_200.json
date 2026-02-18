@@ -1,0 +1,26 @@
+{
+  "executedIn": {},
+  "tests": [
+    {
+      "container": "sample-string",
+      "name": "sample-string",
+      "testResult": {
+        "afnStripId": {},
+        "area": {},
+        "associatedBugs": {},
+        "automatedTestId": {},
+        "automatedTestName": {},
+        "automatedTestStorage": {},
+        "automatedTestType": {},
+        "automatedTestTypeId": {}
+      }
+    }
+  ],
+  "workItem": {
+    "id": "sample-string",
+    "name": "sample-string",
+    "type": "sample-string",
+    "url": "sample-string",
+    "webUrl": "sample-string"
+  }
+}

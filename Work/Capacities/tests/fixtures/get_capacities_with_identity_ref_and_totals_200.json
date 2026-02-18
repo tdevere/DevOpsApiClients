@@ -1,0 +1,18 @@
+{
+  "teamMembers": [
+    {
+      "teamMember": {
+        "directoryAlias": {},
+        "id": {},
+        "imageUrl": {},
+        "inactive": {},
+        "isAadIdentity": {},
+        "isContainer": {},
+        "isDeletedInOrigin": {},
+        "profileUrl": {}
+      }
+    }
+  ],
+  "totalCapacityPerDay": 1.0,
+  "totalDaysOff": 1
+}

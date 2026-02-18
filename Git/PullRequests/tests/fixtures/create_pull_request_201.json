@@ -1,0 +1,16 @@
+{
+  "pullRequestId": 201,
+  "title": "Add new feature",
+  "status": "active",
+  "createdBy": {
+    "displayName": "Alice Developer",
+    "uniqueName": "alice@example.com"
+  },
+  "sourceRefName": "refs/heads/feature/new-feature",
+  "targetRefName": "refs/heads/main",
+  "repository": {
+    "id": "r1a2b3c4-d5e6-7890-abcd-ef1234567890",
+    "name": "MyRepo"
+  },
+  "creationDate": "2026-02-17T12:00:00Z"
+}

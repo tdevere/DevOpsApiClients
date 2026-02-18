@@ -1,0 +1,33 @@
+{
+  "daysToKeepDeletedBuildsBeforeDestroy": 1,
+  "defaultRetentionPolicy": {
+    "artifacts": [
+      "sample-string"
+    ],
+    "artifactTypesToDelete": [
+      "sample-string"
+    ],
+    "branches": [
+      "sample-string"
+    ],
+    "daysToKeep": 1,
+    "deleteBuildRecord": true,
+    "deleteTestResults": true,
+    "minimumToKeep": 1
+  },
+  "maximumRetentionPolicy": {
+    "artifacts": [
+      "sample-string"
+    ],
+    "artifactTypesToDelete": [
+      "sample-string"
+    ],
+    "branches": [
+      "sample-string"
+    ],
+    "daysToKeep": 1,
+    "deleteBuildRecord": true,
+    "deleteTestResults": true,
+    "minimumToKeep": 1
+  }
+}

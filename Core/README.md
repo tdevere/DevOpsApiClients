@@ -4,9 +4,10 @@ Azure DevOps REST API 7.2 — **Core** area.
 
 This area covers fundamental organizational resources:
 
-| Module   | Description                        |
-|----------|------------------------------------|
-| Projects | List, Get, and Update projects     |
+| Module   | Operations                         | Description                        |
+|----------|------------------------------------|------------------------------------|
+| Projects | List, Get, Update                  | Manage projects in the organisation |
+| Teams    | List                               | List teams within a project         |
 
 ## Authentication
 

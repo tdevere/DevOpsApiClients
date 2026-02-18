@@ -1,0 +1,13 @@
+{
+  "changeCounts": {},
+  "changes": [
+    {
+      "changeId": 1,
+      "newContentTemplate": {
+        "name": {},
+        "type": {}
+      },
+      "originalPath": "sample-string"
+    }
+  ]
+}

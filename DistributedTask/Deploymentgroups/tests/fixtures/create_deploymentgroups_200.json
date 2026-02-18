@@ -1,0 +1,31 @@
+{
+  "description": "sample-string",
+  "machineCount": 1,
+  "machines": [
+    {
+      "agent": {
+        "assignedAgentCloudRequest": {},
+        "assignedRequest": {},
+        "authorization": {},
+        "createdOn": {},
+        "lastCompletedRequest": {},
+        "maxParallelism": {},
+        "pendingUpdate": {},
+        "properties": {}
+      },
+      "id": 1,
+      "properties": {
+        "count": {},
+        "item": {},
+        "keys": {},
+        "values": {}
+      },
+      "tags": [
+        {}
+      ]
+    }
+  ],
+  "machineTags": [
+    "sample-string"
+  ]
+}

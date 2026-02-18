@@ -1,0 +1,17 @@
+{
+  "count": 1,
+  "results": [
+    {
+      "description": "sample-string",
+      "feeds": [
+        {}
+      ],
+      "hits": [
+        {}
+      ],
+      "id": "sample-string",
+      "name": "sample-string",
+      "protocolType": "sample-string"
+    }
+  ]
+}

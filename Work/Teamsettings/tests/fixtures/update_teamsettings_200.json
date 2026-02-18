@@ -1,0 +1,28 @@
+{
+  "backlogIteration": {
+    "attributes": {
+      "finishDate": "2026-01-15T10:30:00Z",
+      "startDate": "2026-01-15T10:30:00Z",
+      "timeFrame": {}
+    },
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "sample-string",
+    "path": "sample-string"
+  },
+  "backlogVisibilities": {},
+  "bugsBehavior": {},
+  "defaultIteration": {
+    "attributes": {
+      "finishDate": "2026-01-15T10:30:00Z",
+      "startDate": "2026-01-15T10:30:00Z",
+      "timeFrame": {}
+    },
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "sample-string",
+    "path": "sample-string"
+  },
+  "defaultIterationMacro": "sample-string",
+  "workingDays": [
+    {}
+  ]
+}

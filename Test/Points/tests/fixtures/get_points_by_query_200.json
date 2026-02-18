@@ -1,0 +1,51 @@
+{
+  "orderBy": "sample-string",
+  "points": [
+    {
+      "assignedTo": {
+        "directoryAlias": {},
+        "id": {},
+        "imageUrl": {},
+        "inactive": {},
+        "isAadIdentity": {},
+        "isContainer": {},
+        "isDeletedInOrigin": {},
+        "profileUrl": {}
+      },
+      "automated": true,
+      "comment": "sample-string",
+      "configuration": {
+        "id": {},
+        "name": {},
+        "url": {}
+      },
+      "failureType": "sample-string",
+      "id": 1,
+      "lastResetToActive": "2026-01-15T10:30:00Z",
+      "lastResolutionStateId": 1
+    }
+  ],
+  "pointsFilter": {
+    "configurationNames": [
+      "sample-string"
+    ],
+    "testcaseIds": [
+      1
+    ],
+    "testers": [
+      {
+        "directoryAlias": {},
+        "id": {},
+        "imageUrl": {},
+        "inactive": {},
+        "isAadIdentity": {},
+        "isContainer": {},
+        "isDeletedInOrigin": {},
+        "profileUrl": {}
+      }
+    ]
+  },
+  "witFields": [
+    "sample-string"
+  ]
+}

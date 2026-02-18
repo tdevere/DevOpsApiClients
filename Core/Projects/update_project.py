@@ -15,13 +15,18 @@ Docs: https://learn.microsoft.com/en-us/rest/api/azure/devops/core/projects/upda
 """
 
 import argparse
-import base64
 import json
 import os
 import re
 import sys
 
+# Add project root to path for shared helpers
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
+
 import requests
+
+from _shared.auth import build_auth_header
+from _shared.logging_utils import AdoLogger
 
 # ---------------------------------------------------------------------------
 # Configuration
@@ -67,13 +72,11 @@ if not body:
     sys.exit("ERROR: Provide at least one of --name, --description, or --visibility.")
 
 # ---------------------------------------------------------------------------
-# Auth header
+# Auth header & logging
 # ---------------------------------------------------------------------------
-credentials = base64.b64encode(f":{PAT}".encode("ascii")).decode("ascii")
-HEADERS = {
-    "Authorization": f"Basic {credentials}",
-    "Content-Type": "application/json",
-}
+HEADERS = build_auth_header(PAT)
+logger = AdoLogger("update_project", PAT)
+logger.info(f"Updating project '{PROJECT_ID}' in org '{ORGANIZATION}' with {body}")
 
 # ---------------------------------------------------------------------------
 # Resolve project GUID — PATCH requires a GUID, not a name
@@ -96,11 +99,13 @@ url = (
     f"https://dev.azure.com/{ORGANIZATION}/_apis/projects/{PROJECT_ID}"
     f"?api-version={API_VERSION}"
 )
+logger.info(f"PATCH {url}")
 
 response = requests.patch(url, headers=HEADERS, json=body, timeout=30)
 response.raise_for_status()
 
 data = response.json()
+logger.info("Update operation queued successfully")
 
 # ---------------------------------------------------------------------------
 # Version guard

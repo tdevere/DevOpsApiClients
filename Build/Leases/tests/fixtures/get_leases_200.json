@@ -1,0 +1,9 @@
+{
+  "createdOn": "2026-01-15T10:30:00Z",
+  "definitionId": 1,
+  "leaseId": 1,
+  "ownerId": "sample-string",
+  "protectPipeline": true,
+  "runId": 1,
+  "validUntil": "2026-01-15T10:30:00Z"
+}

@@ -1,0 +1,5 @@
+{
+  "message": "Maven not found",
+  "typeKey": "MavenNotFoundException",
+  "errorCode": 0
+}

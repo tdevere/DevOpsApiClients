@@ -1,0 +1,15 @@
+{
+  "groupByField": "sample-string",
+  "resultsForGroup": [
+    {
+      "groupByValue": {},
+      "results": [
+        {}
+      ],
+      "resultsCountByOutcome": {},
+      "tags": [
+        {}
+      ]
+    }
+  ]
+}

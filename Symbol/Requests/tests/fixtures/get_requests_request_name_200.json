@@ -1,0 +1,10 @@
+{
+  "description": "sample-string",
+  "domainId": {},
+  "expirationDate": "2026-01-15T10:30:00Z",
+  "isChunked": true,
+  "key": "sample-string",
+  "lastOperationDate": "2026-01-15T10:30:00Z",
+  "lastOperationName": "sample-string",
+  "name": "sample-string"
+}

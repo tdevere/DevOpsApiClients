@@ -1,6 +1,6 @@
 # DevOpsApiClients
 
-> Definitive Azure DevOps **REST API 7.2** client library — multi-language examples organised by API Area.
+> A growing reference library of **tested** Azure DevOps **REST API 7.2** client examples — Python, PowerShell, and cURL, organised by API area.
 
 [![API Version](https://img.shields.io/badge/Azure%20DevOps%20API-7.2--preview-blue)](https://learn.microsoft.com/en-us/rest/api/azure/devops/?view=azure-devops-rest-7.2)
 
@@ -11,25 +11,81 @@
 ```
 DevOpsApiClients/
 ├── Core/                          # Core area (org-level resources)
-│   ├── README.md
-│   └── Projects/                  # Projects module
-│       ├── README.md
-│       ├── List-Projects.ps1      # PowerShell — List projects
-│       ├── list_projects.py       # Python     — List projects
-│       ├── list_projects.sh       # cURL/Bash  — List projects
-│       ├── Get-Project.ps1        # PowerShell — Get single project
-│       ├── get_project.py         # Python     — Get single project
-│       ├── get_project.sh         # cURL/Bash  — Get single project
-│       ├── Update-Project.ps1     # PowerShell — Update project
-│       ├── update_project.py      # Python     — Update project
-│       └── update_project.sh      # cURL/Bash  — Update project
-├── Git/                           # Git area (repos, PRs, commits)
-│   └── README.md
-├── Build/                         # Build area (definitions, builds)
-│   └── README.md
-└── WorkItemTracking/              # Work Item Tracking area
-    └── README.md
+│   ├── Projects/                  # List, Get, Update
+│   └── Teams/                     # List
+├── Git/                           # Git area
+│   ├── Repositories/              # List, Get, Create, Delete
+│   ├── PullRequests/              # List, Get, Create, Update
+│   ├── PullRequestThreads/        # List
+│   ├── Commits/                   # List, Get
+│   ├── Pushes/                    # List
+│   └── Refs/                      # List (branches/tags)
+├── Build/                         # Build area
+│   ├── Definitions/               # List, Get
+│   ├── Builds/                    # List, Get
+│   └── Artifacts/                 # List
+├── Pipelines/                     # Pipelines area
+│   ├── Pipelines/                 # List, Get, Run
+│   └── Runs/                      # List, Get
+├── WorkItemTracking/              # Work Item Tracking area
+│   ├── WorkItems/                 # Get, Create, Update, Batch Get, Delete
+│   ├── Wiql/                      # Query (WIQL)
+│   ├── Fields/                    # List
+│   ├── WorkItemTypes/             # List
+│   ├── Comments/                  # List, Add
+│   └── Queries/                   # List, Get
+├── DistributedTask/               # Distributed Task area
+│   ├── Pools/                     # List
+│   ├── VariableGroups/            # List, Get
+│   └── Environments/              # List, Get
+├── Policy/                        # Policy area
+│   └── Configurations/            # List, Get
+├── Hooks/                         # Service Hooks area
+│   └── Subscriptions/             # List, Get
+├── Wiki/                          # Wiki area
+│   └── Wikis/                     # List, Get
+├── _generator/                    # Code generator (YAML → all 3 languages)
+│   ├── definitions/               # YAML operation definitions (39 total)
+│   └── templates/                 # Python, PowerShell, Bash templates
+└── _shared/                       # Shared helpers (auth, logging, HTTP)
+    ├── auth.py / AdoAuth.ps1 / common.sh
+    ├── logging_utils.py
+    └── http_client.py / AdoHttp.ps1
 ```
+
+All generated scripts use the `_shared/` helpers for authentication, logging, and HTTP handling — ensuring consistent error messages, PAT redaction, and retry logic across languages.
+
+## Coverage Summary
+
+| Domain | Resource | Operations | Languages | Offline Tests |
+|--------|----------|-----------|-----------|---------------|
+| **Core** | Projects | List, Get, Update | Py, PS, Bash | ✅ |
+| **Core** | Teams | List | Py, PS, Bash | ✅ |
+| **Git** | Repositories | List, Get, Create, Delete | Py, PS, Bash | ✅ |
+| **Git** | PullRequests | List, Get, Create, Update | Py, PS, Bash | ✅ |
+| **Git** | PullRequestThreads | List | Py, PS, Bash | ✅ |
+| **Git** | Commits | List, Get | Py, PS, Bash | ✅ |
+| **Git** | Pushes | List | Py, PS, Bash | ✅ |
+| **Git** | Refs | List | Py, PS, Bash | ✅ |
+| **Build** | Definitions | List, Get | Py, PS, Bash | ✅ |
+| **Build** | Builds | List, Get | Py, PS, Bash | ✅ |
+| **Build** | Artifacts | List | Py, PS, Bash | ✅ |
+| **Pipelines** | Pipelines | List, Get, Run | Py, PS, Bash | ✅ |
+| **Pipelines** | Runs | List, Get | Py, PS, Bash | ✅ |
+| **WorkItemTracking** | WorkItems | Get, Create, Update, Batch Get, Delete | Py, PS, Bash | ✅ |
+| **WorkItemTracking** | Wiql | Query | Py, PS, Bash | ✅ |
+| **WorkItemTracking** | Fields | List | Py, PS, Bash | ✅ |
+| **WorkItemTracking** | WorkItemTypes | List | Py, PS, Bash | ✅ |
+| **WorkItemTracking** | Comments | List, Add | Py, PS, Bash | ✅ |
+| **WorkItemTracking** | Queries | List, Get | Py, PS, Bash | ✅ |
+| **DistributedTask** | Pools | List | Py, PS, Bash | ✅ |
+| **DistributedTask** | VariableGroups | List, Get | Py, PS, Bash | ✅ |
+| **DistributedTask** | Environments | List, Get | Py, PS, Bash | ✅ |
+| **Policy** | Configurations | List, Get | Py, PS, Bash | ✅ |
+| **Hooks** | Subscriptions | List, Get | Py, PS, Bash | ✅ |
+| **Wiki** | Wikis | List, Get | Py, PS, Bash | ✅ |
+
+**Totals:** 50 operations × 3 languages = 150 scripts, 997+ offline tests (pytest + Pester + bats)
 
 ## Authentication
 
@@ -91,6 +147,16 @@ env:
 
 - [Azure DevOps REST API 7.2 Documentation](https://learn.microsoft.com/en-us/rest/api/azure/devops/?view=azure-devops-rest-7.2)
 - [Core — Projects](https://learn.microsoft.com/en-us/rest/api/azure/devops/core/projects?view=azure-devops-rest-7.2)
+- [Git — Repositories](https://learn.microsoft.com/en-us/rest/api/azure/devops/git/repositories?view=azure-devops-rest-7.2)
+- [Git — Pull Requests](https://learn.microsoft.com/en-us/rest/api/azure/devops/git/pull-requests?view=azure-devops-rest-7.2)
+- [Build — Definitions](https://learn.microsoft.com/en-us/rest/api/azure/devops/build/definitions?view=azure-devops-rest-7.2)
+- [Build — Builds](https://learn.microsoft.com/en-us/rest/api/azure/devops/build/builds?view=azure-devops-rest-7.2)
+- [Pipelines](https://learn.microsoft.com/en-us/rest/api/azure/devops/pipelines/pipelines?view=azure-devops-rest-7.2)
+- [Work Item Tracking](https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items?view=azure-devops-rest-7.2)
+- [Distributed Task — Pools](https://learn.microsoft.com/en-us/rest/api/azure/devops/distributedtask/pools?view=azure-devops-rest-7.2)
+- [Policy — Configurations](https://learn.microsoft.com/en-us/rest/api/azure/devops/policy/configurations?view=azure-devops-rest-7.2)
+- [Service Hooks — Subscriptions](https://learn.microsoft.com/en-us/rest/api/azure/devops/hooks/subscriptions?view=azure-devops-rest-7.2)
+- [Wiki — Wikis](https://learn.microsoft.com/en-us/rest/api/azure/devops/wiki/wikis?view=azure-devops-rest-7.2)
 
 ## License
 

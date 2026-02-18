@@ -1,0 +1,5 @@
+{
+  "message": "Audit Log not found",
+  "typeKey": "AuditLogNotFoundException",
+  "errorCode": 0
+}

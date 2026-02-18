@@ -1,0 +1,22 @@
+{
+  "count": 1,
+  "nextPackageContinuationToken": 1,
+  "packageChanges": [
+    {
+      "package": {
+        "id": {},
+        "isCached": {},
+        "name": {},
+        "normalizedName": {},
+        "protocolType": {},
+        "starCount": {},
+        "url": {}
+      },
+      "packageVersionChange": {
+        "changeType": {},
+        "continuationToken": {},
+        "packageVersion": {}
+      }
+    }
+  ]
+}

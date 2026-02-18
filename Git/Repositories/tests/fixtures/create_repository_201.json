@@ -1,0 +1,31 @@
+{
+  "id": "f1a2b3c4-d5e6-7890-abcd-ef1234567890",
+  "name": "NewRepo",
+  "url": "https://dev.azure.com/testorg/_apis/git/repositories/f1a2b3c4-d5e6-7890-abcd-ef1234567890",
+  "project": {
+    "id": "d1e2f3a4-b5c6-7890-1234-567890abcdef",
+    "name": "ProjectAlpha",
+    "state": "wellFormed",
+    "revision": 42,
+    "visibility": "private",
+    "lastUpdateTime": "2025-12-01T10:00:00Z"
+  },
+  "defaultBranch": null,
+  "size": 0,
+  "remoteUrl": "https://dev.azure.com/testorg/ProjectAlpha/_git/NewRepo",
+  "sshUrl": "git@ssh.dev.azure.com:v3/testorg/ProjectAlpha/NewRepo",
+  "webUrl": "https://dev.azure.com/testorg/ProjectAlpha/_git/NewRepo",
+  "isDisabled": false,
+  "isFork": false,
+  "_links": {
+    "self": {
+      "href": "https://dev.azure.com/testorg/_apis/git/repositories/f1a2b3c4-d5e6-7890-abcd-ef1234567890"
+    },
+    "project": {
+      "href": "https://dev.azure.com/testorg/_apis/projects/d1e2f3a4-b5c6-7890-1234-567890abcdef"
+    },
+    "web": {
+      "href": "https://dev.azure.com/testorg/ProjectAlpha/_git/NewRepo"
+    }
+  }
+}

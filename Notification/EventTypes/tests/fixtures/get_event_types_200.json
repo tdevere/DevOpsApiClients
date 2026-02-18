@@ -1,0 +1,20 @@
+{
+  "category": {
+    "id": "sample-string",
+    "name": "sample-string"
+  },
+  "color": "sample-string",
+  "customSubscriptionsAllowed": true,
+  "eventPublisher": {
+    "id": "sample-string",
+    "subscriptionManagementInfo": {
+      "serviceInstanceType": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "url": "sample-string"
+    },
+    "url": "sample-string"
+  },
+  "fields": {},
+  "hasInitiator": true,
+  "icon": "sample-string",
+  "id": "sample-string"
+}

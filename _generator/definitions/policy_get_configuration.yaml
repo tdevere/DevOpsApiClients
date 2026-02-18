@@ -1,0 +1,57 @@
+# Operation Definition: Policy / Configurations / Get Policy Configuration
+domain: Policy
+resource: Configurations
+operation: get_configuration
+ps_verb: Get
+ps_noun: PolicyConfiguration
+
+http_method: GET
+url_path: "_apis/policy/configurations/{configuration_id}"
+api_version: "7.2-preview.1"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/policy/configurations/get?view=azure-devops-rest-7.2"
+
+synopsis: "Get a specific policy configuration by ID."
+description: "Returns the full details of a branch policy configuration."
+
+project_scoped: true
+
+params:
+  - name: configuration_id
+    env_var: CONFIGURATION_ID
+    description: "Policy configuration ID (integer)"
+    required: true
+
+version_guard_keys:
+  - id
+  - type
+
+success_status: 200
+output_mode: message
+output_message: "Policy {id}: {type.displayName} (enabled: {isEnabled})"
+
+fixture_success:
+  id: 1
+  isEnabled: true
+  isBlocking: true
+  isDeleted: false
+  type:
+    id: "fa4e907d-c16b-4a4c-9dfa-4916e5d171ab"
+    displayName: "Minimum number of reviewers"
+    url: "https://dev.azure.com/testorg/testproject/_apis/policy/types/fa4e907d-c16b-4a4c-9dfa-4916e5d171ab"
+  settings:
+    minimumApproverCount: 2
+    creatorVoteCounts: false
+    scope:
+      - repositoryId: "r1a2b3c4-d5e6-7890-abcd-ef1234567890"
+        refName: "refs/heads/main"
+        matchKind: "exact"
+  createdBy:
+    displayName: "Alice Developer"
+    uniqueName: "alice@example.com"
+  createdDate: "2026-01-10T09:00:00Z"
+  url: "https://dev.azure.com/testorg/testproject/_apis/policy/configurations/1"
+
+fixture_error_404:
+  message: "Policy configuration not found"
+  typeKey: "PolicyConfigurationNotFoundException"
+  errorCode: 0

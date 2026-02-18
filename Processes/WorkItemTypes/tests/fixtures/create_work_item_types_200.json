@@ -1,0 +1,50 @@
+{
+  "behaviors": [
+    {
+      "behavior": {
+        "id": {},
+        "url": {}
+      },
+      "isDefault": true,
+      "isLegacyDefault": true,
+      "url": "sample-string"
+    }
+  ],
+  "color": "sample-string",
+  "customization": {},
+  "description": "sample-string",
+  "icon": "sample-string",
+  "inherits": "sample-string",
+  "isDisabled": true,
+  "layout": {
+    "extensions": [
+      {
+        "id": {}
+      }
+    ],
+    "pages": [
+      {
+        "contribution": {},
+        "id": {},
+        "inherited": {},
+        "isContribution": {},
+        "label": {},
+        "locked": {},
+        "order": {},
+        "overridden": {}
+      }
+    ],
+    "systemControls": [
+      {
+        "contribution": {},
+        "controlType": {},
+        "height": {},
+        "id": {},
+        "inherited": {},
+        "isContribution": {},
+        "label": {},
+        "metadata": {}
+      }
+    ]
+  }
+}

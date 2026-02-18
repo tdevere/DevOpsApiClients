@@ -1,0 +1,16 @@
+{
+  "message": "sample-string",
+  "name": "sample-string",
+  "objectId": "sample-string",
+  "taggedBy": {
+    "date": "2026-01-15T10:30:00Z",
+    "email": "sample-string",
+    "imageUrl": "sample-string",
+    "name": "sample-string"
+  },
+  "taggedObject": {
+    "objectId": "sample-string",
+    "objectType": {}
+  },
+  "url": "sample-string"
+}

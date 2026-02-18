@@ -1,0 +1,52 @@
+# Operation Definition: WorkItemTracking / WorkItems / Update Work Item
+# Single source of truth — generates Python, PowerShell, Bash + tests + fixtures.
+
+domain: WorkItemTracking
+resource: WorkItems
+operation: update_work_item
+ps_verb: Update
+ps_noun: WorkItem
+
+http_method: PATCH
+url_path: "_apis/wit/workitems/{work_item_id}"
+api_version: "7.2-preview.3"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/update?view=azure-devops-rest-7.2"
+
+synopsis: "Update fields on an existing work item."
+description: "Applies a JSON Patch document to update one or more fields on a work item."
+
+project_scoped: true
+
+params:
+  - name: work_item_id
+    env_var: WORK_ITEM_ID
+    description: "Work item ID (integer)"
+    required: true
+
+version_guard_keys:
+  - id
+  - fields
+
+success_status: 200
+output_mode: message
+output_message: "Work item {id} updated — rev {rev}"
+
+fixture_success:
+  id: 42
+  rev: 3
+  url: "https://dev.azure.com/testorg/_apis/wit/workItems/42"
+  fields:
+    System.Id: 42
+    System.Title: "Updated title"
+    System.State: "Active"
+    System.WorkItemType: "Task"
+    System.AreaPath: "TestProject"
+    System.IterationPath: "TestProject\\Sprint 1"
+    System.AssignedTo:
+      displayName: "Test User"
+      uniqueName: "testuser@example.com"
+
+fixture_error_404:
+  message: "Work item 99999 does not exist"
+  typeKey: "WorkItemNotFoundException"
+  errorCode: 0

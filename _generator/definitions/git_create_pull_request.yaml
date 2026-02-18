@@ -1,0 +1,72 @@
+# Operation Definition: Git / PullRequests / Create Pull Request
+domain: Git
+resource: PullRequests
+operation: create_pull_request
+ps_verb: New
+ps_noun: PullRequest
+
+http_method: POST
+url_path: "_apis/git/repositories/{repository_id}/pullrequests"
+api_version: "7.2"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/git/pull-requests/create?view=azure-devops-rest-7.2"
+
+synopsis: "Create a new pull request."
+description: "Creates a pull request in the specified repository from a source branch to a target branch."
+
+project_scoped: true
+
+params:
+  - name: repository_id
+    env_var: REPO_ID
+    description: "Repository name or GUID"
+    required: true
+  - name: source_branch
+    env_var: SOURCE_BRANCH
+    description: "Source branch ref (e.g. refs/heads/feature)"
+    required: true
+  - name: target_branch
+    env_var: TARGET_BRANCH
+    description: "Target branch ref (e.g. refs/heads/main)"
+    required: true
+  - name: pr_title
+    env_var: PR_TITLE
+    description: "Pull request title"
+    required: true
+
+body_fields:
+  - json_path: sourceRefName
+    source: "param:source_branch"
+    description: "Source branch"
+  - json_path: targetRefName
+    source: "param:target_branch"
+    description: "Target branch"
+  - json_path: title
+    source: "param:pr_title"
+    description: "PR title"
+
+version_guard_keys:
+  - pullRequestId
+  - title
+
+success_status: 201
+output_mode: message
+output_message: "Pull request #{pullRequestId} created: {title}"
+
+fixture_success:
+  pullRequestId: 201
+  title: "Add new feature"
+  status: "active"
+  createdBy:
+    displayName: "Alice Developer"
+    uniqueName: "alice@example.com"
+  sourceRefName: "refs/heads/feature/new-feature"
+  targetRefName: "refs/heads/main"
+  repository:
+    id: "r1a2b3c4-d5e6-7890-abcd-ef1234567890"
+    name: "MyRepo"
+  creationDate: "2026-02-17T12:00:00Z"
+
+fixture_error_404:
+  message: "Repository not found"
+  typeKey: "GitRepositoryNotFoundException"
+  errorCode: 0

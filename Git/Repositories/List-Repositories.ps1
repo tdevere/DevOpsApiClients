@@ -33,13 +33,10 @@ if ([string]::IsNullOrWhiteSpace($Pat)) {
 #--- API version ------------------------------------------------------------
 $ApiVersion = '7.2'
 
-#--- Build auth header ------------------------------------------------------
-$base64Auth = [Convert]::ToBase64String(
-    [Text.Encoding]::ASCII.GetBytes(":$Pat")
-)
-$headers = @{
-    Authorization = "Basic $base64Auth"
-}
+#--- Auth (shared helper) ---------------------------------------------------
+. "$PSScriptRoot/../../_shared/AdoAuth.ps1"
+$headers = New-AdoAuthHeader -Pat $Pat
+Write-Verbose "Listing repositories for org '$Organization'"
 
 #--- Call the API -----------------------------------------------------------
 $uri = "https://dev.azure.com/$Organization/_apis/git/repositories?api-version=$ApiVersion"

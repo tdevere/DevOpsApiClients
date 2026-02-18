@@ -1,0 +1,5 @@
+{
+  "message": "Pools not found",
+  "typeKey": "PoolsNotFoundException",
+  "errorCode": 0
+}

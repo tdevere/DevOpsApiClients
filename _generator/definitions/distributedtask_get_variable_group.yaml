@@ -1,0 +1,54 @@
+# Operation Definition: DistributedTask / VariableGroups / Get Variable Group
+domain: DistributedTask
+resource: VariableGroups
+operation: get_variable_group
+ps_verb: Get
+ps_noun: VariableGroup
+
+http_method: GET
+url_path: "_apis/distributedtask/variablegroups/{variable_group_id}"
+api_version: "7.2-preview.2"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/distributedtask/variablegroups/get?view=azure-devops-rest-7.2"
+
+synopsis: "Get a variable group by ID."
+description: "Returns the variable group definition including its variables (secrets are masked)."
+
+project_scoped: true
+
+params:
+  - name: variable_group_id
+    env_var: VARIABLE_GROUP_ID
+    description: "Variable group ID (integer)"
+    required: true
+
+version_guard_keys:
+  - id
+  - name
+
+success_status: 200
+output_mode: message
+output_message: "Variable group: {name} (ID: {id})"
+
+fixture_success:
+  id: 1
+  name: "Production-Secrets"
+  description: "Production environment variables"
+  type: "Vsts"
+  createdBy:
+    displayName: "Alice Developer"
+    uniqueName: "alice@example.com"
+  createdOn: "2026-01-10T09:00:00Z"
+  modifiedBy:
+    displayName: "Alice Developer"
+    uniqueName: "alice@example.com"
+  modifiedOn: "2026-02-15T11:00:00Z"
+  variables:
+    DB_HOST:
+      value: "prod-db.example.com"
+    DB_PASSWORD:
+      isSecret: true
+
+fixture_error_404:
+  message: "Variable group not found"
+  typeKey: "VariableGroupNotFoundException"
+  errorCode: 0

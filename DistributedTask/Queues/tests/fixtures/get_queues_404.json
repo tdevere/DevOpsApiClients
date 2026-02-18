@@ -1,0 +1,5 @@
+{
+  "message": "Queues not found",
+  "typeKey": "QueuesNotFoundException",
+  "errorCode": 0
+}

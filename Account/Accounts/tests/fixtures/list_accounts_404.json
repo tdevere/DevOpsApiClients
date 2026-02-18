@@ -1,0 +1,5 @@
+{
+  "message": "Accounts not found",
+  "typeKey": "AccountsNotFoundException",
+  "errorCode": 0
+}

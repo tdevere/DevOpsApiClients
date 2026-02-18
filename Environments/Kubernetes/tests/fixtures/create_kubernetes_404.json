@@ -1,0 +1,5 @@
+{
+  "message": "Kubernetes not found",
+  "typeKey": "KubernetesNotFoundException",
+  "errorCode": 0
+}

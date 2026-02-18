@@ -1,0 +1,5 @@
+{
+  "message": "Trees not found",
+  "typeKey": "TreesNotFoundException",
+  "errorCode": 0
+}

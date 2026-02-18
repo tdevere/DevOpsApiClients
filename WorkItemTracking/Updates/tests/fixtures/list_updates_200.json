@@ -1,0 +1,24 @@
+[
+  {
+    "fields": {},
+    "id": 1,
+    "relations": {
+      "added": [
+        {}
+      ],
+      "removed": [
+        {}
+      ],
+      "updated": [
+        {}
+      ]
+    },
+    "rev": 1,
+    "revisedBy": {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "sample-string"
+    },
+    "revisedDate": "2026-01-15T10:30:00Z",
+    "workItemId": 1
+  }
+]

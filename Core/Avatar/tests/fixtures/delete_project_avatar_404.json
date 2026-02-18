@@ -1,0 +1,5 @@
+{
+  "message": "Avatar not found",
+  "typeKey": "AvatarNotFoundException",
+  "errorCode": 0
+}

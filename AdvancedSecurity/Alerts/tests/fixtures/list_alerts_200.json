@@ -1,0 +1,27 @@
+[
+  {
+    "additionalProperties": {},
+    "alertId": 1,
+    "alertType": {},
+    "confidence": {},
+    "dismissal": {
+      "dismissalId": 1,
+      "dismissalType": {},
+      "message": "sample-string",
+      "stateChangedBy": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "stateChangedByIdentity": {
+        "directoryAlias": {},
+        "id": {},
+        "imageUrl": {},
+        "inactive": {},
+        "isAadIdentity": {},
+        "isContainer": {},
+        "isDeletedInOrigin": {},
+        "profileUrl": {}
+      }
+    },
+    "firstSeenDate": "2026-01-15T10:30:00Z",
+    "fixedDate": "2026-01-15T10:30:00Z",
+    "gitRef": "sample-string"
+  }
+]

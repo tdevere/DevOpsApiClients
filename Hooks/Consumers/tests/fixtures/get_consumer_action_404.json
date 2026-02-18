@@ -1,0 +1,5 @@
+{
+  "message": "Consumers not found",
+  "typeKey": "ConsumersNotFoundException",
+  "errorCode": 0
+}

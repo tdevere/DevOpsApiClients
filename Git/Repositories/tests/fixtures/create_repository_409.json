@@ -1,0 +1,9 @@
+{
+  "$id": "1",
+  "innerException": null,
+  "message": "A Git repository with the name ContosoRepo already exists.",
+  "typeName": "Microsoft.TeamFoundation.Git.Server.GitRepositoryExistsException, Microsoft.TeamFoundation.Git.Server",
+  "typeKey": "GitRepositoryExistsException",
+  "errorCode": 0,
+  "eventId": 3000
+}

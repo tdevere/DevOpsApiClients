@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "createdBy": {
+        "directoryAlias": {},
+        "id": {},
+        "imageUrl": {},
+        "inactive": {},
+        "isAadIdentity": {},
+        "isContainer": {},
+        "isDeletedInOrigin": {},
+        "profileUrl": {}
+      },
+      "createdDate": "2026-01-15T10:30:00Z",
+      "createdOnBehalfDate": "2026-01-15T10:30:00Z",
+      "createdOnBehalfOf": {
+        "directoryAlias": {},
+        "id": {},
+        "imageUrl": {},
+        "inactive": {},
+        "isAadIdentity": {},
+        "isContainer": {},
+        "isDeletedInOrigin": {},
+        "profileUrl": {}
+      },
+      "format": {},
+      "id": 1,
+      "isDeleted": true,
+      "mentions": [
+        {}
+      ]
+    }
+  ],
+  "continuationToken": "sample-string",
+  "count": 1,
+  "nextPage": "sample-string",
+  "totalCount": 1
+}

@@ -1,0 +1,54 @@
+{
+  "count": 2,
+  "value": [
+    {
+      "id": 1,
+      "publishedDate": "2026-01-15T11:00:00Z",
+      "lastUpdatedDate": "2026-01-15T12:00:00Z",
+      "status": "active",
+      "comments": [
+        {
+          "id": 1,
+          "parentCommentId": 0,
+          "content": "Please add unit tests for this function.",
+          "publishedDate": "2026-01-15T11:00:00Z",
+          "author": {
+            "displayName": "Bob Engineer",
+            "uniqueName": "bob@example.com"
+          },
+          "commentType": "text"
+        }
+      ],
+      "threadContext": {
+        "filePath": "/src/main.py",
+        "rightFileStart": {
+          "line": 42,
+          "offset": 1
+        },
+        "rightFileEnd": {
+          "line": 42,
+          "offset": 30
+        }
+      }
+    },
+    {
+      "id": 2,
+      "publishedDate": "2026-01-15T14:00:00Z",
+      "lastUpdatedDate": "2026-01-15T14:00:00Z",
+      "status": "closed",
+      "comments": [
+        {
+          "id": 1,
+          "parentCommentId": 0,
+          "content": "Looks good overall.",
+          "publishedDate": "2026-01-15T14:00:00Z",
+          "author": {
+            "displayName": "Alice Developer",
+            "uniqueName": "alice@example.com"
+          },
+          "commentType": "text"
+        }
+      ]
+    }
+  ]
+}

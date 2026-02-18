@@ -28,6 +28,7 @@ on:
           - git
           - build
           - wit
+          - pipelines
 
 permissions:
   contents: write

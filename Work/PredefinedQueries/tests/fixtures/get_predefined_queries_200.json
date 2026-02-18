@@ -1,0 +1,25 @@
+{
+  "hasMore": true,
+  "id": "sample-string",
+  "name": "sample-string",
+  "results": [
+    {
+      "commentVersionRef": {
+        "commentId": {},
+        "createdInRevision": {},
+        "isDeleted": {},
+        "text": {},
+        "version": {}
+      },
+      "fields": {},
+      "id": 1,
+      "multilineFieldsFormat": {},
+      "relations": [
+        {}
+      ],
+      "rev": 1
+    }
+  ],
+  "url": "sample-string",
+  "webUrl": "sample-string"
+}

@@ -1,6 +1,27 @@
 {
-  "core":  { "hash": null, "synced_at": null, "spec_url": "https://raw.githubusercontent.com/MicrosoftDocs/vsts-rest-api-specs/master/specification/core/7.2/core.json" },
-  "git":   { "hash": null, "synced_at": null, "spec_url": "https://raw.githubusercontent.com/MicrosoftDocs/vsts-rest-api-specs/master/specification/git/7.2/git.json" },
-  "build": { "hash": null, "synced_at": null, "spec_url": "https://raw.githubusercontent.com/MicrosoftDocs/vsts-rest-api-specs/master/specification/build/7.2/build.json" },
-  "wit":   { "hash": null, "synced_at": null, "spec_url": "https://raw.githubusercontent.com/MicrosoftDocs/vsts-rest-api-specs/master/specification/workItemTracking/7.2/workItemTracking.json" }
+  "core": {
+    "hash": "1e2272235347c3359d0e11e232084d27913cabc8312eff7d9a822be036057f2b",
+    "synced_at": "2026-02-17T23:30:03.914199+00:00",
+    "spec_url": "https://raw.githubusercontent.com/MicrosoftDocs/vsts-rest-api-specs/master/specification/core/7.2/core.json"
+  },
+  "git": {
+    "hash": "4afaa4e4a238585af8ab60f8a1473c8a088b1d9bb104c1bc398fe5bf56934c13",
+    "synced_at": "2026-02-17T23:30:03.914199+00:00",
+    "spec_url": "https://raw.githubusercontent.com/MicrosoftDocs/vsts-rest-api-specs/master/specification/git/7.2/git.json"
+  },
+  "build": {
+    "hash": "db81c43111f255cbafb28103ee0eee5678e872c3f4d1daae17bb3da186976491",
+    "synced_at": "2026-02-17T23:30:03.914199+00:00",
+    "spec_url": "https://raw.githubusercontent.com/MicrosoftDocs/vsts-rest-api-specs/master/specification/build/7.2/build.json"
+  },
+  "wit": {
+    "hash": "ab7e9104176291c079120422885f5ed81fd2a2a0cee0d8b01ec5b920d44e3e02",
+    "synced_at": "2026-02-17T23:31:14.759760+00:00",
+    "spec_url": "https://raw.githubusercontent.com/MicrosoftDocs/vsts-rest-api-specs/master/specification/wit/7.2/workItemTracking.json"
+  },
+  "pipelines": {
+    "hash": "db75e0a5b586e70c9ade412439a19f4b12a613bdb43acc3a9641c4618d6390de",
+    "synced_at": "2026-02-17T23:31:19.812519+00:00",
+    "spec_url": "https://raw.githubusercontent.com/MicrosoftDocs/vsts-rest-api-specs/master/specification/pipelines/7.2/pipelines.json"
+  }
 }

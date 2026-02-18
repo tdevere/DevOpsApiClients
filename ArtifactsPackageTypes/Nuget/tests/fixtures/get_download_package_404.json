@@ -1,0 +1,5 @@
+{
+  "message": "NuGet not found",
+  "typeKey": "NugetNotFoundException",
+  "errorCode": 0
+}

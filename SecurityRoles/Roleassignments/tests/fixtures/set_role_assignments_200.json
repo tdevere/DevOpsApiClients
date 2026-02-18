@@ -1,0 +1,25 @@
+[
+  {
+    "access": {},
+    "accessDisplayName": "sample-string",
+    "identity": {
+      "directoryAlias": "sample-string",
+      "id": "sample-string",
+      "imageUrl": "sample-string",
+      "inactive": true,
+      "isAadIdentity": true,
+      "isContainer": true,
+      "isDeletedInOrigin": true,
+      "profileUrl": "sample-string"
+    },
+    "role": {
+      "allowPermissions": 1,
+      "denyPermissions": 1,
+      "description": "sample-string",
+      "displayName": "sample-string",
+      "identifier": "sample-string",
+      "name": "sample-string",
+      "scope": "sample-string"
+    }
+  }
+]

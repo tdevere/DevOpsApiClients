@@ -1,0 +1,5 @@
+{
+  "message": "Get not found",
+  "typeKey": "GetNotFoundException",
+  "errorCode": 0
+}

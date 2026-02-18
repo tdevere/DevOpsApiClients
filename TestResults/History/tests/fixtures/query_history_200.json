@@ -1,0 +1,18 @@
+{
+  "groupByField": "sample-string",
+  "resultsForGroup": [
+    {
+      "groupByValue": {},
+      "latestResult": {
+        "afnStripId": {},
+        "area": {},
+        "associatedBugs": {},
+        "automatedTestId": {},
+        "automatedTestName": {},
+        "automatedTestStorage": {},
+        "automatedTestType": {},
+        "automatedTestTypeId": {}
+      }
+    }
+  ]
+}

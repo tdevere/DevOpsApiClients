@@ -1,0 +1,31 @@
+{
+  "queryType": "flat",
+  "queryResultType": "workItem",
+  "asOf": "2026-02-17T12:00:00Z",
+  "columns": [
+    {
+      "referenceName": "System.Id",
+      "name": "ID",
+      "url": "https://dev.azure.com/testorg/_apis/wit/fields/System.Id"
+    },
+    {
+      "referenceName": "System.Title",
+      "name": "Title",
+      "url": "https://dev.azure.com/testorg/_apis/wit/fields/System.Title"
+    }
+  ],
+  "workItems": [
+    {
+      "id": 1,
+      "url": "https://dev.azure.com/testorg/_apis/wit/workItems/1"
+    },
+    {
+      "id": 2,
+      "url": "https://dev.azure.com/testorg/_apis/wit/workItems/2"
+    },
+    {
+      "id": 3,
+      "url": "https://dev.azure.com/testorg/_apis/wit/workItems/3"
+    }
+  ]
+}

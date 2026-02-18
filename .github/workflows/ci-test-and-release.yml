@@ -84,6 +84,11 @@ jobs:
       git: ${{ steps.filter.outputs.git }}
       build: ${{ steps.filter.outputs.build }}
       wit: ${{ steps.filter.outputs.wit }}
+      pipelines: ${{ steps.filter.outputs.pipelines }}
+      distributedtask: ${{ steps.filter.outputs.distributedtask }}
+      policy: ${{ steps.filter.outputs.policy }}
+      hooks: ${{ steps.filter.outputs.hooks }}
+      wiki: ${{ steps.filter.outputs.wiki }}
       shared: ${{ steps.filter.outputs.shared }}
       any_domain: ${{ steps.check.outputs.any_domain }}
     steps:
@@ -101,6 +106,16 @@ jobs:
               - 'Build/**'
             wit:
               - 'WorkItemTracking/**'
+            pipelines:
+              - 'Pipelines/**'
+            distributedtask:
+              - 'DistributedTask/**'
+            policy:
+              - 'Policy/**'
+            hooks:
+              - 'Hooks/**'
+            wiki:
+              - 'Wiki/**'
             shared:
               - '_shared/**'
               - '.github/workflows/**'
@@ -113,6 +128,11 @@ jobs:
                 "${{ steps.filter.outputs.git }}" == "true" || \
                 "${{ steps.filter.outputs.build }}" == "true" || \
                 "${{ steps.filter.outputs.wit }}" == "true" || \
+                "${{ steps.filter.outputs.pipelines }}" == "true" || \
+                "${{ steps.filter.outputs.distributedtask }}" == "true" || \
+                "${{ steps.filter.outputs.policy }}" == "true" || \
+                "${{ steps.filter.outputs.hooks }}" == "true" || \
+                "${{ steps.filter.outputs.wiki }}" == "true" || \
                 "${{ steps.filter.outputs.shared }}" == "true" || \
                 "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "any_domain=true" >> "$GITHUB_OUTPUT"
@@ -150,10 +170,15 @@ jobs:
             pytest -m "$MARKERS" -v --tb=short
           else
             PATHS=""
-            [[ "${{ needs.detect-changes.outputs.core }}" == "true" ]]  && PATHS="$PATHS Core/"
-            [[ "${{ needs.detect-changes.outputs.git }}" == "true" ]]   && PATHS="$PATHS Git/"
-            [[ "${{ needs.detect-changes.outputs.build }}" == "true" ]] && PATHS="$PATHS Build/"
-            [[ "${{ needs.detect-changes.outputs.wit }}" == "true" ]]   && PATHS="$PATHS WorkItemTracking/"
+            [[ "${{ needs.detect-changes.outputs.core }}" == "true" ]]            && PATHS="$PATHS Core/"
+            [[ "${{ needs.detect-changes.outputs.git }}" == "true" ]]             && PATHS="$PATHS Git/"
+            [[ "${{ needs.detect-changes.outputs.build }}" == "true" ]]           && PATHS="$PATHS Build/"
+            [[ "${{ needs.detect-changes.outputs.wit }}" == "true" ]]             && PATHS="$PATHS WorkItemTracking/"
+            [[ "${{ needs.detect-changes.outputs.pipelines }}" == "true" ]]       && PATHS="$PATHS Pipelines/"
+            [[ "${{ needs.detect-changes.outputs.distributedtask }}" == "true" ]] && PATHS="$PATHS DistributedTask/"
+            [[ "${{ needs.detect-changes.outputs.policy }}" == "true" ]]          && PATHS="$PATHS Policy/"
+            [[ "${{ needs.detect-changes.outputs.hooks }}" == "true" ]]           && PATHS="$PATHS Hooks/"
+            [[ "${{ needs.detect-changes.outputs.wiki }}" == "true" ]]            && PATHS="$PATHS Wiki/"
 
             if [[ -n "$PATHS" ]]; then
               echo "Running offline tests for:$PATHS"
@@ -175,12 +200,17 @@ jobs:
           $paths = @()
           if ('${{ needs.detect-changes.outputs.shared }}' -eq 'true' -or
               '${{ github.event_name }}' -eq 'workflow_dispatch') {
-              $paths = @('./Core', './Git', './Build', './WorkItemTracking')
+              $paths = @('./Core', './Git', './Build', './WorkItemTracking', './Pipelines', './DistributedTask', './Policy', './Hooks', './Wiki')
           } else {
-              if ('${{ needs.detect-changes.outputs.core }}' -eq 'true')  { $paths += './Core' }
-              if ('${{ needs.detect-changes.outputs.git }}' -eq 'true')   { $paths += './Git' }
-              if ('${{ needs.detect-changes.outputs.build }}' -eq 'true') { $paths += './Build' }
-              if ('${{ needs.detect-changes.outputs.wit }}' -eq 'true')   { $paths += './WorkItemTracking' }
+              if ('${{ needs.detect-changes.outputs.core }}' -eq 'true')            { $paths += './Core' }
+              if ('${{ needs.detect-changes.outputs.git }}' -eq 'true')             { $paths += './Git' }
+              if ('${{ needs.detect-changes.outputs.build }}' -eq 'true')           { $paths += './Build' }
+              if ('${{ needs.detect-changes.outputs.wit }}' -eq 'true')             { $paths += './WorkItemTracking' }
+              if ('${{ needs.detect-changes.outputs.pipelines }}' -eq 'true')       { $paths += './Pipelines' }
+              if ('${{ needs.detect-changes.outputs.distributedtask }}' -eq 'true') { $paths += './DistributedTask' }
+              if ('${{ needs.detect-changes.outputs.policy }}' -eq 'true')          { $paths += './Policy' }
+              if ('${{ needs.detect-changes.outputs.hooks }}' -eq 'true')           { $paths += './Hooks' }
+              if ('${{ needs.detect-changes.outputs.wiki }}' -eq 'true')            { $paths += './Wiki' }
           }
 
           if ($paths.Count -eq 0) {
@@ -206,10 +236,15 @@ jobs:
                 "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             BATS_FILES=$(find . -name '*.bats' -not -path './.git/*')
           else
-            [[ "${{ needs.detect-changes.outputs.core }}" == "true" ]]  && BATS_FILES="$BATS_FILES $(find Core/ -name '*.bats' 2>/dev/null)"
-            [[ "${{ needs.detect-changes.outputs.git }}" == "true" ]]   && BATS_FILES="$BATS_FILES $(find Git/ -name '*.bats' 2>/dev/null)"
-            [[ "${{ needs.detect-changes.outputs.build }}" == "true" ]] && BATS_FILES="$BATS_FILES $(find Build/ -name '*.bats' 2>/dev/null)"
-            [[ "${{ needs.detect-changes.outputs.wit }}" == "true" ]]   && BATS_FILES="$BATS_FILES $(find WorkItemTracking/ -name '*.bats' 2>/dev/null)"
+            [[ "${{ needs.detect-changes.outputs.core }}" == "true" ]]            && BATS_FILES="$BATS_FILES $(find Core/ -name '*.bats' 2>/dev/null)"
+            [[ "${{ needs.detect-changes.outputs.git }}" == "true" ]]             && BATS_FILES="$BATS_FILES $(find Git/ -name '*.bats' 2>/dev/null)"
+            [[ "${{ needs.detect-changes.outputs.build }}" == "true" ]]           && BATS_FILES="$BATS_FILES $(find Build/ -name '*.bats' 2>/dev/null)"
+            [[ "${{ needs.detect-changes.outputs.wit }}" == "true" ]]             && BATS_FILES="$BATS_FILES $(find WorkItemTracking/ -name '*.bats' 2>/dev/null)"
+            [[ "${{ needs.detect-changes.outputs.pipelines }}" == "true" ]]       && BATS_FILES="$BATS_FILES $(find Pipelines/ -name '*.bats' 2>/dev/null)"
+            [[ "${{ needs.detect-changes.outputs.distributedtask }}" == "true" ]] && BATS_FILES="$BATS_FILES $(find DistributedTask/ -name '*.bats' 2>/dev/null)"
+            [[ "${{ needs.detect-changes.outputs.policy }}" == "true" ]]          && BATS_FILES="$BATS_FILES $(find Policy/ -name '*.bats' 2>/dev/null)"
+            [[ "${{ needs.detect-changes.outputs.hooks }}" == "true" ]]           && BATS_FILES="$BATS_FILES $(find Hooks/ -name '*.bats' 2>/dev/null)"
+            [[ "${{ needs.detect-changes.outputs.wiki }}" == "true" ]]            && BATS_FILES="$BATS_FILES $(find Wiki/ -name '*.bats' 2>/dev/null)"
           fi
 
           BATS_FILES=$(echo "$BATS_FILES" | xargs)
@@ -354,7 +389,15 @@ jobs:
             All tests passed: **offline unit tests** (T1) + **live integration** (T2).
 
             ### Tested API Areas
-            - **Core / Projects** — List, Get, Update
+            - **Core** — Projects (List, Get, Update) · Teams (List)
+            - **Git** — Repositories (List, Get, Create, Delete) · PullRequests (List, Get, Create, Update) · PullRequestThreads (List) · Commits (List, Get) · Pushes (List) · Refs (List)
+            - **Build** — Definitions (List, Get) · Builds (List, Get) · Artifacts (List)
+            - **Pipelines** — Pipelines (List, Get, Run) · Runs (List, Get)
+            - **WorkItemTracking** — WorkItems (Get, Create, Update, Batch Get, Delete) · Wiql (Query) · Fields (List) · WorkItemTypes (List) · Comments (List, Add) · Queries (List, Get)
+            - **DistributedTask** — Pools (List) · VariableGroups (List, Get) · Environments (List, Get)
+            - **Policy** — Configurations (List, Get)
+            - **Hooks** — Subscriptions (List, Get)
+            - **Wiki** — Wikis (List, Get)
 
             ### Test Tiers
             | Tier | Status |

@@ -1,0 +1,8 @@
+{
+  "detailedStatus": {
+    "failureMessage": "sample-string",
+    "mergeCommitId": "sample-string"
+  },
+  "mergeOperationId": 1,
+  "status": {}
+}

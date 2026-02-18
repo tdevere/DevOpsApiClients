@@ -1,0 +1,21 @@
+{
+  "id": "s1a2b3c4-d5e6-7890-abcd-ef1234567890",
+  "eventType": "git.push",
+  "status": "enabled",
+  "publisherId": "tfs",
+  "publisherInputs": {
+    "repository": "r1a2b3c4-d5e6-7890-abcd-ef1234567890",
+    "branch": "main",
+    "projectId": "p1a2b3c4-d5e6-7890-abcd-ef1234567890"
+  },
+  "consumerId": "webHooks",
+  "consumerActionId": "httpRequest",
+  "consumerInputs": {
+    "url": "https://example.com/webhook/push"
+  },
+  "createdBy": {
+    "displayName": "Alice Developer",
+    "uniqueName": "alice@example.com"
+  },
+  "createdDate": "2026-01-10T09:00:00Z"
+}

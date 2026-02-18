@@ -1,0 +1,20 @@
+{
+  "logs": [
+    {
+      "createdOn": "2026-01-15T10:30:00Z",
+      "id": 1,
+      "lastChangedOn": "2026-01-15T10:30:00Z",
+      "lineCount": 1,
+      "signedContent": {
+        "signatureExpires": {},
+        "url": {}
+      },
+      "url": "sample-string"
+    }
+  ],
+  "signedContent": {
+    "signatureExpires": "2026-01-15T10:30:00Z",
+    "url": "sample-string"
+  },
+  "url": "sample-string"
+}

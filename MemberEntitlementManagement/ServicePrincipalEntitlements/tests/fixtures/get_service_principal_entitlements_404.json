@@ -1,0 +1,5 @@
+{
+  "message": "Service Principal Entitlements not found",
+  "typeKey": "ServicePrincipalEntitlementsNotFoundException",
+  "errorCode": 0
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "group": {
+      "description": "sample-string"
+    },
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "lastExecuted": "2026-01-15T10:30:00Z",
+    "licenseRule": {
+      "accountLicenseType": {},
+      "assignmentSource": {},
+      "gitHubLicenseType": {},
+      "licenseDisplayName": "sample-string",
+      "licensingSource": {},
+      "msdnLicenseType": {},
+      "status": {},
+      "statusMessage": "sample-string"
+    },
+    "members": [
+      {
+        "user": {}
+      }
+    ],
+    "projectEntitlements": [
+      {
+        "assignmentSource": {},
+        "group": {},
+        "projectPermissionInherited": {},
+        "projectRef": {},
+        "teamRefs": {}
+      }
+    ],
+    "status": {}
+  }
+]

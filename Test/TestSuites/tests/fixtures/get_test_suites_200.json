@@ -1,0 +1,28 @@
+{
+  "pointAssignments": [
+    {
+      "configuration": {
+        "id": {},
+        "name": {},
+        "url": {}
+      },
+      "tester": {
+        "directoryAlias": {},
+        "id": {},
+        "imageUrl": {},
+        "inactive": {},
+        "isAadIdentity": {},
+        "isContainer": {},
+        "isDeletedInOrigin": {},
+        "profileUrl": {}
+      }
+    }
+  ],
+  "testCase": {
+    "id": "sample-string",
+    "name": "sample-string",
+    "type": "sample-string",
+    "url": "sample-string",
+    "webUrl": "sample-string"
+  }
+}

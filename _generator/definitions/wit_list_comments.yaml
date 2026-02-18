@@ -1,0 +1,62 @@
+# Operation Definition: WorkItemTracking / Comments / List Comments
+domain: WorkItemTracking
+resource: Comments
+operation: list_comments
+ps_verb: List
+ps_noun: WorkItemComments
+
+http_method: GET
+url_path: "_apis/wit/workitems/{work_item_id}/comments"
+api_version: "7.2-preview.4"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/comments/list?view=azure-devops-rest-7.2"
+
+synopsis: "List all comments on a work item."
+description: "Returns all discussion comments for the specified work item."
+
+project_scoped: true
+
+params:
+  - name: work_item_id
+    env_var: WORK_ITEM_ID
+    description: "Work item ID (integer)"
+    required: true
+
+version_guard_keys:
+  - count
+  - comments
+
+success_status: 200
+output_mode: table
+list_key: comments
+table_columns:
+  - id
+  - text
+  - createdDate
+
+fixture_success:
+  totalCount: 2
+  count: 2
+  comments:
+    - id: 1
+      workItemId: 42
+      text: "Started investigating this issue."
+      createdBy:
+        displayName: "Alice Developer"
+        uniqueName: "alice@example.com"
+      createdDate: "2026-02-10T09:00:00Z"
+      modifiedDate: "2026-02-10T09:00:00Z"
+      url: "https://dev.azure.com/testorg/testproject/_apis/wit/workItems/42/comments/1"
+    - id: 2
+      workItemId: 42
+      text: "Found root cause — null reference in parser."
+      createdBy:
+        displayName: "Alice Developer"
+        uniqueName: "alice@example.com"
+      createdDate: "2026-02-11T14:30:00Z"
+      modifiedDate: "2026-02-11T14:30:00Z"
+      url: "https://dev.azure.com/testorg/testproject/_apis/wit/workItems/42/comments/2"
+
+fixture_error_404:
+  message: "Work item not found"
+  typeKey: "WorkItemNotFoundException"
+  errorCode: 0

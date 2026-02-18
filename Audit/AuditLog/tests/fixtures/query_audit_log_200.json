@@ -1,0 +1,16 @@
+{
+  "continuationToken": "sample-string",
+  "decoratedAuditLogEntries": [
+    {
+      "actionId": "sample-string",
+      "activityId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "actorClientId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "actorCUID": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "actorDisplayName": "sample-string",
+      "actorImageUrl": "sample-string",
+      "actorUPN": "sample-string",
+      "actorUserId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    }
+  ],
+  "hasMore": true
+}

@@ -1,0 +1,62 @@
+{
+  "count": 2,
+  "value": [
+    {
+      "id": 1,
+      "name": "Production-Secrets",
+      "description": "Production environment variables",
+      "type": "Vsts",
+      "createdBy": {
+        "displayName": "Alice Developer",
+        "uniqueName": "alice@example.com"
+      },
+      "createdOn": "2026-01-10T09:00:00Z",
+      "modifiedBy": {
+        "displayName": "Alice Developer",
+        "uniqueName": "alice@example.com"
+      },
+      "modifiedOn": "2026-02-15T11:00:00Z",
+      "variables": {
+        "DB_HOST": {
+          "value": "prod-db.example.com"
+        },
+        "DB_PASSWORD": {
+          "isSecret": true
+        }
+      },
+      "variableGroupProjectReferences": [
+        {
+          "projectReference": {
+            "id": "p1a2b3c4-d5e6-7890-abcd-ef1234567890",
+            "name": "TestProject"
+          },
+          "name": "Production-Secrets"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Build-Config",
+      "description": "Shared build configuration",
+      "type": "Vsts",
+      "createdBy": {
+        "displayName": "Bob Engineer",
+        "uniqueName": "bob@example.com"
+      },
+      "createdOn": "2026-01-15T14:00:00Z",
+      "modifiedBy": {
+        "displayName": "Bob Engineer",
+        "uniqueName": "bob@example.com"
+      },
+      "modifiedOn": "2026-02-10T10:00:00Z",
+      "variables": {
+        "BUILD_CONFIG": {
+          "value": "Release"
+        },
+        "DOTNET_VERSION": {
+          "value": "8.0"
+        }
+      }
+    }
+  ]
+}

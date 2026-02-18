@@ -1,0 +1,59 @@
+# Operation Definition: DistributedTask / Pools / List Agent Pools
+domain: DistributedTask
+resource: Pools
+operation: list_pools
+ps_verb: List
+ps_noun: AgentPools
+
+http_method: GET
+url_path: "_apis/distributedtask/pools"
+api_version: "7.2-preview.1"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/distributedtask/pools/get-agent-pools?view=azure-devops-rest-7.2"
+
+synopsis: "List all agent pools in the organization."
+description: "Returns all agent pools including hosted and self-hosted pools."
+
+project_scoped: false
+
+params: []
+
+version_guard_keys:
+  - count
+  - value
+
+success_status: 200
+output_mode: table
+table_columns:
+  - id
+  - name
+  - poolType
+
+fixture_success:
+  count: 3
+  value:
+    - id: 1
+      name: "Azure Pipelines"
+      isHosted: true
+      poolType: "automation"
+      size: 0
+      autoProvision: true
+      autoSize: true
+    - id: 2
+      name: "Default"
+      isHosted: false
+      poolType: "automation"
+      size: 3
+      autoProvision: false
+      autoSize: false
+    - id: 3
+      name: "Self-Hosted Linux"
+      isHosted: false
+      poolType: "automation"
+      size: 5
+      autoProvision: false
+      autoSize: false
+
+fixture_error_404:
+  message: "Organization not found"
+  typeKey: "OrganizationNotFoundException"
+  errorCode: 0

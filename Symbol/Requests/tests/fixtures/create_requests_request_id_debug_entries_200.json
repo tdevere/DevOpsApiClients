@@ -1,0 +1,23 @@
+[
+  {
+    "blobDetails": {
+      "blockHashes": [
+        {}
+      ],
+      "identifierValue": [
+        {}
+      ]
+    },
+    "blobIdentifier": {
+      "identifierValue": [
+        {}
+      ]
+    },
+    "blobUri": "sample-string",
+    "clientKey": "sample-string",
+    "domainId": {},
+    "informationLevel": {},
+    "requestId": "sample-string",
+    "size": 1
+  }
+]

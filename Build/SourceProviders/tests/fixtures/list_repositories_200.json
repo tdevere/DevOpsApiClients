@@ -1,0 +1,16 @@
+{
+  "continuationToken": "sample-string",
+  "pageLength": 1,
+  "repositories": [
+    {
+      "defaultBranch": "sample-string",
+      "fullName": "sample-string",
+      "id": "sample-string",
+      "name": "sample-string",
+      "properties": {},
+      "sourceProviderName": "sample-string",
+      "url": "sample-string"
+    }
+  ],
+  "totalPageCount": 1
+}

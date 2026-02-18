@@ -1,0 +1,12 @@
+{
+  "operationReference": {
+    "id": "sample-string",
+    "status": "sample-string",
+    "url": "sample-string"
+  },
+  "payload": {
+    "comment": "sample-string",
+    "name": "sample-string",
+    "stream": "sample-string"
+  }
+}

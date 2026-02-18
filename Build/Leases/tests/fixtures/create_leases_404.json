@@ -1,0 +1,5 @@
+{
+  "message": "Leases not found",
+  "typeKey": "LeasesNotFoundException",
+  "errorCode": 0
+}

@@ -1,0 +1,62 @@
+# Operation Definition: WorkItemTracking / WorkItems / Batch Get Work Items
+domain: WorkItemTracking
+resource: WorkItems
+operation: batch_get_work_items
+ps_verb: Get
+ps_noun: WorkItemsBatch
+
+http_method: POST
+url_path: "_apis/wit/workitemsbatch"
+api_version: "7.2-preview.1"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/get-work-items-batch?view=azure-devops-rest-7.2"
+
+synopsis: "Get multiple work items by IDs in a single request."
+description: "Retrieves a batch of work items by their IDs. More efficient than individual GET calls for multiple items."
+
+project_scoped: false
+
+params:
+  - name: work_item_ids
+    env_var: WORK_ITEM_IDS
+    description: "Comma-separated work item IDs (e.g. 1,2,3)"
+    required: true
+
+body_fields:
+  - json_path: ids
+    source: "param:work_item_ids"
+    description: "Array of work item IDs"
+
+version_guard_keys:
+  - count
+  - value
+
+success_status: 200
+output_mode: table
+table_columns:
+  - id
+  - fields
+
+fixture_success:
+  count: 2
+  value:
+    - id: 1
+      rev: 5
+      url: "https://dev.azure.com/testorg/_apis/wit/workItems/1"
+      fields:
+        System.Id: 1
+        System.Title: "Setup CI pipeline"
+        System.State: "Active"
+        System.WorkItemType: "Task"
+    - id: 2
+      rev: 3
+      url: "https://dev.azure.com/testorg/_apis/wit/workItems/2"
+      fields:
+        System.Id: 2
+        System.Title: "Fix login bug"
+        System.State: "Resolved"
+        System.WorkItemType: "Bug"
+
+fixture_error_404:
+  message: "One or more work items were not found"
+  typeKey: "WorkItemNotFoundException"
+  errorCode: 0

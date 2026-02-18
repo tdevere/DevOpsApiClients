@@ -1,0 +1,5 @@
+{
+  "message": "Boards not found",
+  "typeKey": "BoardsNotFoundException",
+  "errorCode": 0
+}

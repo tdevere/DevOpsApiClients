@@ -25,7 +25,50 @@ body:
         - Core
         - Git
         - Build
+        - Pipelines
         - WorkItemTracking
+        - DistributedTask
+        - Policy
+        - Hooks
+        - Wiki
+        - Account
+        - AdvancedSecurity
+        - ApprovalsAndChecks
+        - Artifacts
+        - ArtifactsPackageTypes
+        - Audit
+        - Dashboard
+        - DelegatedAuth
+        - Environments
+        - ExtensionManagement
+        - Favorite
+        - Governance
+        - Graph
+        - IMS
+        - MemberEntitlementManagement
+        - Notification
+        - Operations
+        - PermissionsReport
+        - ProcessDefinitions
+        - ProcessAdmin
+        - Processes
+        - Profile
+        - Release
+        - ResourceUsage
+        - Search
+        - Security
+        - SecurityRoles
+        - ServiceEndpoint
+        - Status
+        - Symbol
+        - Test
+        - TestPlan
+        - TestResults
+        - TFVC
+        - TokenAdmin
+        - TokenAdministration
+        - Tokens
+        - Work
     validations:
       required: true
 

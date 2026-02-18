@@ -1,0 +1,29 @@
+[
+  {
+    "behaviors": [
+      {
+        "behavior": {},
+        "isDefault": {},
+        "isLegacyDefault": {},
+        "url": {}
+      }
+    ],
+    "color": "sample-string",
+    "customization": {},
+    "description": "sample-string",
+    "icon": "sample-string",
+    "inherits": "sample-string",
+    "isDisabled": true,
+    "layout": {
+      "extensions": [
+        {}
+      ],
+      "pages": [
+        {}
+      ],
+      "systemControls": [
+        {}
+      ]
+    }
+  }
+]

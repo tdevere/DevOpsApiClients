@@ -9,6 +9,9 @@
 # ============================================================================
 set -euo pipefail
 
+# Source shared helpers
+source "$(dirname "$0")/../../_shared/common.sh"
+
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
@@ -18,9 +21,11 @@ PROJECT="${PROJECT_ID:?ERROR: Set the PROJECT_ID environment variable (name or G
 PAT="${AZURE_DEVOPS_PAT:?ERROR: Set the AZURE_DEVOPS_PAT environment variable.}"
 
 # ---------------------------------------------------------------------------
-# Auth
+# Auth & logging
 # ---------------------------------------------------------------------------
-AUTH=$(printf ':%s' "$PAT" | base64 -w0)
+AUTH=$(ado_build_auth "$PAT")
+ado_log_init "get_project"
+ado_log_info "Getting project '${PROJECT}' in org '${ORG}'"
 
 # ---------------------------------------------------------------------------
 # API call

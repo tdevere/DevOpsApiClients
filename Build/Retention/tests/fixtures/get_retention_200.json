@@ -1,0 +1,22 @@
+{
+  "purgeArtifacts": {
+    "max": 1,
+    "min": 1,
+    "value": 1
+  },
+  "purgePullRequestRuns": {
+    "max": 1,
+    "min": 1,
+    "value": 1
+  },
+  "purgeRuns": {
+    "max": 1,
+    "min": 1,
+    "value": 1
+  },
+  "retainRunsPerProtectedBranch": {
+    "max": 1,
+    "min": 1,
+    "value": 1
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "workItems": [
+    {
+      "rel": "sample-string",
+      "source": {
+        "id": {},
+        "url": {}
+      },
+      "target": {
+        "id": {},
+        "url": {}
+      }
+    }
+  ]
+}

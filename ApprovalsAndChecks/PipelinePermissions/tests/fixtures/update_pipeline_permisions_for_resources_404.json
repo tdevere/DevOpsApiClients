@@ -1,0 +1,5 @@
+{
+  "message": "Pipeline Permissions not found",
+  "typeKey": "PipelinePermissionsNotFoundException",
+  "errorCode": 0
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "lastError": "sample-string",
+    "modules": [
+      {
+        "blockCount": {},
+        "blockData": {},
+        "fileUrl": {},
+        "functions": {},
+        "name": {},
+        "signature": {},
+        "signatureAge": {},
+        "statistics": {}
+      }
+    ],
+    "state": "sample-string",
+    "testRun": {
+      "id": "sample-string",
+      "name": "sample-string",
+      "url": "sample-string"
+    }
+  }
+]

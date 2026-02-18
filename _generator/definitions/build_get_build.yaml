@@ -1,0 +1,66 @@
+# Operation Definition: Build / Builds / Get Build
+domain: Build
+resource: Builds
+operation: get_build
+ps_verb: Get
+ps_noun: Build
+
+http_method: GET
+url_path: "_apis/build/builds/{build_id}"
+api_version: "7.2"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/build/builds/get?view=azure-devops-rest-7.2"
+
+synopsis: "Get details of a specific build."
+description: "Returns detailed information about a build including status, result, timeline, and source info."
+
+project_scoped: true
+
+params:
+  - name: build_id
+    env_var: BUILD_ID
+    description: "Build ID (integer)"
+    required: true
+
+version_guard_keys:
+  - id
+  - buildNumber
+
+success_status: 200
+output_mode: message
+output_message: "Build {buildNumber}: {status} — {result}"
+
+fixture_success:
+  id: 42
+  buildNumber: "20260217.1"
+  status: "completed"
+  result: "succeeded"
+  definition:
+    id: 1
+    name: "CI-Build"
+  project:
+    id: "p1a2b3c4-d5e6-7890-abcd-ef1234567890"
+    name: "TestProject"
+  sourceBranch: "refs/heads/main"
+  sourceVersion: "abc123def456"
+  queueTime: "2026-02-17T10:00:00Z"
+  startTime: "2026-02-17T10:00:05Z"
+  finishTime: "2026-02-17T10:03:22Z"
+  requestedBy:
+    displayName: "Alice Developer"
+    uniqueName: "alice@example.com"
+  requestedFor:
+    displayName: "Alice Developer"
+    uniqueName: "alice@example.com"
+  url: "https://dev.azure.com/testorg/testproject/_apis/build/builds/42"
+  _links:
+    self:
+      href: "https://dev.azure.com/testorg/testproject/_apis/build/builds/42"
+    web:
+      href: "https://dev.azure.com/testorg/testproject/_build/results?buildId=42"
+    timeline:
+      href: "https://dev.azure.com/testorg/testproject/_apis/build/builds/42/timeline"
+
+fixture_error_404:
+  message: "Build not found"
+  typeKey: "BuildNotFoundException"
+  errorCode: 0

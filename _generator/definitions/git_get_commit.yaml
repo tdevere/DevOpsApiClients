@@ -1,0 +1,58 @@
+# Operation Definition: Git / Commits / Get Commit
+domain: Git
+resource: Commits
+operation: get_commit
+ps_verb: Get
+ps_noun: Commit
+
+http_method: GET
+url_path: "_apis/git/repositories/{repository_id}/commits/{commit_id}"
+api_version: "7.2"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/git/commits/get?view=azure-devops-rest-7.2"
+
+synopsis: "Get details of a specific Git commit."
+description: "Returns commit metadata including author, committer, message, and change counts."
+
+project_scoped: true
+
+params:
+  - name: repository_id
+    env_var: REPO_ID
+    description: "Repository name or GUID"
+    required: true
+  - name: commit_id
+    env_var: COMMIT_ID
+    description: "Full SHA-1 commit hash"
+    required: true
+
+version_guard_keys:
+  - commitId
+  - comment
+
+success_status: 200
+output_mode: message
+output_message: "Commit {commitId}: {comment}"
+
+fixture_success:
+  commitId: "abc123def456789012345678901234567890abcd"
+  comment: "Fix null reference in parser module"
+  author:
+    name: "Alice Developer"
+    email: "alice@example.com"
+    date: "2026-02-17T10:00:00Z"
+  committer:
+    name: "Alice Developer"
+    email: "alice@example.com"
+    date: "2026-02-17T10:00:00Z"
+  changeCounts:
+    Add: 2
+    Edit: 3
+    Delete: 0
+  url: "https://dev.azure.com/testorg/_apis/git/repositories/r1/commits/abc123def456789012345678901234567890abcd"
+  parents:
+    - "def456789012345678901234567890abcdef1234"
+
+fixture_error_404:
+  message: "Commit not found"
+  typeKey: "GitCommitNotFoundException"
+  errorCode: 0

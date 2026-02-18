@@ -1,0 +1,5 @@
+{
+  "message": "Service Principals not found",
+  "typeKey": "ServicePrincipalsNotFoundException",
+  "errorCode": 0
+}

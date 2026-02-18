@@ -1,0 +1,9 @@
+{
+  "areaPath": "sample-string",
+  "description": "sample-string",
+  "isPublic": true,
+  "machineRoles": "sample-string",
+  "testSettingsContent": "sample-string",
+  "testSettingsId": 1,
+  "testSettingsName": "sample-string"
+}

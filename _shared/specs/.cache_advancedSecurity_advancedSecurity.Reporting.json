@@ -1,0 +1,1806 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "title": "Reporting",
+    "description": "",
+    "termsOfService": "https://go.microsoft.com/fwlink/?LinkId=329770",
+    "contact": {
+      "name": "nugetvss",
+      "email": "nugetvss@microsoft.com"
+    },
+    "license": {
+      "name": "MICROSOFT SOFTWARE LICENSE TERMS",
+      "url": "https://go.microsoft.com/fwlink/?LinkId=329770"
+    },
+    "version": "7.2-preview"
+  },
+  "host": "advsec.dev.azure.com",
+  "x-ms-vss-area": "Reporting",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Summary Dashboard"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/{organization}/_apis/reporting/summary/alerts": {
+      "get": {
+        "tags": [
+          "Summary Dashboard"
+        ],
+        "x-ms-docs-override-version": "7.2-preview.1",
+        "x-ms-vss-resource": "summaryDashboard",
+        "x-ms-vss-method": "getAlertSummaryForOrg",
+        "x-ms-preview": true,
+        "description": "Get Alert summary by severity for the org",
+        "operationId": "Summary Dashboard_Get Alert Summary For Org",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization",
+            "description": "The name of the Azure DevOps organization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "criteria.alertTypes",
+            "description": "If provided, only return summary data for alerts of this type. Otherwise, return summary data for alerts of all types.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "AlertType"
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.keywords",
+            "description": "If provided, only return repos whose titles match this pattern.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "criteria.period",
+            "description": "If provided, summary data will be scoped to this time period.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "undefined",
+              "last24Hours",
+              "last7Days",
+              "last14Days",
+              "last30Days",
+              "last90Days"
+            ],
+            "x-ms-enum": {
+              "name": "TimePeriod",
+              "values": [
+                {
+                  "value": "undefined",
+                  "description": ""
+                },
+                {
+                  "value": "last24Hours",
+                  "description": ""
+                },
+                {
+                  "value": "last7Days",
+                  "description": ""
+                },
+                {
+                  "value": "last14Days",
+                  "description": ""
+                },
+                {
+                  "value": "last30Days",
+                  "description": ""
+                },
+                {
+                  "value": "last90Days",
+                  "description": ""
+                }
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.projects",
+            "description": "If provided, only return summary data for these projects Otherwise, return summary data for all projects.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.severities",
+            "description": "If provided, only return summary data for alerts at these severities. <br />Otherwise, return summary data for alerts at any severity.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "Severity"
+            }
+          },
+          {
+            "$ref": "#/parameters/api-Version-preview.1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrgAlertSummary"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "vso.advsec"
+            ]
+          }
+        ]
+      }
+    },
+    "/{organization}/_apis/reporting/summary/alertsbatch": {
+      "get": {
+        "tags": [
+          "Summary Dashboard"
+        ],
+        "x-ms-docs-override-version": "7.2-preview.1",
+        "x-ms-vss-resource": "summaryDashboard",
+        "x-ms-vss-method": "GetCombinedAlertsForOrg",
+        "x-ms-preview": true,
+        "description": "Get Combined Alerts for the org",
+        "operationId": "Summary Dashboard_List",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization",
+            "description": "The name of the Azure DevOps organization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "criteria.alertType",
+            "description": "If provided, only return alerts of the specified alert type.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "unknown",
+              "dependency",
+              "secret",
+              "code"
+            ],
+            "x-ms-enum": {
+              "name": "AlertType",
+              "values": [
+                {
+                  "value": "unknown",
+                  "description": "The code has an unspecified vulnerability type"
+                },
+                {
+                  "value": "dependency",
+                  "description": "The code uses a dependency with a known vulnerability."
+                },
+                {
+                  "value": "secret",
+                  "description": "The code contains a secret that has now been compromised and must be revoked."
+                },
+                {
+                  "value": "code",
+                  "description": "The code contains a weakness determined by static analysis."
+                }
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.alertValidityStatus",
+            "description": "If provided, only return alerts with the specified validity status.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "none",
+              "unknown",
+              "active",
+              "inactive"
+            ],
+            "x-ms-enum": {
+              "name": "AlertValidityStatus",
+              "values": [
+                {
+                  "value": "none",
+                  "description": "When there are no validation fingerprints attached to the alert."
+                },
+                {
+                  "value": "unknown",
+                  "description": "When the validations for validation fingerprints associated to the alert have not been conclusive."
+                },
+                {
+                  "value": "active",
+                  "description": "When at least one validation fingerprint associated to the alert is exploitable."
+                },
+                {
+                  "value": "inactive",
+                  "description": "When all validation fingerprints associated to the alert are not exploitable."
+                }
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.componentNames",
+            "description": "If provided, only return dependency alerts for the specified package names.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.componentTypes",
+            "description": "If provided, only return dependency alerts for the specified ecosystems (e.g., NuGet, Npm, Maven).",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "ComponentType"
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.dismissalTypes",
+            "description": "If provided, only return alerts with one of the specified dismissal types (closure reasons). Applicable only when filtering for closed/dismissed alerts.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "DismissalType"
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.fixedDateEnd",
+            "description": "If provided, only return alerts fixed on or before this date.",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "criteria.fixedDateStart",
+            "description": "If provided, only return alerts fixed on or after this date.",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "criteria.introducedDateEnd",
+            "description": "If provided, only return alerts introduced on or before this date.",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "criteria.introducedDateStart",
+            "description": "If provided, only return alerts introduced on or after this date.",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "in": "query",
+            "name": "criteria.keywords",
+            "description": "If provided, only return alerts whose titles match this pattern.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "criteria.projects",
+            "description": "If provided, only return alerts for projects whose names are in this list.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.repositories",
+            "description": "If provided, only return alerts for repositories whose names are in this list.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.repositoryIds",
+            "description": "If provided, only return alerts for repositories whose IDs (GitRepositoryId) are in this list.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.ruleNames",
+            "description": "If provided, only return code scanning alerts or secret alerts matching the specified rule names.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.secretTypes",
+            "description": "If provided, only return secret alerts matching the specified secret types (rule friendly name or opaque ID).",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.severities",
+            "description": "If provided, only return alerts with the specified severities. Otherwise, return alerts at any severity.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "Severity"
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.state",
+            "description": "If provided, return alerts that are active or inactive based on this value. <br />Otherwise, return alerts in any state.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "x-ms-enum": {
+              "name": "DashboardAlertState",
+              "values": [
+                {
+                  "value": "open",
+                  "description": "Alert has been detected in the code and corresponds to 'Active' state."
+                },
+                {
+                  "value": "closed",
+                  "description": "Alert corresponds to 'Unknown', 'Dismissed', 'Fixed' or 'AutoDismissed' states."
+                }
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.toolNames",
+            "description": "If provided, only return code scanning alerts detected by the specified tools.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "top",
+            "description": "The maximum number of alerts to return",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "continuationToken",
+            "description": "If there are more alerts than can be returned, a continuation token is placed in the \"x-ms-continuationtoken\" header.  Use that token here to get the next page of alerts",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/api-Version-preview.1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DashboardAlert"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "vso.advsec"
+            ]
+          }
+        ]
+      }
+    },
+    "/{organization}/_apis/reporting/summary/enablement": {
+      "get": {
+        "tags": [
+          "Summary Dashboard"
+        ],
+        "x-ms-docs-override-version": "7.2-preview.1",
+        "x-ms-vss-resource": "summaryDashboard",
+        "x-ms-vss-method": "getEnablementSummaryForOrg",
+        "x-ms-preview": true,
+        "description": "Get Enablement summary for the org",
+        "operationId": "Summary Dashboard_Get Enablement Summary For Org",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization",
+            "description": "The name of the Azure DevOps organization.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "criteria.keywords",
+            "description": "If provided, only return repos whose titles match this pattern.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "criteria.projects",
+            "description": "If provided, only return summary data for these projects. Otherwise, return summary data for all projects.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "criteria.states.anyTool",
+            "description": "True if any tool is enabled for the repository, false if any tool is disabled.",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "criteria.states.codeAlerts",
+            "description": "True if code scanning alerts are enabled for the repository, false if disabled.",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "criteria.states.codePRAlerts",
+            "description": "True if code scanning pull request alerts are enabled for the repository, false if disabled.",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "criteria.states.dependencyAlerts",
+            "description": "True if dependency alerts are enabled for the repository, false if disabled.",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "criteria.states.dependencyPRAlerts",
+            "description": "True if dependency pull request alerts are enabled for the repository, false if disabled.",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "criteria.states.pushProtection",
+            "description": "True if pushes containing secrets will be blocked, false if they will not.",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "criteria.states.secretAlerts",
+            "description": "True if secret scanning is enabled for the repository, false if disabled.",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "$ref": "#/parameters/api-Version-preview.1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrgEnablementSummary"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "vso.advsec"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AdvancedFilter": {
+      "description": "Represents an advanced filter configuration for the Reporting dashboard.",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AdvancedFilterCreate"
+        }
+      ],
+      "properties": {
+        "_links": {
+          "description": "Link references to related REST resources.",
+          "$ref": "#/definitions/ReferenceLinks"
+        },
+        "changedBy": {
+          "description": "The identity of the user who last changed the advanced filter.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "changedDate": {
+          "description": "The date and time when the advanced filter was last changed.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdBy": {
+          "description": "The identity of the user who created the advanced filter.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "createdDate": {
+          "description": "The date and time when the advanced filter was created.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "description": "Unique identifier for the advanced filter.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "isDeleted": {
+          "description": "Indicates whether the advanced filter has been soft-deleted.",
+          "type": "boolean"
+        },
+        "url": {
+          "description": "The URL of the advanced filter.",
+          "type": "string"
+        }
+      }
+    },
+    "AdvancedFilterCreate": {
+      "description": "Represents the data required to create an advanced filter configuration for the Reporting dashboard. Also serves as the base class for AdvancedFilter.",
+      "type": "object",
+      "properties": {
+        "filterCriteria": {
+          "description": "The filter criteria to be applied when this advanced filter is selected.",
+          "$ref": "#/definitions/CombinedAlertFilterCriteria"
+        },
+        "name": {
+          "description": "User-provided name for the advanced filter.",
+          "type": "string"
+        }
+      }
+    },
+    "AdvancedFilterUpdate": {
+      "description": "Represents the data required to update an advanced filter configuration. Only the name can be updated.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The new name for the advanced filter.",
+          "type": "string"
+        }
+      }
+    },
+    "AlertSummaryBySeverity": {
+      "description": "Alert Summary by severity.",
+      "type": "object",
+      "properties": {
+        "critical": {
+          "description": "Total Critical severity alerts.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "high": {
+          "description": "Total High severity alerts.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "low": {
+          "description": "Total low severity alerts.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "medium": {
+          "description": "Total Medium severity alerts.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "note": {
+          "description": "Total Note severity alerts.",
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "AlertSummaryByState": {
+      "description": "Alert Summary by state.",
+      "type": "object",
+      "properties": {
+        "dismissed": {
+          "description": "Total Dismissed state alerts.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "fixed": {
+          "description": "Total Fixed state alerts.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "new": {
+          "description": "Total New state alerts.",
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "CodeScanningRuleInfo": {
+      "description": "Represents code scanning rule information for filtering purposes.",
+      "type": "object",
+      "properties": {
+        "friendlyName": {
+          "description": "The human-readable name of the rule.",
+          "type": "string"
+        },
+        "opaqueId": {
+          "description": "The opaque identifier of the rule (e.g., SARIF rule ID).",
+          "type": "string"
+        },
+        "toolName": {
+          "description": "The name of the tool that defines this rule.",
+          "type": "string"
+        }
+      }
+    },
+    "CombinedAlertFilterCriteria": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "alertType": {
+          "description": "If provided, only return alerts of the specified alert type.",
+          "enum": [
+            "unknown",
+            "dependency",
+            "secret",
+            "code"
+          ],
+          "x-ms-enum": {
+            "name": "AlertType",
+            "values": [
+              {
+                "value": "unknown",
+                "description": "The code has an unspecified vulnerability type"
+              },
+              {
+                "value": "dependency",
+                "description": "The code uses a dependency with a known vulnerability."
+              },
+              {
+                "value": "secret",
+                "description": "The code contains a secret that has now been compromised and must be revoked."
+              },
+              {
+                "value": "code",
+                "description": "The code contains a weakness determined by static analysis."
+              }
+            ]
+          }
+        },
+        "alertValidityStatus": {
+          "description": "If provided, only return alerts with the specified validity status.",
+          "enum": [
+            "none",
+            "unknown",
+            "active",
+            "inactive"
+          ],
+          "x-ms-enum": {
+            "name": "AlertValidityStatus",
+            "values": [
+              {
+                "value": "none",
+                "description": "When there are no validation fingerprints attached to the alert."
+              },
+              {
+                "value": "unknown",
+                "description": "When the validations for validation fingerprints associated to the alert have not been conclusive."
+              },
+              {
+                "value": "active",
+                "description": "When at least one validation fingerprint associated to the alert is exploitable."
+              },
+              {
+                "value": "inactive",
+                "description": "When all validation fingerprints associated to the alert are not exploitable."
+              }
+            ]
+          }
+        },
+        "componentNames": {
+          "description": "If provided, only return dependency alerts for the specified package names.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "componentTypes": {
+          "description": "If provided, only return dependency alerts for the specified ecosystems (e.g., NuGet, Npm, Maven).",
+          "type": "array",
+          "items": {
+            "enum": [
+              "unknown",
+              "nuGet",
+              "npm",
+              "maven",
+              "git",
+              "other",
+              "rubyGems",
+              "cargo",
+              "pip",
+              "file",
+              "go",
+              "dockerImage",
+              "pod",
+              "linux",
+              "conda",
+              "dockerReference",
+              "vcpkg"
+            ],
+            "x-ms-enum": {
+              "name": "ComponentType",
+              "values": [
+                {
+                  "value": "unknown",
+                  "description": ""
+                },
+                {
+                  "value": "nuGet",
+                  "description": ""
+                },
+                {
+                  "value": "npm",
+                  "description": "Indicates the component is an Npm package."
+                },
+                {
+                  "value": "maven",
+                  "description": "Indicates the component is a Maven artifact."
+                },
+                {
+                  "value": "git",
+                  "description": "Indicates the component is a Git repository."
+                },
+                {
+                  "value": "other",
+                  "description": "Indicates the component is not any of the supported component types by Governance."
+                },
+                {
+                  "value": "rubyGems",
+                  "description": "Indicates the component is a Ruby gem."
+                },
+                {
+                  "value": "cargo",
+                  "description": "Indicates the component is a Cargo package."
+                },
+                {
+                  "value": "pip",
+                  "description": "Indicates the component is a Pip package."
+                },
+                {
+                  "value": "file",
+                  "description": "Indicates the component is a loose file. Not a package as understood by different package managers."
+                },
+                {
+                  "value": "go",
+                  "description": "Indicates the component is a Go package."
+                },
+                {
+                  "value": "dockerImage",
+                  "description": "Indicates the component is a Docker Image"
+                },
+                {
+                  "value": "pod",
+                  "description": "Indicates the component is a CocoaPods pod."
+                },
+                {
+                  "value": "linux",
+                  "description": "Indicates the component is found in a linux environment. A package understood by linux based package managers like apt and rpm."
+                },
+                {
+                  "value": "conda",
+                  "description": "Indicates the component is a Conda package."
+                },
+                {
+                  "value": "dockerReference",
+                  "description": "Indicates the component is a Docker Reference."
+                },
+                {
+                  "value": "vcpkg",
+                  "description": "Indicates the component is a Vcpkg Package."
+                }
+              ]
+            }
+          }
+        },
+        "dismissalTypes": {
+          "description": "If provided, only return alerts with one of the specified dismissal types (closure reasons). Applicable only when filtering for closed/dismissed alerts.",
+          "type": "array",
+          "items": {
+            "enum": [
+              "unknown",
+              "fixed",
+              "acceptedRisk",
+              "falsePositive",
+              "agreedToGuidance",
+              "toolUpgrade",
+              "notDistributed"
+            ],
+            "x-ms-enum": {
+              "name": "DismissalType",
+              "values": [
+                {
+                  "value": "unknown",
+                  "description": "Dismissal type unknown"
+                },
+                {
+                  "value": "fixed",
+                  "description": "Dismissal indicating alert has been fixed"
+                },
+                {
+                  "value": "acceptedRisk",
+                  "description": "Dismissal indicating user is accepting a risk for the alert"
+                },
+                {
+                  "value": "falsePositive",
+                  "description": "Dismissal indicating alert is a false positive and will likely not be fixed."
+                },
+                {
+                  "value": "agreedToGuidance",
+                  "description": "Dismissal indicating user is agreeing to follow license guidance."
+                },
+                {
+                  "value": "toolUpgrade",
+                  "description": "Dismissal indicating backend detection tool was upgraded and the alert is not detected by the new version of tool."
+                },
+                {
+                  "value": "notDistributed",
+                  "description": "Dismissal indicating the affected dependencency is not distributed to end users."
+                }
+              ]
+            }
+          }
+        },
+        "fixedDateEnd": {
+          "description": "If provided, only return alerts fixed on or before this date.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "fixedDateStart": {
+          "description": "If provided, only return alerts fixed on or after this date.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "introducedDateEnd": {
+          "description": "If provided, only return alerts introduced on or before this date.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "introducedDateStart": {
+          "description": "If provided, only return alerts introduced on or after this date.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "keywords": {
+          "description": "If provided, only return alerts whose titles match this pattern.",
+          "type": "string"
+        },
+        "projects": {
+          "description": "If provided, only return alerts for projects whose names are in this list.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "repositories": {
+          "description": "If provided, only return alerts for repositories whose names are in this list.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "repositoryIds": {
+          "description": "If provided, only return alerts for repositories whose IDs (GitRepositoryId) are in this list.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "ruleNames": {
+          "description": "If provided, only return code scanning alerts or secret alerts matching the specified rule names.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "secretTypes": {
+          "description": "If provided, only return secret alerts matching the specified secret types (rule friendly name or opaque ID).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "severities": {
+          "description": "If provided, only return alerts with the specified severities. Otherwise, return alerts at any severity.",
+          "type": "array",
+          "items": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical",
+              "note",
+              "warning",
+              "error",
+              "undefined"
+            ],
+            "x-ms-enum": {
+              "name": "Severity",
+              "values": [
+                {
+                  "value": "low",
+                  "description": ""
+                },
+                {
+                  "value": "medium",
+                  "description": ""
+                },
+                {
+                  "value": "high",
+                  "description": ""
+                },
+                {
+                  "value": "critical",
+                  "description": ""
+                },
+                {
+                  "value": "note",
+                  "description": ""
+                },
+                {
+                  "value": "warning",
+                  "description": ""
+                },
+                {
+                  "value": "error",
+                  "description": ""
+                },
+                {
+                  "value": "undefined",
+                  "description": ""
+                }
+              ]
+            }
+          }
+        },
+        "state": {
+          "description": "If provided, return alerts that are active or inactive based on this value. <br />Otherwise, return alerts in any state.",
+          "enum": [
+            "open",
+            "closed"
+          ],
+          "x-ms-enum": {
+            "name": "DashboardAlertState",
+            "values": [
+              {
+                "value": "open",
+                "description": "Alert has been detected in the code and corresponds to 'Active' state."
+              },
+              {
+                "value": "closed",
+                "description": "Alert corresponds to 'Unknown', 'Dismissed', 'Fixed' or 'AutoDismissed' states."
+              }
+            ]
+          }
+        },
+        "toolNames": {
+          "description": "If provided, only return code scanning alerts detected by the specified tools.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DashboardAlert": {
+      "description": "An alert entity used in the dashboard for combined alerts.",
+      "type": "object",
+      "properties": {
+        "alertId": {
+          "description": "Identifier for the alert. It is unique within Azure DevOps organization.",
+          "type": "integer",
+          "format": "int64"
+        },
+        "alertType": {
+          "description": "Type of the alert. E.g. secret, code, etc.",
+          "enum": [
+            "unknown",
+            "dependency",
+            "secret",
+            "code"
+          ],
+          "x-ms-enum": {
+            "name": "AlertType",
+            "values": [
+              {
+                "value": "unknown",
+                "description": "The code has an unspecified vulnerability type"
+              },
+              {
+                "value": "dependency",
+                "description": "The code uses a dependency with a known vulnerability."
+              },
+              {
+                "value": "secret",
+                "description": "The code contains a secret that has now been compromised and must be revoked."
+              },
+              {
+                "value": "code",
+                "description": "The code contains a weakness determined by static analysis."
+              }
+            ]
+          }
+        },
+        "introducedDate": {
+          "description": "This value is computed and returned by the service. This value represents the first time the vulnerability was introduced.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "locations": {
+          "description": "This value is computed and returned by the service. It is a value based on the results from all analysis configurations. An example of a physical location is a file location.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DashboardAlertPhysicalLocation"
+          }
+        },
+        "projectName": {
+          "description": "Name of the project where the alert was detected.",
+          "type": "string"
+        },
+        "repositoryName": {
+          "description": "Name of the repository where the alert was detected.",
+          "type": "string"
+        },
+        "severity": {
+          "description": "Severity of the alert.",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical",
+            "note",
+            "warning",
+            "error",
+            "undefined"
+          ],
+          "x-ms-enum": {
+            "name": "Severity",
+            "values": [
+              {
+                "value": "low",
+                "description": ""
+              },
+              {
+                "value": "medium",
+                "description": ""
+              },
+              {
+                "value": "high",
+                "description": ""
+              },
+              {
+                "value": "critical",
+                "description": ""
+              },
+              {
+                "value": "note",
+                "description": ""
+              },
+              {
+                "value": "warning",
+                "description": ""
+              },
+              {
+                "value": "error",
+                "description": ""
+              },
+              {
+                "value": "undefined",
+                "description": ""
+              }
+            ]
+          }
+        },
+        "state": {
+          "description": "This value is computed and returned by the service. It is a value based on the results from all analysis configurations.",
+          "enum": [
+            "unknown",
+            "active",
+            "dismissed",
+            "fixed",
+            "autoDismissed"
+          ],
+          "x-ms-enum": {
+            "name": "State",
+            "values": [
+              {
+                "value": "unknown",
+                "description": "Alert is in an indeterminate state"
+              },
+              {
+                "value": "active",
+                "description": "Alert has been detected in the code"
+              },
+              {
+                "value": "dismissed",
+                "description": "Alert was dismissed by a user"
+              },
+              {
+                "value": "fixed",
+                "description": "The issue is no longer detected in the code"
+              },
+              {
+                "value": "autoDismissed",
+                "description": "The tool has determined that the issue is no longer a risk"
+              }
+            ]
+          }
+        },
+        "title": {
+          "description": "Title will only be rendered as text and does not support markdown formatting. There is a maximum character limit of 256.",
+          "type": "string"
+        },
+        "truncatedSecret": {
+          "description": "A truncated/obfuscated version of the secret pertaining to the alert (if applicable).",
+          "type": "string"
+        },
+        "validityStatus": {
+          "description": "Validity status of an alert. Currently, this is only applicable to secret alerts. In case of secret alerts, the validity status is computed by looking at the liveness results for validation fingerprints associated to an alert.",
+          "enum": [
+            "none",
+            "unknown",
+            "active",
+            "inactive"
+          ],
+          "x-ms-enum": {
+            "name": "AlertValidityStatus",
+            "values": [
+              {
+                "value": "none",
+                "description": "When there are no validation fingerprints attached to the alert."
+              },
+              {
+                "value": "unknown",
+                "description": "When the validations for validation fingerprints associated to the alert have not been conclusive."
+              },
+              {
+                "value": "active",
+                "description": "When at least one validation fingerprint associated to the alert is exploitable."
+              },
+              {
+                "value": "inactive",
+                "description": "When all validation fingerprints associated to the alert are not exploitable."
+              }
+            ]
+          }
+        }
+      }
+    },
+    "DashboardAlertPhysicalLocation": {
+      "description": "Location in the source control system where the issue was found",
+      "type": "object",
+      "properties": {
+        "alertId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "filePath": {
+          "description": "Path of the file where the issue was found",
+          "type": "string"
+        },
+        "region": {
+          "description": "Details about the location where the issue was found including a snippet",
+          "$ref": "#/definitions/Region"
+        }
+      }
+    },
+    "EnablementFilterCriteria": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "keywords": {
+          "description": "If provided, only return repos whose titles match this pattern.",
+          "type": "string"
+        },
+        "projects": {
+          "description": "If provided, only return summary data for these projects. Otherwise, return summary data for all projects.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "states": {
+          "description": "If provided, only return summary data for these enablement states. Otherwise, return summary data at any state.",
+          "$ref": "#/definitions/EnablementStateTypes"
+        }
+      }
+    },
+    "EnablementStateTypes": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "anyTool": {
+          "description": "True if any tool is enabled for the repository, false if any tool is disabled.",
+          "type": "boolean"
+        },
+        "codeAlerts": {
+          "description": "True if code scanning alerts are enabled for the repository, false if disabled.",
+          "type": "boolean"
+        },
+        "codePRAlerts": {
+          "description": "True if code scanning pull request alerts are enabled for the repository, false if disabled.",
+          "type": "boolean"
+        },
+        "dependencyAlerts": {
+          "description": "True if dependency alerts are enabled for the repository, false if disabled.",
+          "type": "boolean"
+        },
+        "dependencyPRAlerts": {
+          "description": "True if dependency pull request alerts are enabled for the repository, false if disabled.",
+          "type": "boolean"
+        },
+        "pushProtection": {
+          "description": "True if pushes containing secrets will be blocked, false if they will not.",
+          "type": "boolean"
+        },
+        "secretAlerts": {
+          "description": "True if secret scanning is enabled for the repository, false if disabled.",
+          "type": "boolean"
+        }
+      }
+    },
+    "FilterCriteria": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "alertTypes": {
+          "description": "If provided, only return summary data for alerts of this type. Otherwise, return summary data for alerts of all types.",
+          "type": "array",
+          "items": {
+            "enum": [
+              "unknown",
+              "dependency",
+              "secret",
+              "code"
+            ],
+            "x-ms-enum": {
+              "name": "AlertType",
+              "values": [
+                {
+                  "value": "unknown",
+                  "description": "The code has an unspecified vulnerability type"
+                },
+                {
+                  "value": "dependency",
+                  "description": "The code uses a dependency with a known vulnerability."
+                },
+                {
+                  "value": "secret",
+                  "description": "The code contains a secret that has now been compromised and must be revoked."
+                },
+                {
+                  "value": "code",
+                  "description": "The code contains a weakness determined by static analysis."
+                }
+              ]
+            }
+          }
+        },
+        "keywords": {
+          "description": "If provided, only return repos whose titles match this pattern.",
+          "type": "string"
+        },
+        "period": {
+          "description": "If provided, summary data will be scoped to this time period.",
+          "enum": [
+            "undefined",
+            "last24Hours",
+            "last7Days",
+            "last14Days",
+            "last30Days",
+            "last90Days"
+          ],
+          "x-ms-enum": {
+            "name": "TimePeriod",
+            "values": [
+              {
+                "value": "undefined",
+                "description": ""
+              },
+              {
+                "value": "last24Hours",
+                "description": ""
+              },
+              {
+                "value": "last7Days",
+                "description": ""
+              },
+              {
+                "value": "last14Days",
+                "description": ""
+              },
+              {
+                "value": "last30Days",
+                "description": ""
+              },
+              {
+                "value": "last90Days",
+                "description": ""
+              }
+            ]
+          }
+        },
+        "projects": {
+          "description": "If provided, only return summary data for these projects Otherwise, return summary data for all projects.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "severities": {
+          "description": "If provided, only return summary data for alerts at these severities. <br />Otherwise, return summary data for alerts at any severity.",
+          "type": "array",
+          "items": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical",
+              "note",
+              "warning",
+              "error",
+              "undefined"
+            ],
+            "x-ms-enum": {
+              "name": "Severity",
+              "values": [
+                {
+                  "value": "low",
+                  "description": ""
+                },
+                {
+                  "value": "medium",
+                  "description": ""
+                },
+                {
+                  "value": "high",
+                  "description": ""
+                },
+                {
+                  "value": "critical",
+                  "description": ""
+                },
+                {
+                  "value": "note",
+                  "description": ""
+                },
+                {
+                  "value": "warning",
+                  "description": ""
+                },
+                {
+                  "value": "error",
+                  "description": ""
+                },
+                {
+                  "value": "undefined",
+                  "description": ""
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "OrgAlertSummary": {
+      "description": "Org Alert Summary.",
+      "type": "object",
+      "properties": {
+        "orgId": {
+          "description": "Org Id.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "projects": {
+          "description": "A list of Project summary data.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProjectAlertSummary"
+          }
+        }
+      }
+    },
+    "OrgEnablementSummary": {
+      "description": "Org Enablement Summary.",
+      "type": "object",
+      "properties": {
+        "orgId": {
+          "description": "Org Id.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "projects": {
+          "description": "A list of Project Enablement data.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProjectEnablementSummary"
+          }
+        }
+      }
+    },
+    "Project": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "ProjectAlertSummary": {
+      "description": "Project Alert Summary.",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "description": "Project Id.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "projectName": {
+          "description": "Project Name.",
+          "type": "string"
+        },
+        "repos": {
+          "description": "A list of RepoAlertSummary data.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RepoAlertSummary"
+          }
+        }
+      }
+    },
+    "ProjectAndRepoInfo": {
+      "description": "Represents project and repository information for filtering purposes.",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "description": "The unique identifier of the project.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "projectName": {
+          "description": "The name of the project.",
+          "type": "string"
+        },
+        "repositoryId": {
+          "description": "The unique identifier of the repository.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "repositoryName": {
+          "description": "The name of the repository.",
+          "type": "string"
+        }
+      }
+    },
+    "ProjectEnablementSummary": {
+      "description": "Project Enablement Summary.",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "description": "Project Id.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "projectName": {
+          "description": "Project Name.",
+          "type": "string"
+        },
+        "repos": {
+          "description": "A list of RepoEnablementSummary data.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RepoEnablementSummary"
+          }
+        }
+      }
+    },
+    "ReferenceLinks": {
+      "description": "The class to represent a collection of REST reference links.",
+      "type": "object",
+      "properties": {
+        "links": {
+          "description": "The readonly view of the links.  Because Reference links are readonly, we only want to expose them as read only.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "Region": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "columnEnd": {
+          "description": "The column where the code snippet ends",
+          "type": "integer",
+          "format": "int32"
+        },
+        "columnStart": {
+          "description": "The column where the code snippet starts",
+          "type": "integer",
+          "format": "int32"
+        },
+        "lineEnd": {
+          "description": "The line number where the code snippet ends",
+          "type": "integer",
+          "format": "int32"
+        },
+        "lineStart": {
+          "description": "The line number where the code snippet starts",
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "RepoAlertSummary": {
+      "description": "Repo Alert Summary.",
+      "type": "object",
+      "properties": {
+        "alertsBySeverity": {
+          "description": "Total alerts by severity.",
+          "$ref": "#/definitions/AlertSummaryBySeverity"
+        },
+        "alertsByState": {
+          "description": "Total alerts by state.",
+          "$ref": "#/definitions/AlertSummaryByState"
+        },
+        "openAlerts": {
+          "description": "Total active alerts in the repo.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "repoId": {
+          "description": "RepoId.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "repoName": {
+          "description": "Repo Name.",
+          "type": "string"
+        },
+        "totalAlerts": {
+          "description": "Total active alerts in the repo.",
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "RepoEnablementSummary": {
+      "description": "Repo Enablement Summary.",
+      "type": "object",
+      "properties": {
+        "advSecIsEnabled": {
+          "description": "AdvSec is enabled for the repo.",
+          "type": "boolean"
+        },
+        "codeSecurityEnabled": {
+          "description": "Code Security plan is enabled for the repo. Only present for Azure Dev Ops orgs who had enabled Advanced security after billing sku split has went live.",
+          "type": "boolean"
+        },
+        "repoId": {
+          "description": "RepoId.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "repoName": {
+          "description": "Repo Name.",
+          "type": "string"
+        },
+        "scanTypeMetadata": {
+          "description": "Repo scan type metadata for different scan types.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ScanTypeSummaryMetadata"
+          }
+        },
+        "scanTypeSummary": {
+          "description": "Repo enablement summary for different scan types.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ScanTypeSummaryProperties"
+          }
+        },
+        "secretProtectionEnabled": {
+          "description": "Secret Protection plan is enabled for the repo. Only present for Azure Dev Ops orgs who had enabled Advanced security after billing sku split has went live.",
+          "type": "boolean"
+        }
+      }
+    },
+    "ReportingUXComputedFilters": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "projects": {
+          "description": "Display reporting for specified projects. Show reporting for all projects if none are specified.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Project"
+          }
+        }
+      }
+    },
+    "ScanTypeSummaryMetadata": {
+      "description": "Metadata for a scan type.",
+      "type": "object",
+      "properties": {
+        "lastScanDate": {
+          "description": "The date and time of the last scan for the associated alert type/repo combination. Null if no scan has been performed.",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ScanTypeSummaryProperties": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "alerts": {
+          "description": "True if alerts are enabled for the associated alert type/repo combination, false if disabled.",
+          "$ref": "#/definitions/ScanTypeSummaryPropertiesData"
+        },
+        "prAlerts": {
+          "description": "True if pull request alerts are enabled for the associated alert type/repo combination, false if disabled.",
+          "$ref": "#/definitions/ScanTypeSummaryPropertiesData"
+        },
+        "pushProtection": {
+          "description": "True if push protection is enabled for the associated alert type/repo combination, false if disabled.",
+          "$ref": "#/definitions/ScanTypeSummaryPropertiesData"
+        }
+      }
+    },
+    "ScanTypeSummaryPropertiesData": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "Represents the state of the scan type summary property.",
+          "type": "boolean"
+        }
+      }
+    },
+    "VssJsonCollectionWrapper": {
+      "description": "This class is used to serialize collections as a single JSON object on the wire.",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/VssJsonCollectionWrapperBase"
+        }
+      ],
+      "properties": {
+        "value": {
+          "description": "The serialized item.",
+          "type": "string",
+          "format": "T"
+        }
+      }
+    },
+    "VssJsonCollectionWrapperBase": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "count": {
+          "description": "The number of serialized items.",
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    }
+  },
+  "parameters": {
+    "api-Version-preview.1": {
+      "name": "api-version",
+      "in": "query",
+      "description": "Version of the API to use.  This should be set to '7.2-preview.1' to use this version of the api.",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "securityDefinitions": {
+    "accessToken": {
+      "type": "basic",
+      "description": "Personal access token. Use any value for the user name and the token as the password."
+    },
+    "oauth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "https://app.vssps.visualstudio.com/oauth2/authorize&response_type=Assertion",
+      "tokenUrl": "https://app.vssps.visualstudio.com/oauth2/token?client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer",
+      "scopes": {
+        "vso.advsec": "Grants the ability to read alerts, result instances, analysis result instances"
+      }
+    }
+  },
+  "security": [
+    {
+      "accessToken": []
+    }
+  ],
+  "externalDocs": {
+    "description": "Azure DevOps REST APIs",
+    "url": "https://aka.ms/azure-devops-rest-apis"
+  }
+}

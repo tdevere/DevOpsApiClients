@@ -1,0 +1,28 @@
+{
+  "id": 1,
+  "isEnabled": true,
+  "isBlocking": true,
+  "isDeleted": false,
+  "type": {
+    "id": "fa4e907d-c16b-4a4c-9dfa-4916e5d171ab",
+    "displayName": "Minimum number of reviewers",
+    "url": "https://dev.azure.com/testorg/testproject/_apis/policy/types/fa4e907d-c16b-4a4c-9dfa-4916e5d171ab"
+  },
+  "settings": {
+    "minimumApproverCount": 2,
+    "creatorVoteCounts": false,
+    "scope": [
+      {
+        "repositoryId": "r1a2b3c4-d5e6-7890-abcd-ef1234567890",
+        "refName": "refs/heads/main",
+        "matchKind": "exact"
+      }
+    ]
+  },
+  "createdBy": {
+    "displayName": "Alice Developer",
+    "uniqueName": "alice@example.com"
+  },
+  "createdDate": "2026-01-10T09:00:00Z",
+  "url": "https://dev.azure.com/testorg/testproject/_apis/policy/configurations/1"
+}

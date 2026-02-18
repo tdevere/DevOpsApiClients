@@ -1,0 +1,53 @@
+# Operation Definition: Hooks / Subscriptions / Get Service Hook Subscription
+domain: Hooks
+resource: Subscriptions
+operation: get_subscription
+ps_verb: Get
+ps_noun: HookSubscription
+
+http_method: GET
+url_path: "_apis/hooks/subscriptions/{subscription_id}"
+api_version: "7.2-preview.1"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/hooks/subscriptions/get?view=azure-devops-rest-7.2"
+
+synopsis: "Get a service hook subscription by ID."
+description: "Returns the full details of a service hook subscription."
+
+project_scoped: false
+
+params:
+  - name: subscription_id
+    env_var: SUBSCRIPTION_ID
+    description: "Subscription ID (GUID)"
+    required: true
+
+version_guard_keys:
+  - id
+  - eventType
+
+success_status: 200
+output_mode: message
+output_message: "Subscription {id}: {eventType} [{status}]"
+
+fixture_success:
+  id: "s1a2b3c4-d5e6-7890-abcd-ef1234567890"
+  eventType: "git.push"
+  status: "enabled"
+  publisherId: "tfs"
+  publisherInputs:
+    repository: "r1a2b3c4-d5e6-7890-abcd-ef1234567890"
+    branch: "main"
+    projectId: "p1a2b3c4-d5e6-7890-abcd-ef1234567890"
+  consumerId: "webHooks"
+  consumerActionId: "httpRequest"
+  consumerInputs:
+    url: "https://example.com/webhook/push"
+  createdBy:
+    displayName: "Alice Developer"
+    uniqueName: "alice@example.com"
+  createdDate: "2026-01-10T09:00:00Z"
+
+fixture_error_404:
+  message: "Subscription not found"
+  typeKey: "SubscriptionNotFoundException"
+  errorCode: 0

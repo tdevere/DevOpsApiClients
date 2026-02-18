@@ -1,0 +1,15 @@
+{
+  "contribution": {
+    "contributionId": "sample-string",
+    "height": 1,
+    "inputs": {},
+    "showOnDeletedWorkItem": true
+  },
+  "id": "sample-string",
+  "inherited": true,
+  "isContribution": true,
+  "label": "sample-string",
+  "locked": true,
+  "order": 1,
+  "overridden": true
+}

@@ -1,0 +1,48 @@
+# Operation Definition: Wiki / Wikis / Get Wiki
+domain: Wiki
+resource: Wikis
+operation: get_wiki
+ps_verb: Get
+ps_noun: Wiki
+
+http_method: GET
+url_path: "_apis/wiki/wikis/{wiki_identifier}"
+api_version: "7.2-preview.2"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/wiki/wikis/get?view=azure-devops-rest-7.2"
+
+synopsis: "Get a wiki by its identifier."
+description: "Returns details of a specific wiki including its type, repository, and version info."
+
+project_scoped: true
+
+params:
+  - name: wiki_identifier
+    env_var: WIKI_ID
+    description: "Wiki identifier (GUID or name)"
+    required: true
+
+version_guard_keys:
+  - id
+  - name
+
+success_status: 200
+output_mode: message
+output_message: "Wiki: {name} (type: {type})"
+
+fixture_success:
+  id: "w1a2b3c4-d5e6-7890-abcd-ef1234567890"
+  name: "TestProject.wiki"
+  type: "projectWiki"
+  url: "https://dev.azure.com/testorg/testproject/_apis/wiki/wikis/w1a2b3c4-d5e6-7890-abcd-ef1234567890"
+  remoteUrl: "https://dev.azure.com/testorg/testproject/_wiki/wikis/TestProject.wiki"
+  versions:
+    - version: "wikiMaster"
+      versionType: "branch"
+  projectId: "p1a2b3c4-d5e6-7890-abcd-ef1234567890"
+  properties:
+    docsBlobStorageContainer: "wiki-blob-store"
+
+fixture_error_404:
+  message: "Wiki not found"
+  typeKey: "WikiNotFoundException"
+  errorCode: 0

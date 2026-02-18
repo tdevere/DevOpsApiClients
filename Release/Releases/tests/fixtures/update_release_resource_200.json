@@ -1,0 +1,35 @@
+{
+  "artifacts": [
+    {
+      "alias": "sample-string",
+      "definitionReference": {},
+      "isPrimary": true,
+      "isRetained": true,
+      "type": "sample-string"
+    }
+  ],
+  "comment": "sample-string",
+  "createdBy": {
+    "directoryAlias": "sample-string",
+    "id": "sample-string",
+    "imageUrl": "sample-string",
+    "inactive": true,
+    "isAadIdentity": true,
+    "isContainer": true,
+    "isDeletedInOrigin": true,
+    "profileUrl": "sample-string"
+  },
+  "createdFor": {
+    "directoryAlias": "sample-string",
+    "id": "sample-string",
+    "imageUrl": "sample-string",
+    "inactive": true,
+    "isAadIdentity": true,
+    "isContainer": true,
+    "isDeletedInOrigin": true,
+    "profileUrl": "sample-string"
+  },
+  "createdOn": "2026-01-15T10:30:00Z",
+  "definitionSnapshotRevision": 1,
+  "description": "sample-string"
+}

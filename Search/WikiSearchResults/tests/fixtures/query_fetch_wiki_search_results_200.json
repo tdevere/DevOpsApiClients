@@ -1,0 +1,27 @@
+{
+  "count": 1,
+  "results": [
+    {
+      "collection": {
+        "name": {}
+      },
+      "contentId": "sample-string",
+      "fileName": "sample-string",
+      "hits": [
+        {}
+      ],
+      "path": "sample-string",
+      "project": {
+        "id": {},
+        "name": {},
+        "visibility": {}
+      },
+      "wiki": {
+        "id": {},
+        "mappedPath": {},
+        "name": {},
+        "version": {}
+      }
+    }
+  ]
+}

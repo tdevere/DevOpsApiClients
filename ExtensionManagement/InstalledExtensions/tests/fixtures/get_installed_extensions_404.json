@@ -1,0 +1,5 @@
+{
+  "message": "Installed Extensions not found",
+  "typeKey": "InstalledExtensionsNotFoundException",
+  "errorCode": 0
+}

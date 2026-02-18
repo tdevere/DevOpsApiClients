@@ -1,0 +1,25 @@
+[
+  {
+    "actions": [
+      {
+        "allowResourceVersionOverride": {},
+        "consumerId": {},
+        "description": {},
+        "id": {},
+        "inputDescriptors": {},
+        "name": {},
+        "supportedEventTypes": {}
+      }
+    ],
+    "authenticationType": {},
+    "description": "sample-string",
+    "externalConfiguration": {
+      "createSubscriptionUrl": "sample-string",
+      "editSubscriptionPropertyName": "sample-string",
+      "hostedOnly": true
+    },
+    "id": "sample-string",
+    "imageUrl": "sample-string",
+    "informationUrl": "sample-string"
+  }
+]

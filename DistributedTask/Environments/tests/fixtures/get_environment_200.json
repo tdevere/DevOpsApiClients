@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "name": "Production",
+  "description": "Production environment with approval gates",
+  "createdBy": {
+    "displayName": "Alice Developer",
+    "uniqueName": "alice@example.com"
+  },
+  "createdOn": "2026-01-10T09:00:00Z",
+  "lastModifiedBy": {
+    "displayName": "Alice Developer",
+    "uniqueName": "alice@example.com"
+  },
+  "lastModifiedOn": "2026-02-15T11:00:00Z",
+  "project": {
+    "id": "p1a2b3c4-d5e6-7890-abcd-ef1234567890",
+    "name": "TestProject"
+  }
+}

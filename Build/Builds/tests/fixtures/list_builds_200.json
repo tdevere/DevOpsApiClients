@@ -1,0 +1,38 @@
+[
+  {
+    "agentSpecification": {
+      "identifier": "sample-string"
+    },
+    "appendCommitMessageToRunName": true,
+    "buildNumber": "sample-string",
+    "buildNumberRevision": 1,
+    "controller": {
+      "createdDate": "2026-01-15T10:30:00Z",
+      "description": "sample-string",
+      "enabled": true,
+      "status": {},
+      "updatedDate": "2026-01-15T10:30:00Z",
+      "uri": "sample-string"
+    },
+    "definition": {
+      "createdDate": "2026-01-15T10:30:00Z",
+      "id": 1,
+      "name": "sample-string",
+      "path": "sample-string",
+      "project": {
+        "abbreviation": {},
+        "defaultTeamImageUrl": {},
+        "description": {},
+        "id": {},
+        "lastUpdateTime": {},
+        "name": {},
+        "revision": {},
+        "state": {}
+      },
+      "queueStatus": {},
+      "revision": 1,
+      "type": {}
+    },
+    "deleted": true
+  }
+]

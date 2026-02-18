@@ -1,0 +1,31 @@
+{
+  "actionResults": [
+    {
+      "actionPath": "sample-string",
+      "actualResultMessage": "sample-string",
+      "iterationId": 1,
+      "sharedStepModel": {
+        "id": {},
+        "revision": {}
+      },
+      "stepIdentifier": "sample-string",
+      "url": "sample-string"
+    }
+  ],
+  "attachments": [
+    {
+      "actionPath": "sample-string",
+      "id": 1,
+      "iterationId": 1,
+      "name": "sample-string",
+      "size": 1,
+      "url": "sample-string"
+    }
+  ],
+  "comment": "sample-string",
+  "completedDate": "2026-01-15T10:30:00Z",
+  "durationInMs": 1.0,
+  "errorMessage": "sample-string",
+  "id": 1,
+  "outcome": "sample-string"
+}

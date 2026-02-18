@@ -1,0 +1,77 @@
+# Operation Definition: DistributedTask / VariableGroups / List Variable Groups
+domain: DistributedTask
+resource: VariableGroups
+operation: list_variable_groups
+ps_verb: List
+ps_noun: VariableGroups
+
+http_method: GET
+url_path: "_apis/distributedtask/variablegroups"
+api_version: "7.2-preview.2"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/distributedtask/variablegroups/get-variable-groups?view=azure-devops-rest-7.2"
+
+synopsis: "List all variable groups in a project."
+description: "Returns all variable groups including their variables (secrets are masked)."
+
+project_scoped: true
+
+params: []
+
+version_guard_keys:
+  - count
+  - value
+
+success_status: 200
+output_mode: table
+table_columns:
+  - id
+  - name
+  - type
+
+fixture_success:
+  count: 2
+  value:
+    - id: 1
+      name: "Production-Secrets"
+      description: "Production environment variables"
+      type: "Vsts"
+      createdBy:
+        displayName: "Alice Developer"
+        uniqueName: "alice@example.com"
+      createdOn: "2026-01-10T09:00:00Z"
+      modifiedBy:
+        displayName: "Alice Developer"
+        uniqueName: "alice@example.com"
+      modifiedOn: "2026-02-15T11:00:00Z"
+      variables:
+        DB_HOST:
+          value: "prod-db.example.com"
+        DB_PASSWORD:
+          isSecret: true
+      variableGroupProjectReferences:
+        - projectReference:
+            id: "p1a2b3c4-d5e6-7890-abcd-ef1234567890"
+            name: "TestProject"
+          name: "Production-Secrets"
+    - id: 2
+      name: "Build-Config"
+      description: "Shared build configuration"
+      type: "Vsts"
+      createdBy:
+        displayName: "Bob Engineer"
+        uniqueName: "bob@example.com"
+      createdOn: "2026-01-15T14:00:00Z"
+      modifiedBy:
+        displayName: "Bob Engineer"
+        uniqueName: "bob@example.com"
+      modifiedOn: "2026-02-10T10:00:00Z"
+      variables:
+        BUILD_CONFIG:
+          value: "Release"
+        DOTNET_VERSION:
+          value: "8.0"
+
+fixture_error_404:
+  message: "Project not found"
+  typeKey: "ProjectDoesNotExistWithNameException"
+  errorCode: 0

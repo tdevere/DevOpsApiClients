@@ -1,0 +1,21 @@
+{
+  "context": {
+    "genre": "sample-string",
+    "name": "sample-string"
+  },
+  "createdBy": {
+    "directoryAlias": "sample-string",
+    "id": "sample-string",
+    "imageUrl": "sample-string",
+    "inactive": true,
+    "isAadIdentity": true,
+    "isContainer": true,
+    "isDeletedInOrigin": true,
+    "profileUrl": "sample-string"
+  },
+  "creationDate": "2026-01-15T10:30:00Z",
+  "description": "sample-string",
+  "id": 1,
+  "state": {},
+  "targetUrl": "sample-string"
+}

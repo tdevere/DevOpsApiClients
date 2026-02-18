@@ -1,0 +1,5 @@
+{
+  "message": "Client not found",
+  "typeKey": "ClientNotFoundException",
+  "errorCode": 0
+}

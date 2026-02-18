@@ -1,0 +1,23 @@
+{
+  "deliveryResults": {
+    "enabled": true,
+    "endDate": "2026-01-15T10:30:00Z",
+    "maxTracedEntries": 1,
+    "startDate": "2026-01-15T10:30:00Z",
+    "tracedEntries": 1
+  },
+  "deliveryTracing": {
+    "enabled": true,
+    "endDate": "2026-01-15T10:30:00Z",
+    "maxTracedEntries": 1,
+    "startDate": "2026-01-15T10:30:00Z",
+    "tracedEntries": 1
+  },
+  "evaluationTracing": {
+    "enabled": true,
+    "endDate": "2026-01-15T10:30:00Z",
+    "maxTracedEntries": 1,
+    "startDate": "2026-01-15T10:30:00Z",
+    "tracedEntries": 1
+  }
+}

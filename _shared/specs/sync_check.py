@@ -37,10 +37,11 @@ URLS_FILE = SCRIPT_DIR / "upstream_urls.json"
 # Domain → local directory mapping
 # ---------------------------------------------------------------------------
 DOMAIN_DIR_MAP = {
-    "core":  "Core",
-    "git":   "Git",
-    "build": "Build",
-    "wit":   "WorkItemTracking",
+    "core":      "Core",
+    "git":       "Git",
+    "build":     "Build",
+    "wit":       "WorkItemTracking",
+    "pipelines": "Pipelines",
 }
 
 
@@ -245,7 +246,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Check upstream API spec changes.")
     parser.add_argument(
         "--domain",
-        choices=["all", "core", "git", "build", "wit"],
+        choices=["all", "core", "git", "build", "wit", "pipelines"],
         default="all",
         help="Domain to check (default: all)",
     )

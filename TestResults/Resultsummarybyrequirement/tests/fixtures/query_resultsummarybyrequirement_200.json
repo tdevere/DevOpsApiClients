@@ -1,0 +1,23 @@
+[
+  {
+    "summary": {
+      "duration": "sample-string",
+      "resultsByOutcome": {},
+      "runSummaryByState": {},
+      "testResultsContext": {
+        "build": {},
+        "contextType": {},
+        "pipelineReference": {},
+        "release": {}
+      },
+      "totalTests": 1
+    },
+    "workItem": {
+      "id": "sample-string",
+      "name": "sample-string",
+      "type": "sample-string",
+      "url": "sample-string",
+      "webUrl": "sample-string"
+    }
+  }
+]

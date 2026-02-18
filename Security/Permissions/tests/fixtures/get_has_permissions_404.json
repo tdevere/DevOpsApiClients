@@ -1,0 +1,5 @@
+{
+  "message": "Permissions not found",
+  "typeKey": "PermissionsNotFoundException",
+  "errorCode": 0
+}

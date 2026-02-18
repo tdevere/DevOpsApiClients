@@ -1,0 +1,134 @@
+{
+  "agent": {
+    "assignedAgentCloudRequest": {
+      "agent": {
+        "accessPoint": {},
+        "enabled": {},
+        "id": {},
+        "name": {},
+        "osDescription": {},
+        "provisioningState": {},
+        "status": {}
+      },
+      "agentCloudId": 1,
+      "agentConnectedTime": "2026-01-15T10:30:00Z",
+      "agentData": {
+        "item": {},
+        "type": {}
+      },
+      "agentSpecification": {
+        "item": {},
+        "type": {}
+      },
+      "pool": {
+        "id": {},
+        "isHosted": {},
+        "isLegacy": {},
+        "name": {},
+        "options": {},
+        "poolType": {},
+        "scope": {},
+        "size": {}
+      },
+      "poolProvidersTags": {},
+      "provisionedTime": "2026-01-15T10:30:00Z"
+    },
+    "assignedRequest": {
+      "agentSpecification": {
+        "item": {},
+        "type": {}
+      },
+      "data": {},
+      "definition": {
+        "id": {},
+        "name": {}
+      },
+      "demands": [
+        {}
+      ],
+      "hostId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "jobId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "jobName": "sample-string",
+      "lockedUntil": "2026-01-15T10:30:00Z"
+    },
+    "authorization": {
+      "authorizationUrl": "sample-string",
+      "clientId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "publicKey": {
+        "exponent": {},
+        "modulus": {}
+      }
+    },
+    "createdOn": "2026-01-15T10:30:00Z",
+    "lastCompletedRequest": {
+      "agentSpecification": {
+        "item": {},
+        "type": {}
+      },
+      "data": {},
+      "definition": {
+        "id": {},
+        "name": {}
+      },
+      "demands": [
+        {}
+      ],
+      "hostId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "jobId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "jobName": "sample-string",
+      "lockedUntil": "2026-01-15T10:30:00Z"
+    },
+    "maxParallelism": 1,
+    "pendingUpdate": {
+      "currentState": "sample-string",
+      "reason": {
+        "code": {}
+      },
+      "requestedBy": {
+        "directoryAlias": {},
+        "id": {},
+        "imageUrl": {},
+        "inactive": {},
+        "isAadIdentity": {},
+        "isContainer": {},
+        "isDeletedInOrigin": {},
+        "profileUrl": {}
+      },
+      "requestTime": "2026-01-15T10:30:00Z",
+      "sourceVersion": {
+        "major": {},
+        "minor": {},
+        "patch": {}
+      },
+      "targetVersion": {
+        "major": {},
+        "minor": {},
+        "patch": {}
+      }
+    },
+    "properties": {
+      "count": 1,
+      "item": {},
+      "keys": [
+        {}
+      ],
+      "values": [
+        {}
+      ]
+    }
+  },
+  "id": 1,
+  "properties": {
+    "count": 1,
+    "item": {},
+    "keys": [
+      "sample-string"
+    ],
+    "values": [
+      "sample-string"
+    ]
+  },
+  "tags": [
+    "sample-string"
+  ]
+}

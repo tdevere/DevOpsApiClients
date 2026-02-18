@@ -1,0 +1,23 @@
+{
+  "gitItemPath": "sample-string",
+  "id": 1,
+  "isNonConformant": true,
+  "isParentPage": true,
+  "order": 1,
+  "path": "sample-string",
+  "remoteUrl": "sample-string",
+  "subPages": [
+    {
+      "gitItemPath": "sample-string",
+      "id": 1,
+      "isNonConformant": true,
+      "isParentPage": true,
+      "order": 1,
+      "path": "sample-string",
+      "remoteUrl": "sample-string",
+      "subPages": [
+        {}
+      ]
+    }
+  ]
+}

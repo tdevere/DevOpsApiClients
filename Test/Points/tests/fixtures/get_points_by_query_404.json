@@ -1,0 +1,5 @@
+{
+  "message": "Points not found",
+  "typeKey": "PointsNotFoundException",
+  "errorCode": 0
+}

@@ -1,0 +1,60 @@
+# Operation Definition: DistributedTask / Environments / List Environments
+domain: DistributedTask
+resource: Environments
+operation: list_environments
+ps_verb: List
+ps_noun: Environments
+
+http_method: GET
+url_path: "_apis/distributedtask/environments"
+api_version: "7.2-preview.1"
+docs_url: "https://learn.microsoft.com/en-us/rest/api/azure/devops/distributedtask/environments/list?view=azure-devops-rest-7.2"
+
+synopsis: "List all pipeline environments in a project."
+description: "Returns all environments used for deployment approvals and checks."
+
+project_scoped: true
+
+params: []
+
+version_guard_keys:
+  - count
+  - value
+
+success_status: 200
+output_mode: table
+table_columns:
+  - id
+  - name
+  - description
+
+fixture_success:
+  count: 2
+  value:
+    - id: 1
+      name: "Production"
+      description: "Production environment with approval gates"
+      createdBy:
+        displayName: "Alice Developer"
+        uniqueName: "alice@example.com"
+      createdOn: "2026-01-10T09:00:00Z"
+      lastModifiedBy:
+        displayName: "Alice Developer"
+        uniqueName: "alice@example.com"
+      lastModifiedOn: "2026-02-15T11:00:00Z"
+    - id: 2
+      name: "Staging"
+      description: "Staging environment for pre-production testing"
+      createdBy:
+        displayName: "Bob Engineer"
+        uniqueName: "bob@example.com"
+      createdOn: "2026-01-12T10:00:00Z"
+      lastModifiedBy:
+        displayName: "Bob Engineer"
+        uniqueName: "bob@example.com"
+      lastModifiedOn: "2026-02-10T16:00:00Z"
+
+fixture_error_404:
+  message: "Project not found"
+  typeKey: "ProjectDoesNotExistWithNameException"
+  errorCode: 0
