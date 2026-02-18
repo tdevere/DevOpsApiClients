@@ -1,0 +1,248 @@
+# =============================================================================
+# Project Completion — Scheduled Copilot Agent Automation
+#
+# Runs every 6 hours (or on-demand). Each run:
+#   1. Assesses the project against a completion checklist
+#   2. Identifies the single highest-priority remaining task
+#   3. Creates a focused GitHub Issue assigned to Copilot Coding Agent
+#   4. Copilot picks up the issue, does the work, opens a PR
+#
+# On the next scheduled run, the tracker re-evaluates and picks the next task.
+# Once all checks pass, the workflow emits a "project complete" summary and stops.
+#
+# Guard rails:
+#   - Skips if there's already an open 'auto-completion' issue (prevents pileup)
+#   - Hard cap of 200 total auto-completion issues (safety brake)
+#   - Each issue is scoped to one well-defined task with acceptance criteria
+# =============================================================================
+name: Project Completion
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'     # Every 6 hours
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Create task even if one is already open'
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+permissions:
+  contents: read
+  issues: write
+
+# ═══════════════════════════════════════════════════════════════════════════════
+jobs:
+
+  # ---------------------------------------------------------------------------
+  # 1. Assess — Run the completion tracker to find the next task
+  # ---------------------------------------------------------------------------
+  assess:
+    name: "Assess Completion"
+    runs-on: ubuntu-latest
+    outputs:
+      status: ${{ steps.tracker.outputs.status }}
+      has_task: ${{ steps.tracker.outputs.has_task }}
+      task_title: ${{ steps.tracker.outputs.task_title }}
+      task_body: ${{ steps.tracker.outputs.task_body }}
+      task_labels: ${{ steps.tracker.outputs.task_labels }}
+      should_skip: ${{ steps.guard.outputs.should_skip }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: "Install dependencies"
+        run: pip install requests responses pytest pyyaml
+
+      # ── Guard: check for existing open auto-completion issues ──────────
+      - name: "Check for open tasks"
+        id: guard
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FORCE="${{ github.event.inputs.force || 'false' }}"
+
+          # Count open auto-completion issues
+          OPEN=$(gh issue list \
+            --repo "${{ github.repository }}" \
+            --label "auto-completion" \
+            --state open \
+            --json number \
+            --jq 'length')
+          echo "Open auto-completion issues: $OPEN"
+
+          # Count total auto-completion issues ever created (safety cap)
+          TOTAL=$(gh issue list \
+            --repo "${{ github.repository }}" \
+            --label "auto-completion" \
+            --state all \
+            --limit 250 \
+            --json number \
+            --jq 'length')
+          echo "Total auto-completion issues: $TOTAL"
+
+          if [[ "$FORCE" == "true" ]]; then
+            echo "Force mode — skipping guards"
+            echo "should_skip=false" >> "$GITHUB_OUTPUT"
+          elif [[ "$OPEN" -gt "0" ]]; then
+            echo "⏸️  Skipping — $OPEN auto-completion issue(s) still open"
+            echo "should_skip=true" >> "$GITHUB_OUTPUT"
+          elif [[ "$TOTAL" -ge "200" ]]; then
+            echo "🛑 Safety cap reached — 200 auto-completion issues created"
+            echo "should_skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ── Run the completion tracker ─────────────────────────────────────
+      - name: "Run completion tracker"
+        id: tracker
+        if: steps.guard.outputs.should_skip != 'true'
+        run: |
+          set +e
+          OUTPUT=$(python _generator/completion_tracker.py --verbose 2>&1)
+          RC=$?
+          echo "$OUTPUT"
+
+          # Parse the JSON from the last lines (verbose prints status lines first)
+          JSON=$(python _generator/completion_tracker.py 2>/dev/null)
+
+          STATUS=$(echo "$JSON" | python -c "import sys,json; d=json.load(sys.stdin); print(d['status'])" 2>/dev/null || echo "error")
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+
+          if [[ "$STATUS" == "incomplete" ]]; then
+            echo "has_task=true" >> "$GITHUB_OUTPUT"
+
+            # Extract task fields — use Python to handle multiline body safely
+            python3 -c "
+          import json, os
+          data = json.loads('''$JSON'''.replace(\"'''\", \"'\"))
+          " 2>/dev/null || true
+
+            # Safer extraction: write to temp files
+            python3 << 'PYEOF'
+          import json, os
+
+          with open(os.environ.get("GITHUB_OUTPUT", "/dev/null"), "a") as gh:
+              raw = open("/dev/stdin", "r") if False else None  # not used
+
+          # Re-run tracker to get clean JSON
+          import subprocess, sys
+          r = subprocess.run([sys.executable, "_generator/completion_tracker.py"],
+                             capture_output=True, text=True)
+          if r.returncode not in (0, 1):
+              print(f"Tracker error: {r.stderr}")
+              sys.exit(1)
+
+          data = json.loads(r.stdout)
+          task = data.get("next_task", {})
+
+          title = task.get("title", "Unknown task")
+          body = task.get("body", "No details available.")
+          labels = ",".join(task.get("labels", ["auto-completion"]))
+
+          # Write to GITHUB_OUTPUT using delimiter syntax for multiline
+          out = os.environ.get("GITHUB_OUTPUT", "")
+          if out:
+              with open(out, "a") as f:
+                  f.write(f"task_title={title}\n")
+                  # Multiline body needs delimiter
+                  import uuid
+                  delim = f"ghadelimiter_{uuid.uuid4().hex[:8]}"
+                  f.write(f"task_body<<{delim}\n")
+                  f.write(body)
+                  f.write(f"\n{delim}\n")
+                  f.write(f"task_labels={labels}\n")
+          PYEOF
+
+          else
+            echo "has_task=false" >> "$GITHUB_OUTPUT"
+            echo "task_title=" >> "$GITHUB_OUTPUT"
+            echo "task_body=" >> "$GITHUB_OUTPUT"
+            echo "task_labels=" >> "$GITHUB_OUTPUT"
+            echo "🎉 All completion checks passed — project is complete!"
+          fi
+
+      # ── Summary ────────────────────────────────────────────────────────
+      - name: "Summary"
+        if: always()
+        run: |
+          echo "### Project Completion Status" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ "${{ steps.guard.outputs.should_skip }}" == "true" ]]; then
+            echo "⏸️ **Skipped** — previous task still in progress or safety cap reached." >> "$GITHUB_STEP_SUMMARY"
+          elif [[ "${{ steps.tracker.outputs.status }}" == "complete" ]]; then
+            echo "🎉 **All checks passed** — project is complete!" >> "$GITHUB_STEP_SUMMARY"
+          elif [[ "${{ steps.tracker.outputs.has_task }}" == "true" ]]; then
+            echo "📋 **Next task:** ${{ steps.tracker.outputs.task_title }}" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "⚠️ Tracker did not produce a result." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  # ---------------------------------------------------------------------------
+  # 2. Dispatch — Create a GitHub Issue and assign to Copilot
+  # ---------------------------------------------------------------------------
+  dispatch:
+    name: "Dispatch to Copilot"
+    runs-on: ubuntu-latest
+    needs: assess
+    if: |
+      needs.assess.outputs.should_skip != 'true' &&
+      needs.assess.outputs.has_task == 'true'
+    steps:
+      - name: "Ensure auto-completion label exists"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh label create "auto-completion" \
+            --repo "${{ github.repository }}" \
+            --description "Auto-generated project completion task" \
+            --color "0E8A16" \
+            2>/dev/null || true
+
+      - name: "Create issue and assign to Copilot"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TASK_TITLE: ${{ needs.assess.outputs.task_title }}
+          TASK_BODY: ${{ needs.assess.outputs.task_body }}
+          TASK_LABELS: ${{ needs.assess.outputs.task_labels }}
+        run: |
+          echo "Creating issue: $TASK_TITLE"
+
+          # Parse comma-separated labels into --label flags
+          LABEL_FLAGS=""
+          IFS=',' read -ra LABELS <<< "$TASK_LABELS"
+          for label in "${LABELS[@]}"; do
+            label=$(echo "$label" | xargs)  # trim whitespace
+            if [[ -n "$label" ]]; then
+              # Ensure the label exists
+              gh label create "$label" \
+                --repo "${{ github.repository }}" \
+                --color "EDEDED" \
+                2>/dev/null || true
+              LABEL_FLAGS="$LABEL_FLAGS --label $label"
+            fi
+          done
+
+          # Create the issue
+          ISSUE_URL=$(gh issue create \
+            --repo "${{ github.repository }}" \
+            --title "$TASK_TITLE" \
+            --body "$TASK_BODY" \
+            $LABEL_FLAGS \
+            --assignee "copilot")
+
+          echo "✅ Created: $ISSUE_URL"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Dispatched Task" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Issue:** $ISSUE_URL" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Title:** $TASK_TITLE" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Assignee:** copilot" >> "$GITHUB_STEP_SUMMARY"
