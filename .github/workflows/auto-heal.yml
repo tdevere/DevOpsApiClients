@@ -54,8 +54,9 @@ jobs:
           fi
 
           # ── Extract pytest failures ──
-          grep -E "^FAILED |^FAILED " /tmp/failed_logs.txt \
-            | sed 's/.*FAILED /FAILED /' \
+          # GH Actions logs have prefixes: "Job\tStep\tTimestamp test::class FAILED [%]"
+          grep -oP '\S+\.py::\S+ FAILED' /tmp/failed_logs.txt \
+            | sed 's/ FAILED$//' \
             > /tmp/pytest_failures.txt 2>/dev/null || true
           PYTEST_COUNT=$(wc -l < /tmp/pytest_failures.txt | tr -d ' ')
 
@@ -63,12 +64,12 @@ jobs:
           PYTEST_SUMMARY=$(grep -oP '\d+ failed, \d+ passed' /tmp/failed_logs.txt | tail -1 || echo "")
 
           # ── Extract PowerShell parse errors ──
-          grep -E "Parse errors in|DuplicateFormalParameter|TermExpected|Missing" /tmp/failed_logs.txt \
+          grep -iE "Parse errors in|DuplicateFormalParameter|TermExpected|Missing closing" /tmp/failed_logs.txt \
             > /tmp/ps_errors.txt 2>/dev/null || true
           PS_COUNT=$(wc -l < /tmp/ps_errors.txt | tr -d ' ')
 
           # ── Extract bash syntax errors ──
-          grep -E "syntax error|bash -n.*failed|not ok" /tmp/failed_logs.txt \
+          grep -iE "syntax error|bash -n.*failed|^not ok |not ok " /tmp/failed_logs.txt \
             > /tmp/bash_errors.txt 2>/dev/null || true
           BASH_COUNT=$(wc -l < /tmp/bash_errors.txt | tr -d ' ')
 
@@ -79,6 +80,15 @@ jobs:
           echo "ps_count=$PS_COUNT" >> "$GITHUB_OUTPUT"
           echo "bash_count=$BASH_COUNT" >> "$GITHUB_OUTPUT"
           echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+
+          # Extract unique affected domains from failure paths
+          DOMAINS=$(cat /tmp/pytest_failures.txt 2>/dev/null \
+            | grep -oP '^\S+?(?=/)' \
+            | sort -u \
+            | head -20 \
+            | tr '\n' ',' \
+            | sed 's/,$//')
+          echo "domains=${DOMAINS:-unknown}" >> "$GITHUB_OUTPUT"
 
           # ── Build failure details (truncated for issue body) ──
           {
