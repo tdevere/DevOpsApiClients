@@ -18,9 +18,6 @@ param (
     [string]$CodeSecurityFeatures,
 
     [Parameter(Mandatory)]
-    [string]$ProjectId,
-
-    [Parameter(Mandatory)]
     [string]$RepositoryId,
 
     [Parameter(Mandatory)]

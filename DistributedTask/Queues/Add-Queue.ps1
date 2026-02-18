@@ -23,9 +23,6 @@ param (
     [Parameter(Mandatory)]
     [string]$Pool,
 
-    [Parameter(Mandatory)]
-    [string]$ProjectId,
-
     [Parameter()]
     [string]$Organization = $env:AZURE_DEVOPS_ORG,
 

@@ -27,9 +27,6 @@ param (
     [string]$PersistenceId,
 
     [Parameter(Mandatory)]
-    [string]$ProjectId,
-
-    [Parameter(Mandatory)]
     [string]$SortFields,
 
     [Parameter()]

@@ -34,10 +34,23 @@ def render_powershell(op: OperationDef) -> str:
 
     all_params = []
 
-    # CLI params first (Mandatory)
+    # Track names already emitted to prevent duplicate parameters
+    _emitted_names: set = set()
+
+    # CLI params first (Mandatory) — skip if name collides with standard params
+    # that will be added below (Organization, ProjectId, Pat)
+    _standard_ps_names = {"Organization", "Pat"}
+    if op.project_scoped:
+        _standard_ps_names.add("ProjectId")
+
     for p in op.params:
         if p.cli_flag:
             ps_name = p.ps_name or _to_pascal(p.name)
+            if ps_name in _standard_ps_names:
+                continue  # Will be added as env-backed param below
+            if ps_name in _emitted_names:
+                continue
+            _emitted_names.add(ps_name)
             all_params.append(
                 f'    [Parameter(Mandatory)]\n    [string]${ps_name}'
             )
@@ -46,10 +59,12 @@ def render_powershell(op: OperationDef) -> str:
     all_params.append(
         '    [Parameter()]\n    [string]$Organization = $env:AZURE_DEVOPS_ORG'
     )
+    _emitted_names.add("Organization")
     if op.project_scoped:
         all_params.append(
             '    [Parameter()]\n    [string]$ProjectId = $env:PROJECT_ID'
         )
+        _emitted_names.add("ProjectId")
 
     # Extra env params — skip those already handled above
     _already_handled = {"AZURE_DEVOPS_ORG", "AZURE_DEVOPS_PAT"}
@@ -58,6 +73,9 @@ def render_powershell(op: OperationDef) -> str:
     for p in op.params:
         if not p.cli_flag and p.env_var not in _already_handled:
             ps_name = p.ps_name or _to_pascal(p.name)
+            if ps_name in _emitted_names:
+                continue
+            _emitted_names.add(ps_name)
             all_params.append(
                 f'    [Parameter()]\n    [string]${ps_name} = $env:{p.env_var}'
             )
@@ -65,6 +83,7 @@ def render_powershell(op: OperationDef) -> str:
     all_params.append(
         '    [Parameter()]\n    [string]$Pat = $env:AZURE_DEVOPS_PAT'
     )
+    _emitted_names.add("Pat")
 
     lines.append(',\n\n'.join(all_params))
     lines.append(')')
