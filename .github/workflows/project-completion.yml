@@ -232,17 +232,33 @@ jobs:
             fi
           done
 
-          # Create the issue
+          # Create the issue (without assignee first — assignee may not be available)
           ISSUE_URL=$(gh issue create \
             --repo "${{ github.repository }}" \
             --title "$TASK_TITLE" \
             --body "$TASK_BODY" \
-            $LABEL_FLAGS \
-            --assignee "copilot")
+            $LABEL_FLAGS)
 
           echo "✅ Created: $ISSUE_URL"
+
+          # Extract issue number from URL
+          ISSUE_NUM=$(echo "$ISSUE_URL" | grep -oP '\d+$')
+
+          # Try to assign copilot — non-fatal if Copilot Coding Agent isn't enabled
+          if gh issue edit "$ISSUE_NUM" \
+            --repo "${{ github.repository }}" \
+            --add-assignee "copilot" 2>/dev/null; then
+            echo "✅ Assigned to copilot"
+            ASSIGNEE="copilot"
+          else
+            echo "⚠️  Could not assign 'copilot' — Copilot Coding Agent may not be enabled."
+            echo "   To enable: Repo Settings → Copilot → Coding Agent → Enable"
+            echo "   The issue was still created. You can assign it manually or work it yourself."
+            ASSIGNEE="(unassigned — enable Copilot Coding Agent in repo settings)"
+          fi
+
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "### Dispatched Task" >> "$GITHUB_STEP_SUMMARY"
           echo "**Issue:** $ISSUE_URL" >> "$GITHUB_STEP_SUMMARY"
           echo "**Title:** $TASK_TITLE" >> "$GITHUB_STEP_SUMMARY"
-          echo "**Assignee:** copilot" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Assignee:** $ASSIGNEE" >> "$GITHUB_STEP_SUMMARY"
