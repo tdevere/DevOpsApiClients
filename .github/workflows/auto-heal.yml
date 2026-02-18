@@ -57,11 +57,34 @@ jobs:
         run: |
           echo "Fetching logs for CI run $RUN_ID"
 
-          gh run view "$RUN_ID" \
-            --repo "${{ github.repository }}" \
-            --log-failed > /tmp/failed_logs.txt 2>/dev/null || true
+          # Retry --log-failed up to 3 times with 20s delay (logs may not be
+          # immediately available right after workflow_run triggers).
+          LOG_SIZE=0
+          for FETCH_ATTEMPT in 1 2 3; do
+            gh run view "$RUN_ID" \
+              --repo "${{ github.repository }}" \
+              --log-failed > /tmp/failed_logs.txt 2>/dev/null || true
+            LOG_SIZE=$(wc -c < /tmp/failed_logs.txt | tr -d ' ')
+            echo "Attempt $FETCH_ATTEMPT — log-failed size: $LOG_SIZE bytes"
+            if [[ "$LOG_SIZE" -ge 10 ]]; then
+              break
+            fi
+            if [[ "$FETCH_ATTEMPT" -lt 3 ]]; then
+              echo "No logs yet — waiting 20s before retry..."
+              sleep 20
+            fi
+          done
 
-          LOG_SIZE=$(wc -c < /tmp/failed_logs.txt | tr -d ' ')
+          # Fallback: fetch the full log and filter for error markers
+          if [[ "$LOG_SIZE" -lt 10 ]]; then
+            echo "log-failed returned nothing — falling back to full log..."
+            gh run view "$RUN_ID" \
+              --repo "${{ github.repository }}" \
+              --log > /tmp/failed_logs.txt 2>/dev/null || true
+            LOG_SIZE=$(wc -c < /tmp/failed_logs.txt | tr -d ' ')
+            echo "Full log size: $LOG_SIZE bytes"
+          fi
+
           echo "Log size: $LOG_SIZE bytes"
 
           if [[ "$LOG_SIZE" -lt 10 ]]; then
@@ -78,10 +101,21 @@ jobs:
 
           PYTEST_SUMMARY=$(grep -oP '\d+ failed, \d+ passed' /tmp/failed_logs.txt | tail -1 || echo "")
 
-          # ── Extract PowerShell parse errors ──
+          # ── Extract Pester test failures ([-] lines) ──
+          grep -oP '\[-\] .+' /tmp/failed_logs.txt \
+            > /tmp/pester_failures.txt 2>/dev/null || true
+          PESTER_FAIL_COUNT=$(wc -l < /tmp/pester_failures.txt | tr -d ' ')
+
+          PESTER_SUMMARY=$(grep -oP 'Tests Passed: \d+, Failed: \d+[^,]*' /tmp/failed_logs.txt \
+            | tail -1 || echo "")
+
+          # ── Extract PowerShell static parse errors ──
           grep -iE "Parse errors in|DuplicateFormalParameter|TermExpected|Missing closing" /tmp/failed_logs.txt \
-            > /tmp/ps_errors.txt 2>/dev/null || true
-          PS_COUNT=$(wc -l < /tmp/ps_errors.txt | tr -d ' ')
+            > /tmp/ps_parse_errors.txt 2>/dev/null || true
+          PS_PARSE_COUNT=$(wc -l < /tmp/ps_parse_errors.txt | tr -d ' ')
+
+          # Combined PS count = parse errors + Pester test failures
+          PS_COUNT=$((PS_PARSE_COUNT + PESTER_FAIL_COUNT))
 
           # ── Extract bash syntax errors ──
           grep -iE "syntax error|bash -n.*failed|^not ok |not ok " /tmp/failed_logs.txt \
@@ -93,22 +127,35 @@ jobs:
           echo "pytest_count=$PYTEST_COUNT" >> "$GITHUB_OUTPUT"
           echo "pytest_summary=$PYTEST_SUMMARY" >> "$GITHUB_OUTPUT"
           echo "ps_count=$PS_COUNT" >> "$GITHUB_OUTPUT"
+          echo "pester_fail_count=$PESTER_FAIL_COUNT" >> "$GITHUB_OUTPUT"
+          echo "pester_summary=$PESTER_SUMMARY" >> "$GITHUB_OUTPUT"
           echo "bash_count=$BASH_COUNT" >> "$GITHUB_OUTPUT"
           echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
 
-          # Extract unique affected domains
-          DOMAINS=$(cat /tmp/pytest_failures.txt 2>/dev/null \
+          # Extract unique affected domains from pytest files
+          PYTEST_DOMAINS=$(cat /tmp/pytest_failures.txt 2>/dev/null \
             | grep -oP '^\S+?(?=/)' \
             | sort -u | head -20 \
+            | tr '\n' ',')
+
+          # Extract domains hinted at by Pester [-] lines (e.g. "Core/Projects")
+          PESTER_DOMAINS=$(cat /tmp/pester_failures.txt 2>/dev/null \
+            | grep -oP '\b[A-Z][A-Za-z]+/[A-Z]' \
+            | grep -oP '^[^/]+' \
+            | sort -u | head -20 \
+            | tr '\n' ',')
+
+          ALL_DOMAINS=$(printf '%s%s' "$PYTEST_DOMAINS" "$PESTER_DOMAINS" \
+            | tr ',' '\n' | sort -u | grep -v '^$' \
             | tr '\n' ',' | sed 's/,$//')
-          echo "domains=${DOMAINS:-unknown}" >> "$GITHUB_OUTPUT"
+          echo "domains=${ALL_DOMAINS:-unknown}" >> "$GITHUB_OUTPUT"
 
           # Extract unique test FILE paths (for scoped re-run)
           sed 's/::.*$//' /tmp/pytest_failures.txt \
             | sort -u \
             > /tmp/pytest_failing_files.txt 2>/dev/null || true
 
-          echo "Parsed: pytest=$PYTEST_COUNT ps=$PS_COUNT bash=$BASH_COUNT total=$TOTAL"
+          echo "Parsed: pytest=$PYTEST_COUNT pester=$PESTER_FAIL_COUNT ps_parse=$PS_PARSE_COUNT bash=$BASH_COUNT total=$TOTAL"
 
       # ── 2. Diagnostic analysis — run failing tests to categorize ─────
       - name: "Run diagnostic analysis"
@@ -414,6 +461,9 @@ jobs:
           DOMINANT="${{ steps.diagnose.outputs.dominant }}"
           RUN_ID="${{ steps.logs.outputs.run_id }}"
 
+          PESTER_FAIL_COUNT="${{ steps.logs.outputs.pester_fail_count }}"
+          PESTER_SUMMARY="${{ steps.logs.outputs.pester_summary }}"
+
           cat > /tmp/retry_comment.md <<RETRYEOF
           ## :arrows_counterclockwise: Previous Fix Did Not Resolve All Failures
 
@@ -424,6 +474,16 @@ jobs:
           > If you modified individual files last time, consider fixing the **generator template** instead.
 
           RETRYEOF
+
+          # Append Pester failure list if any
+          if [[ "$PESTER_FAIL_COUNT" -gt 0 ]]; then
+            {
+              printf '\n### Pester Failing Tests (%s)\n\n' "$PESTER_SUMMARY"
+              printf '```\n'
+              head -50 /tmp/pester_failures.txt
+              printf '```\n\n'
+            } >> /tmp/retry_comment.md
+          fi
 
           # Append diagnostic report
           if [[ -f /tmp/diagnostic_report.md ]]; then
@@ -490,6 +550,8 @@ jobs:
           PYTEST_COUNT="${{ steps.logs.outputs.pytest_count }}"
           PYTEST_SUMMARY="${{ steps.logs.outputs.pytest_summary }}"
           PS_COUNT="${{ steps.logs.outputs.ps_count }}"
+          PESTER_FAIL_COUNT="${{ steps.logs.outputs.pester_fail_count }}"
+          PESTER_SUMMARY="${{ steps.logs.outputs.pester_summary }}"
           BASH_COUNT="${{ steps.logs.outputs.bash_count }}"
           DOMAINS="${{ steps.logs.outputs.domains }}"
           STILL_FAILING="${{ steps.diagnose.outputs.still_failing }}"
@@ -509,18 +571,28 @@ jobs:
 
           ### Context
 
-          The CI pipeline on \`${{ github.event.workflow_run.head_branch }}\` has **${TOTAL} failure(s)** (${PYTEST_SUMMARY:-details below}).
+          The CI pipeline on \`${{ github.event.workflow_run.head_branch }}\` has **${TOTAL} failure(s)**.
           These must be fixed to keep the project healthy.
 
           **CI Run:** https://github.com/${{ github.repository }}/actions/runs/${RUN_ID}
 
-          | Framework | Failures |
-          |-----------|----------|
-          | pytest | ${PYTEST_COUNT} |
-          | PowerShell | ${PS_COUNT} |
-          | Bash/bats | ${BASH_COUNT} |
+          | Framework | Failures | Summary |
+          |-----------|----------|---------|
+          | pytest | ${PYTEST_COUNT} | ${PYTEST_SUMMARY:-see below} |
+          | Pester (PowerShell) | ${PESTER_FAIL_COUNT} | ${PESTER_SUMMARY:-see below} |
+          | Bash/bats | ${BASH_COUNT} | |
 
           HEADEREOF
+
+          # Append Pester failure list if any
+          if [[ "$PESTER_FAIL_COUNT" -gt 0 ]]; then
+            {
+              printf '\n### Pester Failing Tests\n\n'
+              printf '```\n'
+              head -50 /tmp/pester_failures.txt
+              printf '```\n\n'
+            } >> /tmp/issue_body.md
+          fi
 
           # Append diagnostic report (categorized errors + strategy)
           if [[ -f /tmp/diagnostic_report.md ]]; then
@@ -631,7 +703,7 @@ jobs:
 
           echo "| Metric | Value |" >> "$GITHUB_STEP_SUMMARY"
           echo "|--------|-------|" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Failures in CI logs | ${TOTAL:-0} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Failures in CI logs | ${TOTAL:-0} (pytest: ${{ steps.logs.outputs.pytest_count }}, pester: ${{ steps.logs.outputs.pester_fail_count }}, bash: ${{ steps.logs.outputs.bash_count }}) |" >> "$GITHUB_STEP_SUMMARY"
           echo "| Still failing (after checkout) | ${STILL:-n/a} |" >> "$GITHUB_STEP_SUMMARY"
           echo "| Attempt | ${ATTEMPT:-0} |" >> "$GITHUB_STEP_SUMMARY"
 
