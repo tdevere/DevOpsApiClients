@@ -1,13 +1,18 @@
 # =============================================================================
-# Auto-Heal — Detect CI failures and create fix issues for Copilot
+# Auto-Heal — Detect CI failures, diagnose root causes, and create fix issues
 #
 # Triggers after any CI Test & Release run completes with failure on main.
-# Parses test failure logs, creates a structured GitHub Issue with
-# reproduction steps and acceptance criteria, then assigns to copilot.
+#
+# Key features:
+#   1. DIAGNOSTIC ANALYSIS — runs failing tests locally to categorize errors
+#   2. ATTEMPT TRACKING — tracks how many times a fix has been tried
+#   3. ESCALATION — after 3 failed attempts, unassigns copilot and pings human
+#   4. STRATEGY GUIDANCE — tells the agent WHERE to fix based on error category
+#   5. ANTI-REPEAT — explicitly forbids repeating a failed approach
 #
 # Guard rails:
 #   - Only triggers on main branch failures (not PR branches)
-#   - Dedup: skips if an open auto-heal issue already exists
+#   - Dedup: updates existing issue instead of creating duplicates
 #   - Non-fatal copilot assignment (issue created regardless)
 # =============================================================================
 name: Auto-Heal Test Failures
@@ -24,12 +29,24 @@ permissions:
 
 jobs:
   check-and-heal:
-    name: "Detect & Dispatch Fix"
+    name: "Detect, Diagnose & Dispatch Fix"
     if: >-
       github.event.workflow_run.conclusion == 'failure' &&
       github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     steps:
+      # ── 0. Checkout code (needed for diagnostic test runs) ───────────
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: "Install test dependencies"
+        run: pip install pytest requests responses --quiet
+
       # ── 1. Parse failure logs ────────────────────────────────────────
       - name: "Download and parse CI failure logs"
         id: logs
@@ -39,7 +56,6 @@ jobs:
         run: |
           echo "Fetching logs for CI run $RUN_ID"
 
-          # Download failed job logs
           gh run view "$RUN_ID" \
             --repo "${{ github.repository }}" \
             --log-failed > /tmp/failed_logs.txt 2>/dev/null || true
@@ -54,13 +70,11 @@ jobs:
           fi
 
           # ── Extract pytest failures ──
-          # GH Actions logs have prefixes: "Job\tStep\tTimestamp test::class FAILED [%]"
           grep -oP '\S+\.py::\S+ FAILED' /tmp/failed_logs.txt \
             | sed 's/ FAILED$//' \
             > /tmp/pytest_failures.txt 2>/dev/null || true
           PYTEST_COUNT=$(wc -l < /tmp/pytest_failures.txt | tr -d ' ')
 
-          # Also grab the summary line (e.g. "54 failed, 7511 passed")
           PYTEST_SUMMARY=$(grep -oP '\d+ failed, \d+ passed' /tmp/failed_logs.txt | tail -1 || echo "")
 
           # ── Extract PowerShell parse errors ──
@@ -81,81 +95,403 @@ jobs:
           echo "bash_count=$BASH_COUNT" >> "$GITHUB_OUTPUT"
           echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
 
-          # Extract unique affected domains from failure paths
+          # Extract unique affected domains
           DOMAINS=$(cat /tmp/pytest_failures.txt 2>/dev/null \
             | grep -oP '^\S+?(?=/)' \
-            | sort -u \
-            | head -20 \
-            | tr '\n' ',' \
-            | sed 's/,$//')
+            | sort -u | head -20 \
+            | tr '\n' ',' | sed 's/,$//')
           echo "domains=${DOMAINS:-unknown}" >> "$GITHUB_OUTPUT"
 
-          # Extract unique test FILE paths (for targeted re-run command)
+          # Extract unique test FILE paths (for scoped re-run)
           sed 's/::.*$//' /tmp/pytest_failures.txt \
             | sort -u \
             > /tmp/pytest_failing_files.txt 2>/dev/null || true
 
-          # ── Build failure details into a FILE (not a variable) ──
-          # Writing to a file avoids shell expansion issues with backticks
-          : > /tmp/failure_details.txt
-          if [[ "$PYTEST_COUNT" -gt 0 ]]; then
-            printf '```\n' >> /tmp/failure_details.txt
-            printf '# pytest failures (%s):\n' "$PYTEST_COUNT" >> /tmp/failure_details.txt
-            head -50 /tmp/pytest_failures.txt >> /tmp/failure_details.txt
-            if [[ "$PYTEST_COUNT" -gt 50 ]]; then
-              printf '... and %d more\n' "$((PYTEST_COUNT - 50))" >> /tmp/failure_details.txt
-            fi
-            printf '```\n' >> /tmp/failure_details.txt
-          fi
-
-          if [[ "$PS_COUNT" -gt 0 ]]; then
-            printf '```\n' >> /tmp/failure_details.txt
-            printf '# PowerShell errors (%s):\n' "$PS_COUNT" >> /tmp/failure_details.txt
-            head -20 /tmp/ps_errors.txt >> /tmp/failure_details.txt
-            printf '```\n' >> /tmp/failure_details.txt
-          fi
-
-          if [[ "$BASH_COUNT" -gt 0 ]]; then
-            printf '```\n' >> /tmp/failure_details.txt
-            printf '# Bash errors (%s):\n' "$BASH_COUNT" >> /tmp/failure_details.txt
-            head -20 /tmp/bash_errors.txt >> /tmp/failure_details.txt
-            printf '```\n' >> /tmp/failure_details.txt
-          fi
-
           echo "Parsed: pytest=$PYTEST_COUNT ps=$PS_COUNT bash=$BASH_COUNT total=$TOTAL"
 
-      # ── 2. Dedup guard ───────────────────────────────────────────────
-      - name: "Check for existing auto-heal issue"
+      # ── 2. Diagnostic analysis — run failing tests to categorize ─────
+      - name: "Run diagnostic analysis"
+        id: diagnose
+        if: steps.logs.outputs.total_failures != '0'
+        run: |
+          echo "Running diagnostic analysis on failing tests..."
+
+          DIAG_FILE="/tmp/diagnostic_report.md"
+          : > "$DIAG_FILE"
+
+          URL_MISMATCH=0
+          ENCODING_ERROR=0
+          FIXTURE_ERROR=0
+          IMPORT_ERROR=0
+          ASSERTION_ERROR=0
+          OTHER_ERROR=0
+
+          # Collect per-file details into a separate file
+          : > /tmp/diag_details.txt
+
+          while IFS= read -r test_file; do
+            [ -z "$test_file" ] && continue
+            [ ! -f "$test_file" ] && continue
+
+            # Run the single test file with short traceback
+            OUTPUT=$(python -m pytest "$test_file" --tb=short -q 2>&1 || true)
+            FAILED_COUNT=$(echo "$OUTPUT" | grep -cP 'FAILED|ERROR' || true)
+
+            if [ "$FAILED_COUNT" -eq 0 ]; then
+              continue  # Test passes now (maybe fixed in this commit)
+            fi
+
+            # Categorize the failure
+            if echo "$OUTPUT" | grep -qiP "URL does not match|ConnectionError.*%7B|url.*mismatch"; then
+              URL_MISMATCH=$((URL_MISMATCH + 1))
+              CATEGORY="url_mismatch"
+            elif echo "$OUTPUT" | grep -qiP "ChunkedEncodingError|IncompleteRead|may not contain content"; then
+              ENCODING_ERROR=$((ENCODING_ERROR + 1))
+              CATEGORY="encoding_error"
+            elif echo "$OUTPUT" | grep -qiP "FileNotFoundError|JSONDecodeError|KeyError.*fixture|No such file"; then
+              FIXTURE_ERROR=$((FIXTURE_ERROR + 1))
+              CATEGORY="fixture_error"
+            elif echo "$OUTPUT" | grep -qiP "ImportError|ModuleNotFoundError|No module named"; then
+              IMPORT_ERROR=$((IMPORT_ERROR + 1))
+              CATEGORY="import_error"
+            elif echo "$OUTPUT" | grep -qiP "AssertionError|assert "; then
+              ASSERTION_ERROR=$((ASSERTION_ERROR + 1))
+              CATEGORY="assertion_error"
+            else
+              OTHER_ERROR=$((OTHER_ERROR + 1))
+              CATEGORY="other"
+            fi
+
+            # Extract the first error detail (5 lines around FAILED/ERROR)
+            FIRST_ERROR=$(echo "$OUTPUT" | grep -B2 -A3 "FAILED\|Error\|assert " | head -8)
+
+            {
+              printf '#### `%s` — %s\n' "$test_file" "$CATEGORY"
+              printf '```\n'
+              printf '%s\n' "$FIRST_ERROR"
+              printf '```\n\n'
+            } >> /tmp/diag_details.txt
+
+          done < /tmp/pytest_failing_files.txt
+
+          # ── Build the diagnostic report ──
+          {
+            printf '### Diagnostic Report\n\n'
+            printf 'Generated: %s\n\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+            printf '#### Failure Categories\n\n'
+            printf '| Category | Count | What It Means |\n'
+            printf '|----------|-------|---------------|\n'
+            [ "$URL_MISMATCH" -gt 0 ]    && printf '| URL mismatch | %d | URL template has unresolved placeholders or wrong host — fix the **source scripts** |\n' "$URL_MISMATCH"
+            [ "$ENCODING_ERROR" -gt 0 ]  && printf '| Encoding error | %d | Mock returns body for HTTP 204/DELETE — fix the **test mocks** |\n' "$ENCODING_ERROR"
+            [ "$FIXTURE_ERROR" -gt 0 ]   && printf '| Fixture error | %d | Missing or malformed fixture JSON — fix **tests/fixtures/** |\n' "$FIXTURE_ERROR"
+            [ "$IMPORT_ERROR" -gt 0 ]    && printf '| Import error | %d | Missing module or __init__.py — fix **package structure** |\n' "$IMPORT_ERROR"
+            [ "$ASSERTION_ERROR" -gt 0 ] && printf '| Assertion error | %d | Test expectation wrong — fix **test assertions** or **implementation** |\n' "$ASSERTION_ERROR"
+            [ "$OTHER_ERROR" -gt 0 ]     && printf '| Other | %d | Uncategorized — see per-file details below |\n' "$OTHER_ERROR"
+            printf '\n'
+
+            # Determine dominant category and recommend strategy
+            DOMINANT="other"; MAX=0
+            [ "$URL_MISMATCH"    -gt "$MAX" ] && MAX=$URL_MISMATCH    && DOMINANT="url_mismatch"
+            [ "$ENCODING_ERROR"  -gt "$MAX" ] && MAX=$ENCODING_ERROR  && DOMINANT="encoding_error"
+            [ "$FIXTURE_ERROR"   -gt "$MAX" ] && MAX=$FIXTURE_ERROR   && DOMINANT="fixture_error"
+            [ "$IMPORT_ERROR"    -gt "$MAX" ] && MAX=$IMPORT_ERROR    && DOMINANT="import_error"
+            [ "$ASSERTION_ERROR" -gt "$MAX" ] && MAX=$ASSERTION_ERROR && DOMINANT="assertion_error"
+
+            printf '#### Recommended Fix Strategy\n\n'
+            case "$DOMINANT" in
+              url_mismatch)
+                printf '**Dominant issue: URL mismatch (%d failures)**\n\n' "$MAX"
+                printf 'The implementation scripts build URLs with unresolved template variables (e.g., `{service}`, `{instance}`).\n\n'
+                printf '**Fix the SOURCE SCRIPTS** (`.py`, `.ps1`, `.sh`) — NOT the tests.\n\n'
+                printf 'Search: `grep -r "{service}" --include="*.py" <Domain>/`\n\n'
+                printf 'Replace the placeholder with the correct hostname (usually `dev.azure.com`).\n'
+                printf 'Also fix the YAML definitions in `_generator/definitions/` so regeneration stays clean.\n'
+                ;;
+              encoding_error)
+                printf '**Dominant issue: ChunkedEncodingError (%d failures)**\n\n' "$MAX"
+                printf 'Test mocks return a JSON body for HTTP 204 No Content responses.\n\n'
+                printf '**Fix the TEST FILES** — change `responses.add(method, url, json=fixture, status=204)` to `responses.add(method, url, status=204)`.\n\n'
+                printf 'Also fix the generator template `_generator/templates/python_test.py` to prevent this for future generations.\n'
+                ;;
+              fixture_error)
+                printf '**Dominant issue: Fixture/data errors (%d failures)**\n\n' "$MAX"
+                printf '**Fix the fixture files** in `tests/fixtures/` — add missing keys or regenerate.\n\n'
+                printf 'Also check `_generator/templates/python_test.py` for fixture generation logic.\n'
+                ;;
+              import_error)
+                printf '**Dominant issue: Import errors (%d failures)**\n\n' "$MAX"
+                printf '**Fix the package structure** — ensure `__init__.py` exists in each directory.\n\n'
+                printf 'Check `sys.path` setup in test files.\n'
+                ;;
+              assertion_error)
+                printf '**Dominant issue: Assertion errors (%d failures)**\n\n' "$MAX"
+                printf 'Test expectations do not match implementation behavior.\n\n'
+                printf '**Compare** what the implementation returns vs what the test asserts.\n\n'
+                printf 'If 10+ files have the same mismatch pattern, fix the **generator template**.\n'
+                ;;
+              *)
+                printf '**Mixed failure types** — review each file individually.\n'
+                ;;
+            esac
+
+            printf '\n#### Per-File Error Details\n\n'
+          } > "$DIAG_FILE"
+
+          # Append per-file details (truncated to 50 files max)
+          head -500 /tmp/diag_details.txt >> "$DIAG_FILE"
+
+          # Output counts for downstream steps
+          echo "url_mismatch=$URL_MISMATCH" >> "$GITHUB_OUTPUT"
+          echo "encoding_error=$ENCODING_ERROR" >> "$GITHUB_OUTPUT"
+          echo "fixture_error=$FIXTURE_ERROR" >> "$GITHUB_OUTPUT"
+          echo "import_error=$IMPORT_ERROR" >> "$GITHUB_OUTPUT"
+          echo "assertion_error=$ASSERTION_ERROR" >> "$GITHUB_OUTPUT"
+          echo "other_error=$OTHER_ERROR" >> "$GITHUB_OUTPUT"
+          echo "dominant=$DOMINANT" >> "$GITHUB_OUTPUT"
+
+          STILL_FAILING=$((URL_MISMATCH + ENCODING_ERROR + FIXTURE_ERROR + IMPORT_ERROR + ASSERTION_ERROR + OTHER_ERROR))
+          echo "still_failing=$STILL_FAILING" >> "$GITHUB_OUTPUT"
+
+          echo "Diagnostic complete: $STILL_FAILING test files still failing"
+          echo "  url_mismatch=$URL_MISMATCH encoding=$ENCODING_ERROR fixture=$FIXTURE_ERROR"
+          echo "  import=$IMPORT_ERROR assertion=$ASSERTION_ERROR other=$OTHER_ERROR"
+
+      # ── 3. Check for existing issue + count attempts ─────────────────
+      - name: "Check for existing auto-heal issue and count attempts"
         id: dedup
         if: steps.logs.outputs.total_failures != '0'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          OPEN=$(gh issue list \
+          # Find open auto-heal issues
+          OPEN_ISSUES=$(gh issue list \
             --repo "${{ github.repository }}" \
             --label "auto-heal" \
             --state open \
-            --json number \
-            --jq 'length')
-          echo "Open auto-heal issues: $OPEN"
-          echo "open_count=$OPEN" >> "$GITHUB_OUTPUT"
+            --json number,body \
+            --jq '.')
+          OPEN_COUNT=$(echo "$OPEN_ISSUES" | jq 'length')
+          echo "Open auto-heal issues: $OPEN_COUNT"
+          echo "open_count=$OPEN_COUNT" >> "$GITHUB_OUTPUT"
 
-      # ── 3. Create healing issue ──────────────────────────────────────
-      - name: "Create fix issue"
+          if [[ "$OPEN_COUNT" -gt 0 ]]; then
+            EXISTING_NUM=$(echo "$OPEN_ISSUES" | jq -r '.[0].number')
+            EXISTING_BODY=$(echo "$OPEN_ISSUES" | jq -r '.[0].body')
+
+            # Extract attempt number from issue body or comments
+            # Format: "**Attempt: N**"
+            ATTEMPT=$(echo "$EXISTING_BODY" | grep -oP '\*\*Attempt: \K\d+' || echo "1")
+
+            # Also check comments for higher attempt numbers
+            COMMENT_ATTEMPT=$(gh issue view "$EXISTING_NUM" \
+              --repo "${{ github.repository }}" \
+              --json comments \
+              --jq '.comments[].body' 2>/dev/null \
+              | grep -oP '\*\*Attempt: \K\d+' \
+              | sort -n | tail -1 || echo "0")
+
+            # Use the higher of body vs comment attempt numbers
+            if [[ "$COMMENT_ATTEMPT" -gt "$ATTEMPT" ]]; then
+              ATTEMPT=$COMMENT_ATTEMPT
+            fi
+
+            echo "existing_issue=$EXISTING_NUM" >> "$GITHUB_OUTPUT"
+            echo "attempt=$ATTEMPT" >> "$GITHUB_OUTPUT"
+            echo "Found existing issue #$EXISTING_NUM at attempt $ATTEMPT"
+          else
+            echo "existing_issue=" >> "$GITHUB_OUTPUT"
+            echo "attempt=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ── 4a. ESCALATE if stuck (attempt >= 3) ─────────────────────────
+      - name: "Escalate — agent loop detected"
+        if: >-
+          steps.logs.outputs.total_failures != '0' &&
+          steps.dedup.outputs.open_count != '0' &&
+          steps.dedup.outputs.attempt != '' &&
+          steps.dedup.outputs.attempt >= 3
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ADMIN_PAT: ${{ secrets.ADMIN_PAT }}
+        run: |
+          ISSUE_NUM="${{ steps.dedup.outputs.existing_issue }}"
+          ATTEMPT="${{ steps.dedup.outputs.attempt }}"
+          REPO="${{ github.repository }}"
+
+          echo "::warning::Auto-heal stuck after $ATTEMPT attempts. Escalating issue #$ISSUE_NUM."
+
+          # Ensure escalation label exists
+          gh label create "escalation" \
+            --repo "$REPO" \
+            --description "Auto-heal stuck — needs human review" \
+            --color "B60205" \
+            2>/dev/null || true
+
+          # Build escalation comment
+          cat > /tmp/escalation.md <<ESCEOF
+          ## :warning: Auto-Heal Escalation — Agent Loop Detected
+
+          The same failures have persisted through **${ATTEMPT} consecutive fix attempts**.
+          The automated agent is not making progress. **The loop has been broken.**
+
+          ### What Happened
+
+          1. CI detected test failures on \`main\`
+          2. Auto-heal created this issue and assigned copilot
+          3. Copilot attempted a fix, but CI still failed after merge
+          4. This cycle repeated ${ATTEMPT} times without resolution
+
+          ### Diagnostic Report (Latest Run)
+
+          ESCEOF
+
+          # Append diagnostic report
+          if [[ -f /tmp/diagnostic_report.md ]]; then
+            cat /tmp/diagnostic_report.md >> /tmp/escalation.md
+          fi
+
+          cat >> /tmp/escalation.md <<'ESCEOF2'
+
+          ### Actions Taken
+
+          - [x] Copilot has been **unassigned** to stop the loop
+          - [x] `escalation` label added
+          - [ ] **Human review required** — see diagnostic report above
+
+          ### What To Do
+
+          1. Read the **Recommended Fix Strategy** in the diagnostic report
+          2. If the dominant category is `url_mismatch`: fix the **source scripts**, not the tests
+          3. If the dominant category is `encoding_error`: fix the **test mocks** (204 status)
+          4. If 10+ files share the same bug pattern: fix the **generator template** and regenerate
+          5. After fixing, close this issue — auto-heal will create a fresh one if failures remain
+
+          /cc @tdevere
+          ESCEOF2
+
+          sed -i 's/^          //' /tmp/escalation.md
+
+          gh issue comment "$ISSUE_NUM" \
+            --repo "$REPO" \
+            --body-file /tmp/escalation.md
+
+          # Add escalation label
+          gh issue edit "$ISSUE_NUM" \
+            --repo "$REPO" \
+            --add-label "escalation"
+
+          # Unassign copilot to break the loop
+          if [[ -n "$ADMIN_PAT" ]]; then
+            curl -s -o /dev/null \
+              -X DELETE \
+              -H "Authorization: token $ADMIN_PAT" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/$REPO/issues/$ISSUE_NUM/assignees" \
+              -d '{"assignees":["copilot"]}' || true
+            echo "Copilot unassigned from issue #$ISSUE_NUM"
+          fi
+
+          echo "Escalation complete. Agent loop broken."
+
+      # ── 4b. UPDATE existing issue with retry context (attempt < 3) ───
+      - name: "Update existing issue with retry context"
+        if: >-
+          steps.logs.outputs.total_failures != '0' &&
+          steps.dedup.outputs.open_count != '0' &&
+          steps.dedup.outputs.attempt != '' &&
+          steps.dedup.outputs.attempt < 3 &&
+          steps.diagnose.outputs.still_failing != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NUM="${{ steps.dedup.outputs.existing_issue }}"
+          ATTEMPT="${{ steps.dedup.outputs.attempt }}"
+          NEXT_ATTEMPT=$((ATTEMPT + 1))
+          STILL_FAILING="${{ steps.diagnose.outputs.still_failing }}"
+          DOMINANT="${{ steps.diagnose.outputs.dominant }}"
+          RUN_ID="${{ steps.logs.outputs.run_id }}"
+
+          cat > /tmp/retry_comment.md <<RETRYEOF
+          ## :arrows_counterclockwise: Previous Fix Did Not Resolve All Failures
+
+          **Attempt: ${NEXT_ATTEMPT}** | **Still failing: ${STILL_FAILING} test files** | [CI Run](https://github.com/${{ github.repository }}/actions/runs/${RUN_ID})
+
+          > :stop_sign: **Do NOT repeat your previous approach.** It did not work.
+          > If you modified tests last time, try modifying the **source scripts** instead (or vice versa).
+          > If you modified individual files last time, consider fixing the **generator template** instead.
+
+          RETRYEOF
+
+          # Append diagnostic report
+          if [[ -f /tmp/diagnostic_report.md ]]; then
+            cat /tmp/diagnostic_report.md >> /tmp/retry_comment.md
+          fi
+
+          {
+            printf '\n### Scoped Test Command\n\n'
+            printf 'Run **only** these failing tests:\n'
+            printf '```bash\n'
+            printf 'python -m pytest --tb=long -q \\\n'
+            while IFS= read -r f; do
+              [ -z "$f" ] && continue
+              printf '  %s \\\n' "$f"
+            done < /tmp/pytest_failing_files.txt
+            printf '  2>&1 | tail -60\n'
+            printf '```\n\n'
+            printf '### Rules for Attempt %d\n\n' "$NEXT_ATTEMPT"
+            printf '1. **Read the Recommended Fix Strategy above** before writing any code\n'
+            printf '2. **Do NOT re-run the full test suite** — only the files listed above\n'
+          } >> /tmp/retry_comment.md
+
+          case "$DOMINANT" in
+            url_mismatch)
+              printf '3. The issue is in **source scripts** (`.py`, `.ps1`, `.sh`) — look for unresolved `{service}` or `{instance}` placeholders\n' >> /tmp/retry_comment.md
+              printf '4. Also fix the YAML definitions in `_generator/definitions/`\n' >> /tmp/retry_comment.md
+              ;;
+            encoding_error)
+              printf '3. The issue is in **test mocks** — `responses.add()` calls with `json=fixture` for 204/DELETE endpoints\n' >> /tmp/retry_comment.md
+              printf '4. Remove the `json=` argument for any mock with `status=204`\n' >> /tmp/retry_comment.md
+              ;;
+            fixture_error)
+              printf '3. Check the fixture JSON files in `tests/fixtures/` directories\n' >> /tmp/retry_comment.md
+              printf '4. Regenerate fixtures or add missing keys\n' >> /tmp/retry_comment.md
+              ;;
+            *)
+              printf '3. Review the per-file error details above to understand each failure\n' >> /tmp/retry_comment.md
+              printf '4. If 10+ files have the same pattern, fix the **generator template** in `_generator/templates/`\n' >> /tmp/retry_comment.md
+              ;;
+          esac
+
+          printf '\n**Attempt: %d**\n' "$NEXT_ATTEMPT" >> /tmp/retry_comment.md
+
+          sed -i 's/^          //' /tmp/retry_comment.md
+
+          gh issue comment "$ISSUE_NUM" \
+            --repo "${{ github.repository }}" \
+            --body-file /tmp/retry_comment.md
+
+          echo "Updated issue #$ISSUE_NUM with attempt $NEXT_ATTEMPT context"
+
+      # ── 4c. CREATE new healing issue (no existing open issue) ────────
+      - name: "Create new fix issue"
         id: create
         if: >-
           steps.logs.outputs.total_failures != '0' &&
-          steps.dedup.outputs.open_count == '0'
+          steps.dedup.outputs.open_count == '0' &&
+          steps.diagnose.outputs.still_failing != '0'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           RUN_ID="${{ steps.logs.outputs.run_id }}"
+          TOTAL="${{ steps.logs.outputs.total_failures }}"
           PYTEST_COUNT="${{ steps.logs.outputs.pytest_count }}"
           PYTEST_SUMMARY="${{ steps.logs.outputs.pytest_summary }}"
           PS_COUNT="${{ steps.logs.outputs.ps_count }}"
           BASH_COUNT="${{ steps.logs.outputs.bash_count }}"
-          TOTAL="${{ steps.logs.outputs.total_failures }}"
           DOMAINS="${{ steps.logs.outputs.domains }}"
+          STILL_FAILING="${{ steps.diagnose.outputs.still_failing }}"
 
           # Ensure labels exist
           gh label create "auto-heal" \
@@ -166,88 +502,69 @@ jobs:
 
           TITLE="[AUTO-HEAL] Fix $TOTAL test failure(s) in ${DOMAINS} from CI run #${RUN_ID}"
 
-          # ── Build the issue body in a FILE to avoid shell expansion ──
-          # (backticks in failure details were causing command substitution)
-          cat > /tmp/issue_body.md <<'STATIC_EOF'
+          # ── Build issue body in a file ──
+          cat > /tmp/issue_body.md <<HEADEREOF
           ## Task: Fix test failures detected in CI
 
           ### Context
 
-          STATIC_EOF
+          The CI pipeline on \`main\` has **${TOTAL} failure(s)** (${PYTEST_SUMMARY:-details below}).
+          These must be fixed to keep the project healthy.
 
-          # Append dynamic content with proper escaping
-          {
-            printf 'The CI pipeline on `main` has **%s failure(s)** (%s).\n' "$TOTAL" "${PYTEST_SUMMARY:-details below}"
-            printf 'These must be fixed to keep the project healthy.\n\n'
-            printf '**CI Run:** https://github.com/%s/actions/runs/%s\n\n' "${{ github.repository }}" "$RUN_ID"
-            printf '| Framework | Failures |\n'
-            printf '|-----------|----------|\n'
-            printf '| pytest | %s |\n' "$PYTEST_COUNT"
-            printf '| PowerShell | %s |\n' "$PS_COUNT"
-            printf '| Bash/bats | %s |\n\n' "$BASH_COUNT"
-            printf '### Failure Details\n\n'
-          } >> /tmp/issue_body.md
+          **CI Run:** https://github.com/${{ github.repository }}/actions/runs/${RUN_ID}
 
-          # Append failure details from file (safe — no shell expansion)
-          cat /tmp/failure_details.txt >> /tmp/issue_body.md
+          | Framework | Failures |
+          |-----------|----------|
+          | pytest | ${PYTEST_COUNT} |
+          | PowerShell | ${PS_COUNT} |
+          | Bash/bats | ${BASH_COUNT} |
 
-          # ── Build targeted test command ──
-          FAILING_FILES=""
-          if [[ -s /tmp/pytest_failing_files.txt ]]; then
-            FAILING_FILES=$(cat /tmp/pytest_failing_files.txt | tr '\n' ' ')
+          HEADEREOF
+
+          # Append diagnostic report (categorized errors + strategy)
+          if [[ -f /tmp/diagnostic_report.md ]]; then
+            cat /tmp/diagnostic_report.md >> /tmp/issue_body.md
           fi
 
-          cat >> /tmp/issue_body.md <<'INSTRUCTIONS_EOF'
-
-          ### How to Fix
-
-          1. **Reproduce locally** — run ONLY the failing tests (not the full suite):
-          INSTRUCTIONS_EOF
-
-          # Add the targeted pytest command
+          # Build scoped test command
           {
-            printf '   ```bash\n'
-            if [[ -n "$FAILING_FILES" ]]; then
-              printf '   python -m pytest --tb=short -q \\\n'
-              # List each failing test file, one per line for readability
-              while IFS= read -r f; do
-                printf '     %s \\\n' "$f"
-              done < /tmp/pytest_failing_files.txt
-              printf '     2>&1 | tail -60\n'
-            else
-              printf '   python -m pytest --tb=short -q 2>&1 | tail -60\n'
-            fi
-            printf '   ```\n'
+            printf '\n### Scoped Test Command\n\n'
+            printf 'Run **only** these failing tests — do NOT re-run the full suite (7000+ other tests pass):\n'
+            printf '```bash\n'
+            printf 'python -m pytest --tb=long -q \\\n'
+            while IFS= read -r f; do
+              [ -z "$f" ] && continue
+              printf '  %s \\\n' "$f"
+            done < /tmp/pytest_failing_files.txt
+            printf '  2>&1 | tail -60\n'
+            printf '```\n'
           } >> /tmp/issue_body.md
 
-          cat >> /tmp/issue_body.md <<'TAIL_EOF'
+          cat >> /tmp/issue_body.md <<'INSTREOF'
 
-             > **Important:** Only run the tests listed above. Do NOT re-run the full test suite — 7000+ other tests already pass.
+          ### Instructions
 
-          2. **Common root causes** for generated scripts:
-             - **Fixture mismatch**: Test expects keys that don't exist in `tests/fixtures/*.json` — update the fixture
-             - **URL pattern wrong**: Mock URL doesn't match what the script builds — check `responses.add()` URL vs script URL
-             - **Import errors**: Missing `__init__.py` or wrong relative import — check the domain's package structure
-             - **Unescaped characters**: Apostrophes or quotes in YAML synopsis/description — fix the YAML in `_generator/definitions/` and regenerate
-             - **PowerShell duplicate params**: Already fixed in template — regenerate with `python -m _generator.generate -d <yaml>`
-          3. **Fix the root cause** (template, YAML definition, or fixture) — not just the symptom
-          4. **Regenerate if needed**: `python -m _generator.generate -d _generator/definitions/<name>.yaml`
-          5. **Verify locally** before committing — run ONLY the affected tests:
-             ```bash
-             python -m pytest -q --tb=line <failing_test_files> 2>&1 | tail -10
-             ```
+          1. **Read the Diagnostic Report above FIRST** — it categorizes each failure and tells you WHERE to fix
+          2. **Follow the "Recommended Fix Strategy"** — it tells you whether to fix source scripts, test mocks, fixtures, or generator templates
+          3. **If 10+ files have the same bug pattern**: fix the generator template in `_generator/templates/`, then regenerate affected files
+          4. **Verify ONLY the listed tests pass** before committing — use the scoped command above
+          5. **Do NOT skip or delete failing tests**
+          6. **Do NOT re-run the full test suite** — only run the specifically listed failing files
 
           ### Acceptance Criteria
 
-          - [ ] All previously-failing tests now pass (run the targeted command above)
+          - [ ] All listed pytest tests pass (run the scoped command above)
           - [ ] No tests were deleted or skipped to hide failures
-          - [ ] Any template/YAML fixes are applied so future regeneration is clean
+          - [ ] If a template was fixed, all regenerated files also pass
+          - [ ] Any YAML definition fixes are applied so future regeneration is clean
+
+          **Attempt: 1**
 
           ### Reference
           See `.github/copilot-instructions.md` for project conventions.
-          TAIL_EOF
+          INSTREOF
 
-          # Dedent the body (heredoc indentation artifact)
+          # Dedent heredoc indentation
           sed -i 's/^          //' /tmp/issue_body.md
 
           ISSUE_URL=$(gh issue create \
@@ -262,7 +579,7 @@ jobs:
           echo "issue_number=$ISSUE_NUM" >> "$GITHUB_OUTPUT"
           echo "issue_url=$ISSUE_URL" >> "$GITHUB_OUTPUT"
 
-      # ── 4. Assign copilot ────────────────────────────────────────────
+      # ── 5. Assign copilot ────────────────────────────────────────────
       - name: "Assign Copilot to fix issue"
         if: steps.create.outputs.issue_number != ''
         env:
@@ -280,7 +597,7 @@ jobs:
             "https://api.github.com/repos/$REPO/issues/$ISSUE_NUM/assignees" \
             -d '{"assignees":["copilot"]}')
 
-          # Verify the assignee actually stuck (API returns 200 even for invalid assignees)
+          # Verify the assignee actually stuck
           ASSIGNEES=$(curl -s \
             -H "Authorization: token $ADMIN_PAT" \
             -H "Accept: application/vnd.github+json" \
@@ -288,31 +605,43 @@ jobs:
             | python3 -c "import sys,json; print(','.join(a['login'] for a in json.load(sys.stdin).get('assignees',[])))" 2>/dev/null || echo "")
 
           if echo "$ASSIGNEES" | grep -q "copilot"; then
-            echo "✅ Confirmed: copilot assigned to issue #$ISSUE_NUM"
+            echo "Confirmed: copilot assigned to issue #$ISSUE_NUM"
           elif [[ "$HTTP_CODE" -lt 300 ]]; then
-            echo "⚠️  API returned $HTTP_CODE but copilot not in assignees: $ASSIGNEES"
+            echo "::warning::API returned $HTTP_CODE but copilot not in assignees: $ASSIGNEES"
             echo "Issue was created — assign copilot manually:"
             echo "  ${{ steps.create.outputs.issue_url }}"
           else
-            echo "⚠️  Assignment returned HTTP $HTTP_CODE"
+            echo "::warning::Assignment returned HTTP $HTTP_CODE"
             cat /tmp/assign_resp.json 2>/dev/null | head -5
-            echo ""
             echo "Issue was created — assign copilot manually:"
             echo "  ${{ steps.create.outputs.issue_url }}"
           fi
 
-      # ── 5. Summary ──────────────────────────────────────────────────
+      # ── 6. Summary ──────────────────────────────────────────────────
       - name: "Summary"
         if: always()
         run: |
           echo "### Auto-Heal Results" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
+
           TOTAL="${{ steps.logs.outputs.total_failures }}"
-          if [[ "$TOTAL" == "0" ]]; then
-            echo "No test failures detected (workflow may have failed for other reasons)." >> "$GITHUB_STEP_SUMMARY"
-          elif [[ "${{ steps.dedup.outputs.open_count }}" != "0" ]]; then
-            echo "⏸️ **Skipped** — an auto-heal issue is already open." >> "$GITHUB_STEP_SUMMARY"
+          ATTEMPT="${{ steps.dedup.outputs.attempt }}"
+          STILL="${{ steps.diagnose.outputs.still_failing }}"
+
+          echo "| Metric | Value |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|--------|-------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Failures in CI logs | ${TOTAL:-0} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Still failing (after checkout) | ${STILL:-n/a} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Attempt | ${ATTEMPT:-0} |" >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ "${ATTEMPT:-0}" -ge 3 ]]; then
+            echo "| Status | :warning: **ESCALATED** — agent loop broken, human review needed |" >> "$GITHUB_STEP_SUMMARY"
+          elif [[ "${TOTAL:-0}" == "0" ]]; then
+            echo "| Status | :white_check_mark: No failures detected |" >> "$GITHUB_STEP_SUMMARY"
+          elif [[ "${STILL:-0}" == "0" ]]; then
+            echo "| Status | :white_check_mark: All failures resolved in current commit |" >> "$GITHUB_STEP_SUMMARY"
           elif [[ -n "${{ steps.create.outputs.issue_url }}" ]]; then
-            echo "🩹 **Created fix issue:** ${{ steps.create.outputs.issue_url }}" >> "$GITHUB_STEP_SUMMARY"
-            echo "**Failures:** $TOTAL (pytest: ${{ steps.logs.outputs.pytest_count }}, PS: ${{ steps.logs.outputs.ps_count }}, bash: ${{ steps.logs.outputs.bash_count }})" >> "$GITHUB_STEP_SUMMARY"
+            echo "| Status | :adhesive_bandage: Created fix issue: ${{ steps.create.outputs.issue_url }} |" >> "$GITHUB_STEP_SUMMARY"
+          elif [[ "${{ steps.dedup.outputs.open_count }}" != "0" ]]; then
+            echo "| Status | :arrows_counterclockwise: Updated existing issue #${{ steps.dedup.outputs.existing_issue }} with attempt $((ATTEMPT + 1)) |" >> "$GITHUB_STEP_SUMMARY"
           fi
