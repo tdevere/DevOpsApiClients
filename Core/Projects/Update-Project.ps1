@@ -63,6 +63,16 @@ if ($Capabilities)   { $bodyHash['capabilities'] = $Capabilities }
 if ($DefaultTeam)    { $bodyHash['defaultTeam']  = $DefaultTeam }
 $body = $bodyHash | ConvertTo-Json -Depth 3
 
+#--- Resolve project name → GUID (PATCH requires a GUID, not a name) -------
+$guidPattern = '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+if ($ProjectId -notmatch $guidPattern) {
+    Write-Verbose "ProjectId '$ProjectId' is a name — resolving to GUID via GET..."
+    $getUri = New-AdoUrl -Organization $Organization -Path "_apis/projects/$ProjectId" -ApiVersion $ApiVersion
+    $proj = Invoke-RestMethod -Uri $getUri -Method Get -Headers $headers -ContentType 'application/json'
+    $ProjectId = $proj.id
+    Write-Verbose "Resolved to GUID: $ProjectId"
+}
+
 #--- Call the API -----------------------------------------------------------
 $uri = New-AdoUrl -Organization $Organization -Path "_apis/projects/$ProjectId" -ApiVersion $ApiVersion
 
