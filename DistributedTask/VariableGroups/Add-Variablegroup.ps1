@@ -2,26 +2,38 @@
 # Source of truth: _generator/definitions/
 <#
 .SYNOPSIS
-    Get a variable group.
+    Add a variable group.
 
 .DESCRIPTION
-    Calls  GET {org}/_apis/distributedtask/variablegroups/{group_id}?api-version=7.2
+    Calls  POST {org}/_apis/distributedtask/variablegroups?api-version=7.2
     Uses Basic Auth with a PAT stored in $env:AZURE_DEVOPS_PAT.
 
 .LINK
-    https://learn.microsoft.com/en-us/rest/api/azure/devops/distributed-task/variablegroups/get?view=azure-devops-rest-7.2
+    https://learn.microsoft.com/en-us/rest/api/azure/devops/distributed-task/variablegroups/add?view=azure-devops-rest-7.2
 #>
 
 [CmdletBinding()]
 param (
+    [Parameter(Mandatory)]
+    [string]$Description,
+
+    [Parameter(Mandatory)]
+    [string]$Name,
+
+    [Parameter(Mandatory)]
+    [string]$ProviderData,
+
+    [Parameter(Mandatory)]
+    [string]$Type,
+
+    [Parameter(Mandatory)]
+    [string]$VariableGroupProjectReferences,
+
+    [Parameter(Mandatory)]
+    [string]$Variables,
+
     [Parameter()]
     [string]$Organization = $env:AZURE_DEVOPS_ORG,
-
-    [Parameter()]
-    [string]$ProjectId = $env:PROJECT_ID,
-
-    [Parameter()]
-    [string]$GroupId = $env:GROUP_ID,
 
     [Parameter()]
     [string]$Pat = $env:AZURE_DEVOPS_PAT
@@ -37,8 +49,6 @@ $_sharedDir = Join-Path (Join-Path (Split-Path $PSScriptRoot -Parent) '..') '_sh
 
 #--- Validate inputs --------------------------------------------------------
 Assert-AdoEnv -Name 'Organisation' -Value $Organization
-Assert-AdoEnv -Name 'ProjectId' -Value $ProjectId
-Assert-AdoEnv -Name 'GroupId' -Value $GroupId
 Assert-AdoEnv -Name 'PAT' -Value $Pat
 
 #--- API version ------------------------------------------------------------
@@ -47,12 +57,22 @@ $ApiVersion = '7.2'
 #--- Build auth header ------------------------------------------------------
 $headers = New-AdoAuthHeader -Pat $Pat
 
+#--- Build request body -----------------------------------------------------
+$body = @{
+    description = $Description
+    name = $Name
+    providerData = $ProviderData
+    type = $Type
+    variableGroupProjectReferences = $VariableGroupProjectReferences
+    variables = $Variables
+} | ConvertTo-Json -Depth 3
+
 #--- Call the API -----------------------------------------------------------
-$uri = New-AdoUrl -Organization $Organization -Path "_apis/distributedtask/variablegroups/$GroupId" -ApiVersion $ApiVersion -Project $ProjectId
+$uri = New-AdoUrl -Organization $Organization -Path "_apis/distributedtask/variablegroups" -ApiVersion $ApiVersion
 
-Write-Verbose "GET $uri"
+Write-Verbose "POST $uri"
 
-$response = Invoke-RestMethod -Uri $uri -Method Get -Headers $headers -ContentType 'application/json'
+$response = Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body -ContentType 'application/json'
 
 #--- Version guard ----------------------------------------------------------
 if ($response.PSObject.Properties.Name -notcontains 'id') {

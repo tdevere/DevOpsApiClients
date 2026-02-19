@@ -2,14 +2,14 @@
 # Source of truth: _generator/definitions/
 <#
 .SYNOPSIS
-    Retrieve all pull requests matching a specified criteria.
+    Get details of a specific pull request.
 
 .DESCRIPTION
-    Calls  GET {org}/_apis/git/pullrequests?api-version=7.2
+    Calls  GET {org}/_apis/git/repositories/{repository_id}/pullrequests/{pull_request_id}?api-version=7.2
     Uses Basic Auth with a PAT stored in $env:AZURE_DEVOPS_PAT.
 
 .LINK
-    https://learn.microsoft.com/en-us/rest/api/azure/devops/git/pull-requests/get-pull-requests-by-project?view=azure-devops-rest-7.2
+    https://learn.microsoft.com/en-us/rest/api/azure/devops/git/pull-requests/get-pull-request?view=azure-devops-rest-7.2
 #>
 
 [CmdletBinding()]
@@ -19,6 +19,12 @@ param (
 
     [Parameter()]
     [string]$ProjectId = $env:PROJECT_ID,
+
+    [Parameter()]
+    [string]$RepositoryId = $env:REPO_ID,
+
+    [Parameter()]
+    [string]$PullRequestId = $env:PULL_REQUEST_ID,
 
     [Parameter()]
     [string]$Pat = $env:AZURE_DEVOPS_PAT
@@ -35,6 +41,8 @@ $_sharedDir = Join-Path (Join-Path (Split-Path $PSScriptRoot -Parent) '..') '_sh
 #--- Validate inputs --------------------------------------------------------
 Assert-AdoEnv -Name 'Organisation' -Value $Organization
 Assert-AdoEnv -Name 'ProjectId' -Value $ProjectId
+Assert-AdoEnv -Name 'RepositoryId' -Value $RepositoryId
+Assert-AdoEnv -Name 'PullRequestId' -Value $PullRequestId
 Assert-AdoEnv -Name 'PAT' -Value $Pat
 
 #--- API version ------------------------------------------------------------
@@ -44,11 +52,20 @@ $ApiVersion = '7.2'
 $headers = New-AdoAuthHeader -Pat $Pat
 
 #--- Call the API -----------------------------------------------------------
-$uri = New-AdoUrl -Organization $Organization -Path "_apis/git/pullrequests" -ApiVersion $ApiVersion -Project $ProjectId
+$uri = New-AdoUrl -Organization $Organization -Path "_apis/git/repositories/$RepositoryId/pullrequests/$PullRequestId" -ApiVersion $ApiVersion -Project $ProjectId
 
 Write-Verbose "GET $uri"
 
 $response = Invoke-RestMethod -Uri $uri -Method Get -Headers $headers -ContentType 'application/json'
 
+#--- Version guard ----------------------------------------------------------
+if ($response.PSObject.Properties.Name -notcontains 'pullRequestId') {
+    Write-Warning "Unexpected response shape — missing 'pullRequestId'. The server may not support api-version $ApiVersion."
+}
+if ($response.PSObject.Properties.Name -notcontains 'title') {
+    Write-Warning "Unexpected response shape — missing 'title'. The server may not support api-version $ApiVersion."
+}
+
 #--- Output -----------------------------------------------------------------
+Write-Host "PR #$($response.pullRequestId): $($response.title) [$($response.status)]"
 $response | ConvertTo-Json -Depth 5

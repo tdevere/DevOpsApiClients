@@ -2,14 +2,14 @@
 # Source of truth: _generator/definitions/
 <#
 .SYNOPSIS
-    Delete (recycle) a work item.
+    Delete a variable group
 
 .DESCRIPTION
-    Calls  DELETE {org}/_apis/wit/workitems/{work_item_id}?api-version=7.2-preview.3
+    Calls  DELETE {org}/_apis/distributedtask/variablegroups/{group_id}?api-version=7.2
     Uses Basic Auth with a PAT stored in $env:AZURE_DEVOPS_PAT.
 
 .LINK
-    https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/delete?view=azure-devops-rest-7.2
+    https://learn.microsoft.com/en-us/rest/api/azure/devops/distributed-task/variablegroups/delete?view=azure-devops-rest-7.2
 #>
 
 [CmdletBinding()]
@@ -18,7 +18,10 @@ param (
     [string]$Organization = $env:AZURE_DEVOPS_ORG,
 
     [Parameter()]
-    [string]$WorkItemId = $env:WORK_ITEM_ID,
+    [string]$GroupId = $env:GROUP_ID,
+
+    [Parameter()]
+    [string]$ProjectIds = $env:PROJECT_IDS,
 
     [Parameter()]
     [string]$Pat = $env:AZURE_DEVOPS_PAT
@@ -34,30 +37,22 @@ $_sharedDir = Join-Path (Join-Path (Split-Path $PSScriptRoot -Parent) '..') '_sh
 
 #--- Validate inputs --------------------------------------------------------
 Assert-AdoEnv -Name 'Organisation' -Value $Organization
-Assert-AdoEnv -Name 'WorkItemId' -Value $WorkItemId
+Assert-AdoEnv -Name 'GroupId' -Value $GroupId
+Assert-AdoEnv -Name 'ProjectIds' -Value $ProjectIds
 Assert-AdoEnv -Name 'PAT' -Value $Pat
 
 #--- API version ------------------------------------------------------------
-$ApiVersion = '7.2-preview.3'
+$ApiVersion = '7.2'
 
 #--- Build auth header ------------------------------------------------------
 $headers = New-AdoAuthHeader -Pat $Pat
 
 #--- Call the API -----------------------------------------------------------
-$uri = New-AdoUrl -Organization $Organization -Path "_apis/wit/workitems/$WorkItemId" -ApiVersion $ApiVersion
+$uri = New-AdoUrl -Organization $Organization -Path "_apis/distributedtask/variablegroups/$GroupId" -ApiVersion $ApiVersion
 
 Write-Verbose "DELETE $uri"
 
 $response = Invoke-RestMethod -Uri $uri -Method Delete -Headers $headers -ContentType 'application/json'
 
-#--- Version guard ----------------------------------------------------------
-if ($response.PSObject.Properties.Name -notcontains 'id') {
-    Write-Warning "Unexpected response shape — missing 'id'. The server may not support api-version $ApiVersion."
-}
-if ($response.PSObject.Properties.Name -notcontains 'code') {
-    Write-Warning "Unexpected response shape — missing 'code'. The server may not support api-version $ApiVersion."
-}
-
 #--- Output -----------------------------------------------------------------
-Write-Host "Work item $($response.id) deleted (moved to recycle bin)"
 $response | ConvertTo-Json -Depth 5

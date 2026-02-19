@@ -2,7 +2,7 @@
 # Source of truth: _generator/definitions/
 <#
 .SYNOPSIS
-    Create a pull request.
+    Create a new pull request.
 
 .DESCRIPTION
     Calls  POST {org}/_apis/git/repositories/{repository_id}/pullrequests?api-version=7.2
@@ -14,21 +14,6 @@
 
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory)]
-    [string]$ArtifactId,
-
-    [Parameter(Mandatory)]
-    [string]$AutoCompleteSetBy,
-
-    [Parameter(Mandatory)]
-    [string]$ClosedBy,
-
-    [Parameter(Mandatory)]
-    [string]$ClosedDate,
-
-    [Parameter(Mandatory)]
-    [string]$CodeReviewId,
-
     [Parameter()]
     [string]$Organization = $env:AZURE_DEVOPS_ORG,
 
@@ -37,6 +22,15 @@ param (
 
     [Parameter()]
     [string]$RepositoryId = $env:REPO_ID,
+
+    [Parameter()]
+    [string]$SourceBranch = $env:SOURCE_BRANCH,
+
+    [Parameter()]
+    [string]$TargetBranch = $env:TARGET_BRANCH,
+
+    [Parameter()]
+    [string]$PrTitle = $env:PR_TITLE,
 
     [Parameter()]
     [string]$Pat = $env:AZURE_DEVOPS_PAT
@@ -54,6 +48,9 @@ $_sharedDir = Join-Path (Join-Path (Split-Path $PSScriptRoot -Parent) '..') '_sh
 Assert-AdoEnv -Name 'Organisation' -Value $Organization
 Assert-AdoEnv -Name 'ProjectId' -Value $ProjectId
 Assert-AdoEnv -Name 'RepositoryId' -Value $RepositoryId
+Assert-AdoEnv -Name 'SourceBranch' -Value $SourceBranch
+Assert-AdoEnv -Name 'TargetBranch' -Value $TargetBranch
+Assert-AdoEnv -Name 'PrTitle' -Value $PrTitle
 Assert-AdoEnv -Name 'PAT' -Value $Pat
 
 #--- API version ------------------------------------------------------------
@@ -64,11 +61,9 @@ $headers = New-AdoAuthHeader -Pat $Pat
 
 #--- Build request body -----------------------------------------------------
 $body = @{
-    artifactId = $ArtifactId
-    autoCompleteSetBy = $AutoCompleteSetBy
-    closedBy = $ClosedBy
-    closedDate = $ClosedDate
-    codeReviewId = $CodeReviewId
+    sourceRefName = $SourceBranch
+    targetRefName = $TargetBranch
+    title = $PrTitle
 } | ConvertTo-Json -Depth 3
 
 #--- Call the API -----------------------------------------------------------
@@ -79,12 +74,13 @@ Write-Verbose "POST $uri"
 $response = Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body -ContentType 'application/json'
 
 #--- Version guard ----------------------------------------------------------
-if ($response.PSObject.Properties.Name -notcontains 'artifactId') {
-    Write-Warning "Unexpected response shape — missing 'artifactId'. The server may not support api-version $ApiVersion."
+if ($response.PSObject.Properties.Name -notcontains 'pullRequestId') {
+    Write-Warning "Unexpected response shape — missing 'pullRequestId'. The server may not support api-version $ApiVersion."
 }
-if ($response.PSObject.Properties.Name -notcontains 'autoCompleteSetBy') {
-    Write-Warning "Unexpected response shape — missing 'autoCompleteSetBy'. The server may not support api-version $ApiVersion."
+if ($response.PSObject.Properties.Name -notcontains 'title') {
+    Write-Warning "Unexpected response shape — missing 'title'. The server may not support api-version $ApiVersion."
 }
 
 #--- Output -----------------------------------------------------------------
+Write-Host "Pull request #$($response.pullRequestId) created: $($response.title)"
 $response | ConvertTo-Json -Depth 5

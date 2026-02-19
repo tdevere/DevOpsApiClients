@@ -2,10 +2,10 @@
 # Source of truth: _generator/definitions/
 <#
 .SYNOPSIS
-    Updates a single work item.
+    Update fields on an existing work item.
 
 .DESCRIPTION
-    Calls  PATCH {org}/_apis/wit/workitems/{id}?api-version=7.2
+    Calls  PATCH {org}/_apis/wit/workitems/{work_item_id}?api-version=7.2-preview.3
     Uses Basic Auth with a PAT stored in $env:AZURE_DEVOPS_PAT.
 
 .LINK
@@ -21,7 +21,7 @@ param (
     [string]$ProjectId = $env:PROJECT_ID,
 
     [Parameter()]
-    [string]$Id = $env:RESOURCE_ID,
+    [string]$WorkItemId = $env:WORK_ITEM_ID,
 
     [Parameter()]
     [string]$Pat = $env:AZURE_DEVOPS_PAT
@@ -38,17 +38,17 @@ $_sharedDir = Join-Path (Join-Path (Split-Path $PSScriptRoot -Parent) '..') '_sh
 #--- Validate inputs --------------------------------------------------------
 Assert-AdoEnv -Name 'Organisation' -Value $Organization
 Assert-AdoEnv -Name 'ProjectId' -Value $ProjectId
-Assert-AdoEnv -Name 'Id' -Value $Id
+Assert-AdoEnv -Name 'WorkItemId' -Value $WorkItemId
 Assert-AdoEnv -Name 'PAT' -Value $Pat
 
 #--- API version ------------------------------------------------------------
-$ApiVersion = '7.2'
+$ApiVersion = '7.2-preview.3'
 
 #--- Build auth header ------------------------------------------------------
 $headers = New-AdoAuthHeader -Pat $Pat
 
 #--- Call the API -----------------------------------------------------------
-$uri = New-AdoUrl -Organization $Organization -Path "_apis/wit/workitems/$Id" -ApiVersion $ApiVersion -Project $ProjectId
+$uri = New-AdoUrl -Organization $Organization -Path "_apis/wit/workitems/$WorkItemId" -ApiVersion $ApiVersion -Project $ProjectId
 
 Write-Verbose "PATCH $uri"
 
@@ -58,10 +58,10 @@ $response = Invoke-RestMethod -Uri $uri -Method Patch -Headers $headers -Content
 if ($response.PSObject.Properties.Name -notcontains 'id') {
     Write-Warning "Unexpected response shape — missing 'id'. The server may not support api-version $ApiVersion."
 }
-if ($response.PSObject.Properties.Name -notcontains 'commentVersionRef') {
-    Write-Warning "Unexpected response shape — missing 'commentVersionRef'. The server may not support api-version $ApiVersion."
+if ($response.PSObject.Properties.Name -notcontains 'fields') {
+    Write-Warning "Unexpected response shape — missing 'fields'. The server may not support api-version $ApiVersion."
 }
 
 #--- Output -----------------------------------------------------------------
-Write-Host "Work Items ID: $($response.id)"
+Write-Host "Work item $($response.id) updated — rev $($response.rev)"
 $response | ConvertTo-Json -Depth 5

@@ -2,7 +2,7 @@
 # Source of truth: _generator/definitions/
 <#
 .SYNOPSIS
-    Update a pull request These are the properties that can be updated with the API: - Status - Title - Description (up t...
+    Update a pull request (title, description, status, etc.).
 
 .DESCRIPTION
     Calls  PATCH {org}/_apis/git/repositories/{repository_id}/pullrequests/{pull_request_id}?api-version=7.2
@@ -14,21 +14,6 @@
 
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory)]
-    [string]$ArtifactId,
-
-    [Parameter(Mandatory)]
-    [string]$AutoCompleteSetBy,
-
-    [Parameter(Mandatory)]
-    [string]$ClosedBy,
-
-    [Parameter(Mandatory)]
-    [string]$ClosedDate,
-
-    [Parameter(Mandatory)]
-    [string]$CodeReviewId,
-
     [Parameter()]
     [string]$Organization = $env:AZURE_DEVOPS_ORG,
 
@@ -66,29 +51,21 @@ $ApiVersion = '7.2'
 #--- Build auth header ------------------------------------------------------
 $headers = New-AdoAuthHeader -Pat $Pat
 
-#--- Build request body -----------------------------------------------------
-$body = @{
-    artifactId = $ArtifactId
-    autoCompleteSetBy = $AutoCompleteSetBy
-    closedBy = $ClosedBy
-    closedDate = $ClosedDate
-    codeReviewId = $CodeReviewId
-} | ConvertTo-Json -Depth 3
-
 #--- Call the API -----------------------------------------------------------
 $uri = New-AdoUrl -Organization $Organization -Path "_apis/git/repositories/$RepositoryId/pullrequests/$PullRequestId" -ApiVersion $ApiVersion -Project $ProjectId
 
 Write-Verbose "PATCH $uri"
 
-$response = Invoke-RestMethod -Uri $uri -Method Patch -Headers $headers -Body $body -ContentType 'application/json'
+$response = Invoke-RestMethod -Uri $uri -Method Patch -Headers $headers -ContentType 'application/json'
 
 #--- Version guard ----------------------------------------------------------
-if ($response.PSObject.Properties.Name -notcontains 'artifactId') {
-    Write-Warning "Unexpected response shape — missing 'artifactId'. The server may not support api-version $ApiVersion."
+if ($response.PSObject.Properties.Name -notcontains 'pullRequestId') {
+    Write-Warning "Unexpected response shape — missing 'pullRequestId'. The server may not support api-version $ApiVersion."
 }
-if ($response.PSObject.Properties.Name -notcontains 'autoCompleteSetBy') {
-    Write-Warning "Unexpected response shape — missing 'autoCompleteSetBy'. The server may not support api-version $ApiVersion."
+if ($response.PSObject.Properties.Name -notcontains 'title') {
+    Write-Warning "Unexpected response shape — missing 'title'. The server may not support api-version $ApiVersion."
 }
 
 #--- Output -----------------------------------------------------------------
+Write-Host "PR #$($response.pullRequestId) updated — status: $($response.status)"
 $response | ConvertTo-Json -Depth 5
