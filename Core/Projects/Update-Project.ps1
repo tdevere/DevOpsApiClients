@@ -14,11 +14,14 @@
 
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory)]
-    [string]$Capabilities,
+    [Parameter()]
+    [string]$NewDescription = '',
 
-    [Parameter(Mandatory)]
-    [string]$DefaultTeam,
+    [Parameter()]
+    [string]$Capabilities = '',
+
+    [Parameter()]
+    [string]$DefaultTeam = '',
 
     [Parameter()]
     [string]$Organization = $env:AZURE_DEVOPS_ORG,
@@ -43,6 +46,10 @@ Assert-AdoEnv -Name 'Organisation' -Value $Organization
 Assert-AdoEnv -Name 'ProjectId' -Value $ProjectId
 Assert-AdoEnv -Name 'PAT' -Value $Pat
 
+if (-not $NewDescription -and -not $Capabilities -and -not $DefaultTeam) {
+    throw 'Provide at least one of -NewDescription, -Capabilities, or -DefaultTeam.'
+}
+
 #--- API version ------------------------------------------------------------
 $ApiVersion = '7.2-preview.4'
 
@@ -50,10 +57,11 @@ $ApiVersion = '7.2-preview.4'
 $headers = New-AdoAuthHeader -Pat $Pat
 
 #--- Build request body -----------------------------------------------------
-$body = @{
-    capabilities = $Capabilities
-    defaultTeam = $DefaultTeam
-} | ConvertTo-Json -Depth 3
+$bodyHash = @{}
+if ($NewDescription) { $bodyHash['description'] = $NewDescription }
+if ($Capabilities)   { $bodyHash['capabilities'] = $Capabilities }
+if ($DefaultTeam)    { $bodyHash['defaultTeam']  = $DefaultTeam }
+$body = $bodyHash | ConvertTo-Json -Depth 3
 
 #--- Call the API -----------------------------------------------------------
 $uri = New-AdoUrl -Organization $Organization -Path "_apis/projects/$ProjectId" -ApiVersion $ApiVersion
