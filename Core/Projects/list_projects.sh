@@ -20,7 +20,7 @@ source "${SCRIPT_DIR}/../../_shared/common.sh"
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-API_VERSION="7.2"
+API_VERSION="7.2-preview.4"
 ORG=$(ado_require_env "AZURE_DEVOPS_ORG" "organisation slug")
 PAT=$(ado_require_env "AZURE_DEVOPS_PAT" "Personal Access Token")
 

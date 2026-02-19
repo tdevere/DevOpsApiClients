@@ -26,7 +26,7 @@ from _shared.http_client import build_url, execute_request, version_guard
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-API_VERSION = "7.2"
+API_VERSION = "7.2-preview.4"
 
 ORGANIZATION = get_env_or_exit("AZURE_DEVOPS_ORG", "organisation slug")
 PAT = get_env_or_exit("AZURE_DEVOPS_PAT", "Personal Access Token")
