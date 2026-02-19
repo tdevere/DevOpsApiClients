@@ -33,6 +33,7 @@ AUTH=$(ado_build_auth "$PAT")
 # ---------------------------------------------------------------------------
 # Request body
 # ---------------------------------------------------------------------------
+set +u
 BODY=$(cat <<EOF
 {
   "automatedResultsRetentionDuration": "${AUTOMATED_RESULTS_RETENTION_DURATION}",
@@ -42,6 +43,7 @@ BODY=$(cat <<EOF
 }
 EOF
 )
+set -u
 
 # ---------------------------------------------------------------------------
 # API call
