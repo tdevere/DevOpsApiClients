@@ -19,7 +19,7 @@ Describe 'Update-Project.ps1' -Tag 'Offline', 'Core' {
 
         It 'Throws when Organisation is empty' {
             {
-                & $ScriptPath -Organization '' -Capabilities 'testvalue' -DefaultTeam 'testvalue' -ProjectId 'testvalue' -Pat 'fakepat'
+                & $ScriptPath -Organization '' -Capabilities 'testvalue' -DefaultTeam 'testvalue' -ProjectId 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' -Pat 'fakepat'
             } | Should -Throw '*is required*'
         }
 
@@ -31,7 +31,7 @@ Describe 'Update-Project.ps1' -Tag 'Offline', 'Core' {
 
         It 'Throws when Pat is empty' {
             {
-                & $ScriptPath -Organization 'testorg' -Capabilities 'testvalue' -DefaultTeam 'testvalue' -ProjectId 'testvalue' -Pat ''
+                & $ScriptPath -Organization 'testorg' -Capabilities 'testvalue' -DefaultTeam 'testvalue' -ProjectId 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' -Pat ''
             } | Should -Throw '*is required*'
         }
     }
@@ -45,11 +45,11 @@ Describe 'Update-Project.ps1' -Tag 'Offline', 'Core' {
         It 'Calls the correct URL' {
             Mock Invoke-RestMethod { return $fixture } -Verifiable
 
-            & $ScriptPath -Organization 'testorg' -Capabilities 'testvalue' -DefaultTeam 'testvalue' -ProjectId 'testvalue' -Pat 'fakepat' | Out-Null
+            & $ScriptPath -Organization 'testorg' -Capabilities 'testvalue' -DefaultTeam 'testvalue' -ProjectId 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' -Pat 'fakepat' | Out-Null
 
             Should -InvokeVerifiable
             Should -Invoke Invoke-RestMethod -Times 1 -Exactly -ParameterFilter {
-                $Uri -eq "https://dev.azure.com/testorg/_apis/projects/testvalue?api-version=7.2-preview.4" -and
+                $Uri -eq "https://dev.azure.com/testorg/_apis/projects/a1b2c3d4-e5f6-7890-abcd-ef1234567890?api-version=7.2-preview.4" -and
                 $Method -eq 'Patch'
             }
         }
@@ -61,7 +61,7 @@ Describe 'Update-Project.ps1' -Tag 'Offline', 'Core' {
 
             Mock Invoke-RestMethod { return $fixture }
 
-            & $ScriptPath -Organization 'testorg' -Capabilities 'testvalue' -DefaultTeam 'testvalue' -ProjectId 'testvalue' -Pat 'fakepat' | Out-Null
+            & $ScriptPath -Organization 'testorg' -Capabilities 'testvalue' -DefaultTeam 'testvalue' -ProjectId 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' -Pat 'fakepat' | Out-Null
 
             Should -Invoke Invoke-RestMethod -Times 1 -ParameterFilter {
                 $Headers['Authorization'] -eq "Basic $expectedAuth"
@@ -77,7 +77,7 @@ Describe 'Update-Project.ps1' -Tag 'Offline', 'Core' {
                 throw $ex
             }
 
-            { & $ScriptPath -Organization 'testorg' -Capabilities 'testvalue' -DefaultTeam 'testvalue' -ProjectId 'testvalue' -Pat 'fakepat' } | Should -Throw
+            { & $ScriptPath -Organization 'testorg' -Capabilities 'testvalue' -DefaultTeam 'testvalue' -ProjectId 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' -Pat 'fakepat' } | Should -Throw
         }
     }
 }
