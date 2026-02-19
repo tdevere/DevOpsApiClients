@@ -1,0 +1,443 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# batch-generate.yml
+# Iterates all YAML definitions in _generator/definitions/ and generates any
+# missing implementations (Python, PowerShell, Bash, tests, fixtures).
+#
+# Follows the Validation Gate from copilot-instructions.md §8.5:
+#   Generate → T1 offline tests on touched domains → Commit if T1 passes
+#
+# Triggers:
+#   - Manual (workflow_dispatch) with optional domain filter and force-regen
+#   - Weekly schedule (Sunday 03:00 UTC)
+# ─────────────────────────────────────────────────────────────────────────────
+name: Batch Generate API Clients
+
+on:
+  workflow_dispatch:
+    inputs:
+      domain_filter:
+        description: >
+          Optional filename prefix to limit generation
+          (e.g. "git_", "build_", "core_").
+          Leave blank to process all definitions.
+        default: ""
+        required: false
+        type: string
+      force_regenerate:
+        description: "Overwrite existing files (regenerate even if all 3 scripts exist)"
+        default: "false"
+        required: false
+        type: choice
+        options:
+          - "false"
+          - "true"
+      skip_tests:
+        description: "Skip T1 offline tests before committing (not recommended)"
+        default: "false"
+        required: false
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+  schedule:
+    - cron: "0 3 * * 0" # Weekly — Sunday 03:00 UTC
+
+permissions:
+  contents: write
+
+jobs:
+  # ───────────────────────────────────────────────────────────────────────────
+  # Phase 1 — Generate missing implementations
+  # ───────────────────────────────────────────────────────────────────────────
+  generate:
+    name: "Generate Missing Implementations"
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    outputs:
+      generated_count: ${{ steps.gen.outputs.generated_count }}
+      failed_count:    ${{ steps.gen.outputs.failed_count }}
+      domains_touched: ${{ steps.gen.outputs.domains_touched }}
+      has_new_files:   ${{ steps.gen.outputs.has_new_files }}
+      failed_list:     ${{ steps.gen.outputs.failed_list }}
+
+    steps:
+      # ── 1. Checkout ────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      # ── 2. Python environment ──────────────────────────────────────────────
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install generator dependencies
+        run: pip install pyyaml requests responses
+
+      # ── 3. Batch generation loop ───────────────────────────────────────────
+      - name: Run batch generator
+        id: gen
+        env:
+          DOMAIN_FILTER: ${{ inputs.domain_filter || '' }}
+          FORCE_REGEN:   ${{ inputs.force_regenerate || 'false' }}
+        run: |
+          python - << 'PYEOF'
+          import os, sys, subprocess, yaml
+          from pathlib import Path
+
+          ROOT         = Path(".")
+          DEFS_DIR     = ROOT / "_generator" / "definitions"
+          DOMAIN_FILTER = os.environ.get("DOMAIN_FILTER", "").strip()
+          FORCE_REGEN   = os.environ.get("FORCE_REGEN", "false").lower() == "true"
+
+          yaml_files = sorted(DEFS_DIR.glob("*.yaml"))
+          if DOMAIN_FILTER:
+              yaml_files = [f for f in yaml_files if f.name.startswith(DOMAIN_FILTER)]
+              print(f"Domain filter '{DOMAIN_FILTER}' → {len(yaml_files)} definitions matched.")
+
+          total         = len(yaml_files)
+          generated     = 0
+          skipped       = 0
+          failed        = 0
+          domains_touched: set[str] = set()
+          failed_names: list[str]   = []
+
+          print(f"Processing {total} definitions (force_regen={FORCE_REGEN})...")
+
+          for i, yaml_path in enumerate(yaml_files, 1):
+              try:
+                  with open(yaml_path) as fh:
+                      defn = yaml.safe_load(fh)
+              except Exception as exc:
+                  print(f"[{i:>4}/{total}] SKIP  {yaml_path.name}: YAML parse error — {exc}", flush=True)
+                  failed += 1
+                  failed_names.append(yaml_path.name)
+                  continue
+
+              domain    = defn.get("domain", "")
+              resource  = defn.get("resource", "")
+              ps_verb   = defn.get("ps_verb", "")
+              ps_noun   = defn.get("ps_noun", "")
+              operation = defn.get("operation", "")
+
+              if not all([domain, resource, ps_verb, ps_noun, operation]):
+                  print(f"[{i:>4}/{total}] SKIP  {yaml_path.name}: missing required field(s)", flush=True)
+                  skipped += 1
+                  continue
+
+              # ── Idempotency: skip if all three implementation files exist ──
+              ps1_path = ROOT / domain / resource / f"{ps_verb}-{ps_noun}.ps1"
+              py_path  = ROOT / domain / resource / f"{operation}.py"
+              sh_path  = ROOT / domain / resource / f"{operation}.sh"
+
+              if not FORCE_REGEN and ps1_path.exists() and py_path.exists() and sh_path.exists():
+                  skipped += 1
+                  continue
+
+              # ── Generate ───────────────────────────────────────────────────
+              result = subprocess.run(
+                  [sys.executable, "-m", "_generator.generate", "--definition", str(yaml_path)],
+                  capture_output=True,
+                  text=True,
+              )
+
+              if result.returncode == 0:
+                  generated += 1
+                  domains_touched.add(domain)
+                  # Log every 25th generation or the first 5 to keep output readable
+                  if generated <= 5 or generated % 25 == 0:
+                      print(f"[{i:>4}/{total}] GEN   {yaml_path.name}", flush=True)
+              else:
+                  failed += 1
+                  failed_names.append(yaml_path.name)
+                  stderr_snippet = (result.stderr or result.stdout or "").strip()[:300]
+                  print(f"[{i:>4}/{total}] FAIL  {yaml_path.name}: {stderr_snippet}", flush=True)
+
+          # ── Summary ────────────────────────────────────────────────────────
+          print(f"\nResults: {generated} generated | {skipped} skipped | {failed} failed")
+          domains_str = ",".join(sorted(domains_touched))
+          print(f"Domains touched: {domains_str or 'none'}")
+
+          # ── Write GitHub outputs ───────────────────────────────────────────
+          output_file = os.environ.get("GITHUB_OUTPUT", "")
+          if output_file:
+              with open(output_file, "a") as fh:
+                  fh.write(f"generated_count={generated}\n")
+                  fh.write(f"failed_count={failed}\n")
+                  fh.write(f"domains_touched={domains_str}\n")
+                  fh.write(f"has_new_files={'true' if generated > 0 else 'false'}\n")
+                  if failed_names:
+                      fh.write(f"failed_list={';'.join(failed_names[:30])}\n")
+                  else:
+                      fh.write("failed_list=\n")
+
+          sys.exit(0)
+          PYEOF
+
+      # ── 4. Upload generated files as an artifact (for the test job) ────────
+      - name: Upload workspace snapshot
+        if: steps.gen.outputs.has_new_files == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-workspace
+          # Upload the entire repo tree so the test job can run T1 against it
+          path: |
+            .
+            !.git
+          retention-days: 1
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Phase 2 — T1 offline tests on touched domains (Validation Gate §8.5)
+  # ───────────────────────────────────────────────────────────────────────────
+  test-t1:
+    name: "T1 Offline Tests (generated domains)"
+    runs-on: ubuntu-latest
+    needs: generate
+    timeout-minutes: 30
+    # Only run if new files were generated AND skip_tests is not requested
+    if: >
+      needs.generate.outputs.has_new_files == 'true' &&
+      (github.event_name == 'schedule' || inputs.skip_tests == 'false')
+    outputs:
+      t1_passed: ${{ steps.pytest.outputs.t1_passed }}
+
+    steps:
+      # ── Use the artifact from phase 1 so we test the exact generated state ──
+      - name: Download generated workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: generated-workspace
+          path: .
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install test dependencies
+        run: pip install requests responses pytest pyyaml
+
+      - name: Run pytest on touched domains
+        id: pytest
+        env:
+          DOMAINS_CSV: ${{ needs.generate.outputs.domains_touched }}
+        run: |
+          # Build the space-separated list of domain paths to test
+          IFS=',' read -ra DOMAINS <<< "$DOMAINS_CSV"
+          PATHS=""
+          for d in "${DOMAINS[@]}"; do
+            [[ -d "$d" ]] && PATHS="$PATHS $d/"
+          done
+
+          if [[ -z "$PATHS" ]]; then
+            echo "No domain directories found — skipping pytest."
+            echo "t1_passed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Running: pytest -m offline -q --tb=short $PATHS"
+          if pytest -m offline -q --tb=short $PATHS; then
+            echo "t1_passed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "t1_passed=false" >> "$GITHUB_OUTPUT"
+            # Do NOT exit 1 here — let the commit job decide based on output
+          fi
+
+      - name: Run Pester on touched domains
+        id: pester
+        shell: pwsh
+        env:
+          DOMAINS_CSV: ${{ needs.generate.outputs.domains_touched }}
+        run: |
+          # Ensure Pester v5
+          $installed = (Get-Module Pester -ListAvailable | Sort-Object Version -Descending | Select-Object -First 1).Version
+          if (-not $installed -or $installed.Major -lt 5) {
+            Install-Module Pester -Force -SkipPublisherCheck -MinimumVersion 5.0 -Scope CurrentUser
+          }
+
+          $domains = ($env:DOMAINS_CSV -split ',') | Where-Object { $_ -and (Test-Path $_) }
+          if (-not $domains) {
+            Write-Host "No domain directories found — skipping Pester."
+            exit 0
+          }
+
+          $testFiles = $domains | ForEach-Object {
+            Get-ChildItem -Path $_ -Recurse -Filter "*.Tests.ps1" -ErrorAction SilentlyContinue
+          }
+
+          if (-not $testFiles) {
+            Write-Host "No Pester test files found in touched domains."
+            exit 0
+          }
+
+          Write-Host "Running Pester on $($testFiles.Count) test file(s)..."
+          $config = New-PesterConfiguration
+          $config.Run.Path = $testFiles.FullName
+          $config.Filter.Tag = @('Offline')
+          $config.Output.Verbosity = 'Normal'
+          $config.TestResult.Enabled = $true
+          $config.TestResult.OutputPath = 'pester_batch_results.xml'
+
+          $result = Invoke-Pester -Configuration $config -PassThru
+          if ($result.FailedCount -gt 0) {
+            Write-Warning "Pester: $($result.FailedCount) test(s) failed."
+            # Non-fatal — let commit job use pytest output as the gate
+          }
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Phase 3 — Commit & push if T1 passed (or tests were skipped)
+  # ───────────────────────────────────────────────────────────────────────────
+  commit:
+    name: "Commit Generated Files"
+    runs-on: ubuntu-latest
+    needs: [generate, test-t1]
+    timeout-minutes: 10
+    # Run if tests passed, OR if the test job was skipped (skip_tests='true')
+    if: >
+      always() &&
+      needs.generate.outputs.has_new_files == 'true' &&
+      (
+        needs.test-t1.result == 'skipped' ||
+        needs.test-t1.outputs.t1_passed == 'true'
+      )
+
+    steps:
+      - name: Checkout repository (fresh)
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Download generated workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: generated-workspace
+          path: generated-workspace
+
+      # Copy generated files over the clean checkout, preserving .git
+      - name: Apply generated files
+        run: |
+          rsync -a --exclude='.git' generated-workspace/ .
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "Nothing to commit — all generated files already matched the tree."
+            exit 0
+          fi
+
+          COUNT="${{ needs.generate.outputs.generated_count }}"
+          DOMAINS="${{ needs.generate.outputs.domains_touched }}"
+          DOMAIN_LIST=$(echo "$DOMAINS" | tr ',' '\n' | head -10 | tr '\n' ',' | sed 's/,$//')
+          DOMAIN_COUNT=$(echo "$DOMAINS" | tr ',' '\n' | wc -l | tr -d ' ')
+          T1_STATUS="${{ needs.test-t1.result }}"
+          RUN_ID="${{ github.run_id }}"
+
+          git commit \
+            -m "feat: batch-generate ${COUNT} missing API client implementations" \
+            -m "Domains (${DOMAIN_COUNT} total): ${DOMAIN_LIST}" \
+            -m "T1 offline tests: ${T1_STATUS}" \
+            -m "Generated by: batch-generate workflow | Run: ${RUN_ID}"
+          git push
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Phase 4 — Post T1 failure as an issue (Validation Gate §8.5)
+  # ───────────────────────────────────────────────────────────────────────────
+  fail-issue:
+    name: "Open T1 Failure Issue"
+    runs-on: ubuntu-latest
+    needs: [generate, test-t1]
+    if: >
+      always() &&
+      needs.generate.outputs.has_new_files == 'true' &&
+      needs.test-t1.result == 'success' &&
+      needs.test-t1.outputs.t1_passed == 'false'
+    permissions:
+      issues: write
+
+    steps:
+      - name: Open GitHub Issue for T1 failures
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const domains = "${{ needs.generate.outputs.domains_touched }}";
+            const count   = "${{ needs.generate.outputs.generated_count }}";
+            const runUrl  = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              title: `[batch-generate] T1 offline tests failed after generating ${count} implementations`,
+              labels: ["auto-completion", "tests", "api-sync-failure"],
+              body: `## Batch Generation T1 Failure
+
+            The batch-generate workflow generated **${count}** new implementations but **T1 offline tests failed** — files were NOT committed.
+
+            | Field | Value |
+            |-------|-------|
+            | **Domains touched** | \`${domains.replace(/,/g, "`, `")}\` |
+            | **T1 result** | FAILED |
+            | **Workflow run** | [View logs](${runUrl}) |
+
+            ### Next Steps
+
+            1. Review the failed test output in the [workflow run](${runUrl}).
+            2. If the failure is in a template (all generated files share the bug), fix \`_generator/templates/\` and re-run.
+            3. If the failure is in specific YAML definitions, update those definitions and re-run.
+            4. Re-run \`batch-generate\` after fixing — it will skip already-committed files.
+
+            ### Reference
+            See \`.github/copilot-instructions.md\` §8.5 Validation Gate for the T1/T2 commit policy.
+
+            > This issue was auto-generated by the batch-generate workflow.
+            `,
+            });
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Always — Job summary
+  # ───────────────────────────────────────────────────────────────────────────
+  summary:
+    name: "Workflow Summary"
+    runs-on: ubuntu-latest
+    needs: [generate, test-t1, commit]
+    if: always()
+
+    steps:
+      - name: Write step summary
+        run: |
+          GEN="${{ needs.generate.outputs.generated_count || '0' }}"
+          FAIL="${{ needs.generate.outputs.failed_count || '0' }}"
+          DOMAINS="${{ needs.generate.outputs.domains_touched || 'none' }}"
+          T1="${{ needs.test-t1.result }}"
+          COMMIT="${{ needs.commit.result }}"
+          FAILED_LIST="${{ needs.generate.outputs.failed_list || '' }}"
+
+          {
+            echo "## Batch Generate — Summary"
+            echo ""
+            echo "| Metric | Value |"
+            echo "|--------|-------|"
+            echo "| Definitions generated | **${GEN}** |"
+            echo "| Definitions failed    | **${FAIL}** |"
+            echo "| Domains touched       | \`${DOMAINS}\` |"
+            echo "| T1 offline tests result | ${T1} |"
+            echo "| Commit job result       | ${COMMIT} |"
+            echo ""
+
+            if [[ -n "$FAILED_LIST" ]]; then
+              echo "### Failed definitions (first 30)"
+              echo '```'
+              echo "$FAILED_LIST" | tr ';' '\n'
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
